@@ -1,0 +1,29 @@
+GET http://localhost:3000/students
+
+###
+
+GET http://localhost:3000/students/6450ecc6963bce1d709609a8
+
+###
+
+POST http://localhost:3000/students
+Content-Type: application/json
+
+{
+    "student_id": "208992",
+    "study_course": "informatica",
+    "study_year": "2021"
+}
+
+###
+
+DELETE http://localhost:3000/students/6450ecd6963bce1d709609ac
+
+###
+
+PATCH http://localhost:3000/students/6450ecd6963bce1d709609ac
+Content-Type: application/json
+
+{
+    "student_id": "206666"
+}
