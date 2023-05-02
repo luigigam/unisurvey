@@ -17,13 +17,13 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/students/6450ecd6963bce1d709609ac
+DELETE http://localhost:3000/students/6450ecc6963bce1d709609a8
 
 ###
 
-PATCH http://localhost:3000/students/6450ecd6963bce1d709609ac
+PATCH http://localhost:3000/students/6450ecc6963bce1d709609a8
 Content-Type: application/json
 
 {
-    "student_id": "206666"
+    "student_id": "654452"
 }
