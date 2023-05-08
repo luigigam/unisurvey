@@ -16,5 +16,6 @@ const loginRouter = require('./backend/routes/login')
 
 app.use('/students', studentsRouter)
 app.use('/login', loginRouter)
+app.use(express.static('frontend'));
 
 app.listen(3000, () => console.log('Server Started'))
