@@ -14,4 +14,4 @@ app.use(express.json())
 const studentsRouter = require('./backend/routes/students')
 app.use('/students', studentsRouter)
 
-app.listen(3000, () => console.log('Server Started'));
+app.listen(3000, () => console.log('Server Started'))
