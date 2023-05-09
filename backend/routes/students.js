@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Student = require ('../models/student')
+const bcrypt = require("bcrypt")
+const hashing = require("../middlewares/encrypt_pssw")
 
 //Getting all
 router.get('/', async (req,res) => {
@@ -19,12 +21,13 @@ router.get('/:id', getStudent, async (req,res) => {
 
 //Creating one
 router.post('/', async (req,res) => {
+    const hashed = await hashing(req.body.password)
     const student = new Student({
       name: req.body.name,
       surname: req.body.surname,
       gender: req.body.gender,
       email: req.body.email,
-      password: req.body.password,
+      password: hashed,
       student_id: req.body.student_id,
       study_course: req.body.study_course,
       study_year: req.body.study_year

@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Admin = require ('../models/admin')
+const bcrypt = require("bcrypt")
+const hashing = require("../middlewares/encrypt_pssw")
 
 //Getting all
 router.get('/', async (req,res) => {
@@ -19,11 +21,12 @@ router.get('/:id', getAdmin, async (req,res) => {
 
 //Creating one
 router.post('/', async (req,res) => {
+    const hashed = await hashing(req.body.password)
     const admin = new Admin({
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,
-        password: req.body.password
+        password: hashed
     })
 
     try {
