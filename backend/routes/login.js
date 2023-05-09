@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const Login = require('../models/login');
 
-// Rotte per il login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   // Cerca l'utente nel database per l'email fornita
@@ -15,8 +15,9 @@ router.post('/login', async (req, res) => {
   if (!isValidPassword) {
     return res.status(401).json({ message: 'Credenziali non valide' });
   }
-  // Restituisci il token di autenticazione dell'utente
-  return res.status(200).json({ token: 'TODO: generare il token di autenticazione qui' });
+  // Genera il token di autenticazione dell'utente
+  const token = jwt.sign({ id: login._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return res.status(200).json({ token });
 });
 
 module.exports = router;

@@ -1,21 +1,23 @@
-require('dotenv').config()
+require('dotenv').config();
 
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
 
-mongoose.connect(process.env.DATABASE_URL)
-const db = mongoose.connection
-db.on('error', (error) => console.error(error))
-db.once('open', () => console.log('Connected to Database'))
+mongoose.connect(process.env.DATABASE_URL);
+const db = mongoose.connection;
+db.on('error', (error) => console.error(error));
+db.once('open', () => console.log('Connected to Database'));
 
-app.use(express.json())
+app.use(express.json());
 
-const studentsRouter = require('./backend/routes/students')
-const loginRouter = require('./backend/routes/login')
+const studentsRouter = require('./backend/routes/students');
+const loginRouter = require('./backend/routes/login');
+const adminPromotesRouter = require('./backend/routes/AdminPromotes');
 
-app.use('/students', studentsRouter)
-app.use('/login', loginRouter)
+app.use('/students', studentsRouter);
+app.use('/login', loginRouter);
+app.use('/admin', adminPromotesRouter);
 app.use(express.static('frontend'));
 
-app.listen(3000, () => console.log('Server Started'))
+app.listen(3000, () => console.log('Server Started'));

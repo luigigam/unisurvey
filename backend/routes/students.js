@@ -2,6 +2,13 @@ const express = require('express')
 const router = express.Router()
 const Student = require ('../models/student')
 
+const isAdmin = (req, res, next) => {
+  if (req.user.role === 'Administration') {
+    return next()
+  }
+  return res.status(403).json({ message: 'You are not authorized to access this resource' })
+}
+
 //Getting all
 router.get('/', async (req,res) => {
     try {
@@ -18,7 +25,7 @@ router.get('/:id', getStudent, async (req,res) => {
 })
 
 //Creating one
-router.post('/', async (req,res) => {
+router.post('/', isAdmin, async (req,res) => {
     const student = new Student({
         student_id: req.body.student_id,
         study_course: req.body.study_course
@@ -33,7 +40,7 @@ router.post('/', async (req,res) => {
 })
 
 //Updating one
-router.patch('/:id', getStudent, async (req,res) => {
+router.patch('/:id', isAdmin, getStudent, async (req,res) => {
   if (req.body.student_id != null) {
     res.student.student_id = req.body.student_id
   }
@@ -49,7 +56,7 @@ router.patch('/:id', getStudent, async (req,res) => {
 })
 
 // Deleting One
-router.delete("/:id", getStudent, async (req, res) => {
+router.delete("/:id", isAdmin, getStudent, async (req, res) => {
 	try {
 		await res.student.deleteOne()
 		res.json({ message: "Deleted Student" })
