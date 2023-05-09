@@ -1,2 +1,4 @@
 .env
 node_modules
+student_route.rest
+admin_route.rest

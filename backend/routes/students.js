@@ -2,13 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Student = require ('../models/student')
 
-const isAdmin = (req, res, next) => {
-  if (req.user.role === 'Administration') {
-    return next()
-  }
-  return res.status(403).json({ message: 'You are not authorized to access this resource' })
-}
-
 //Getting all
 router.get('/', async (req,res) => {
     try {
@@ -25,10 +18,16 @@ router.get('/:id', getStudent, async (req,res) => {
 })
 
 //Creating one
-router.post('/', isAdmin, async (req,res) => {
+router.post('/', async (req,res) => {
     const student = new Student({
-        student_id: req.body.student_id,
-        study_course: req.body.study_course
+      name: req.body.name,
+      surname: req.body.surname,
+      gender: req.body.gender,
+      email: req.body.email,
+      password: req.body.password,
+      student_id: req.body.student_id,
+      study_course: req.body.study_course,
+      study_year: req.body.study_year
     })
 
     try {
@@ -40,12 +39,30 @@ router.post('/', isAdmin, async (req,res) => {
 })
 
 //Updating one
-router.patch('/:id', isAdmin, getStudent, async (req,res) => {
+router.patch('/:id', getStudent, async (req,res) => {
+  if (req.body.name != null) {
+    res.student.name = req.body.name
+  }
+  if (req.body.surname != null) {
+    res.student.surname = req.body.surname
+  }
+  if (req.body.gender != null) {
+    res.student.gender = req.body.gender
+  }
+  if (req.body.email != null) {
+    res.student.email = req.body.email
+  }
+  if (req.body.password != null) {
+    res.student.password = req.body.password
+  }
   if (req.body.student_id != null) {
     res.student.student_id = req.body.student_id
   }
   if (req.body.study_course != null) {
     res.student.study_course = req.body.study_course
+  }
+  if (req.body.study_year != null) {
+    res.student.study_year = req.body.study_year
   }
   try {
     const updatedStudent = await res.student.save()
@@ -56,7 +73,7 @@ router.patch('/:id', isAdmin, getStudent, async (req,res) => {
 })
 
 // Deleting One
-router.delete("/:id", isAdmin, getStudent, async (req, res) => {
+router.delete("/:id", getStudent, async (req, res) => {
 	try {
 		await res.student.deleteOne()
 		res.json({ message: "Deleted Student" })

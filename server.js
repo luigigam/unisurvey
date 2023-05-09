@@ -12,12 +12,11 @@ db.once('open', () => console.log('Connected to Database'));
 app.use(express.json());
 
 const studentsRouter = require('./backend/routes/students');
-const loginRouter = require('./backend/routes/login');
-const adminPromotesRouter = require('./backend/routes/AdminPromotes');
+const adminsRouter = require('./backend/routes/admins');
 
 app.use('/students', studentsRouter);
-app.use('/login', loginRouter);
-app.use('/admin', adminPromotesRouter);
+app.use('/admins', adminsRouter);
+
 app.use(express.static('frontend'));
 
 app.listen(3000, () => console.log('Server Started'));
