@@ -1,24 +1,38 @@
 <!DOCTYPE html>
-<html lang="it">
-  <head>
-    <meta charset="UTF-8">
-    <title>Unisurvey - Login</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Unisurvey</h1>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Unisurvey Login</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@samsungsds/one-ui/latest/one-ui.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="container">
+    <div class="box">
+      <h1 class="title">Unisurvey</h1>
       <form>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+        <div class="field">
+          <label class="label">Email or ID</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Email or ID">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required>
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" type="password" placeholder="Password">
+          </div>
         </div>
-        <button type="submit">Accedi</button>
+        <div class="field">
+          <div class="control">
+            <button class="button is-primary is-fullwidth">Login</button>
+          </div>
+        </div>
+        <div class="field">
+          <p class="has-text-centered">Non hai un account? <a href="#">Richiedilo qui</a></p>
+        </div>
       </form>
     </div>
-  </body>
+  </div>
+</body>
 </html>
