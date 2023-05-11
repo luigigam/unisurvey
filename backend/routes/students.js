@@ -1,8 +1,12 @@
+require('dotenv').config()
+
 const express = require('express')
 const router = express.Router()
 const Student = require ('../models/student')
 const bcrypt = require("bcrypt")
 const hashing = require("../middlewares/encrypt_pssw")
+const jwt = require('jsonwebtoken')
+const authenticateToken = require("../middlewares/authenticateToken")
 
 //Getting all
 router.get('/', async (req,res) => {
@@ -93,7 +97,8 @@ router.post('/login', async (req, res) => {
   }
   try {
     if (await bcrypt.compare(req.body.password, student.password)) {
-      res.send('Success')
+      const accessToken = jwt.sign(student.toJSON(), process.env.ACCESS_TOKEN_SECRET)
+      res.json({ accessToken: accessToken })
     } else {
       res.send('Not allowed')
     }
@@ -101,7 +106,12 @@ router.post('/login', async (req, res) => {
     res.status(500).send()
   }
 })
-  
+
+//Home
+router.post('/home', authenticateToken, (req, res) => {
+  res.send('Homepage')
+})  
+
 async function getStudent(req, res, next) {
   let student
   try {

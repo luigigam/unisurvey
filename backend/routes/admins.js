@@ -3,6 +3,8 @@ const router = express.Router()
 const Admin = require ('../models/admin')
 const bcrypt = require("bcrypt")
 const hashing = require("../middlewares/encrypt_pssw")
+const jwt = require('jsonwebtoken')
+const authenticateToken = require("../middlewares/authenticateToken")
 
 //Getting all
 router.get('/', async (req,res) => {
@@ -77,13 +79,19 @@ router.post('/login', async (req, res) => {
   }
   try {
     if (await bcrypt.compare(req.body.password, admin.password)) {
-      res.send('Success')
+      const accessToken = jwt.sign(admin.toJSON(), process.env.ACCESS_TOKEN_SECRET)
+      res.json({ accessToken: accessToken })
     } else {
       res.send('Not allowed')
     }
   } catch {
     res.status(500).send()
   }
+})
+
+//Home
+router.post('/home', authenticateToken, (req, res) => {
+  res.send('Homepage')
 })
   
 async function getAdmin(req, res, next) {
