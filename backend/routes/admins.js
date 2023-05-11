@@ -68,6 +68,23 @@ router.delete("/:id", getAdmin, async (req, res) => {
 		res.status(500).json({ message: err.message })
 	}
 })
+
+//Login
+router.post('/login', async (req, res) => {
+  const admin = await Admin.findOne({ email: req.body.email })
+  if (admin == null) {
+    return res.status(400).send('Cannot find admin')
+  }
+  try {
+    if (await bcrypt.compare(req.body.password, admin.password)) {
+      res.send('Success')
+    } else {
+      res.send('Not allowed')
+    }
+  } catch {
+    res.status(500).send()
+  }
+})
   
 async function getAdmin(req, res, next) {
   let admin

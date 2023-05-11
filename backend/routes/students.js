@@ -84,6 +84,23 @@ router.delete("/:id", getStudent, async (req, res) => {
 		res.status(500).json({ message: err.message })
 	}
 })
+
+//Login
+router.post('/login', async (req, res) => {
+  const student = await Student.findOne({ email: req.body.email })
+  if (student == null) {
+    return res.status(400).send('Cannot find student')
+  }
+  try {
+    if (await bcrypt.compare(req.body.password, student.password)) {
+      res.send('Success')
+    } else {
+      res.send('Not allowed')
+    }
+  } catch {
+    res.status(500).send()
+  }
+})
   
 async function getStudent(req, res, next) {
   let student
