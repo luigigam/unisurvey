@@ -1,0 +1,6 @@
+Funzioni tipo authUrl serve per l'URL di autorizzazione 
+              getAccessToken per token di accesso post user consenso. 
+si può usare token di accesso per chiamare funzioni quali:createEvent per creare un nuovo evento nel calendario
+                                                          getEvents per ottenere gli eventi esistenti.
+
+Importante la call delle funzioni in maniera corretta nel server o delle route appropriate
