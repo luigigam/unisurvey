@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Ripristino Password</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@samsungsds/one-ui/latest/one-ui.css">
-  <link rel="stylesheet" href="reset-password.css">
+  <link rel="stylesheet" href="Uibase.css">
 </head>
 <body>
   <div class="container">
@@ -72,28 +72,46 @@
           </div>
         </form>
       </div>
+
+      <!-- Link per tornare alla pagina di login -->
+      <div class="field">
+        <p class="has-text-centered"><a href="login.html">Torna al Login</a></p>
+      </div>
     </div>
   </div>
-
+  
   <script>
-    document.getElementById("btn-next-step-2").addEventListener("click", function(e) {
+    // Gestisci il click sul bottone "Torna al login"
+    document.getElementById("btn-back-to-login").addEventListener("click", function(e) {
       e.preventDefault();
-      document.getElementById("step-1").style.display = "none";
-      document.getElementById("step-2").style.display = "block";
+      window.location.href = "login.html";
     });
-  
-    document.getElementById("btn-next-step-3").addEventListener("click", function(e) {
-      e.preventDefault();
-      document.getElementById("step-2").style.display = "none";
-      document.getElementById("step-3").style.display = "block";
-    });
-  
-    document.getElementById("btn-reset-password").addEventListener("click", function(e) {
-      e.preventDefault();
-    /*
-        Per Luigi:: Esegui l'azione di reset della password,con invio della nuova password al server per l'aggiornamento nel database.
-    */
+    //gestisci primo avanti
+  document.getElementById("btn-next-step-2").addEventListener("click", function(e) {
+    e.preventDefault();
+    document.getElementById("step-1").style.display = "none";
+    document.getElementById("step-2").style.display = "block";
+  });
+    //gestisci 2 avanti
+  document.getElementById("btn-next-step-3").addEventListener("click", function(e) {
+    e.preventDefault();
+    document.getElementById("step-2").style.display = "none";
+    document.getElementById("step-3").style.display = "block";
+  });
+  //gestisci Reset password
+  document.getElementById("btn-reset-password").addEventListener("click", function(e) {
+    e.preventDefault();
+
+    //Ricava valori delle nuove password
+    const newPassword = document.getElementById("new-password").value;
+    const repeatPassword = document.getElementById("repeat-password").value;
+
+    // Verifica se le password corrispondono
+    if (newPassword !== repeatPassword) 
+        {
+         alert("Le password non corrispondono.");
+         return;
+        }
       alert("Password ripristinata con successo!");
     });
-  </script>
-  
+</script>
