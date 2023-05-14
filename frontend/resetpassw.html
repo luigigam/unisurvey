@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ripristino Password</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@samsungsds/one-ui/latest/one-ui.css">
+  <link rel="stylesheet" href="reset-password.css">
+</head>
+<body>
+  <div class="container">
+    <div class="box">
+      <div class="logo-container">
+        <img class="logo" src="Immagini\Logo.jpg" alt="Unisurvey Logo">
+      </div>
+
+      <!-- Finestra 1: Inserisci l'email -->
+      <div id="step-1" class="step">
+        <h2>Inserisci l'email</h2>
+        <form>
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input" type="email" placeholder="Inserisci l'email" required>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button id="btn-next-step-2" class="button is-primary">Avanti</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Finestra 2: Inserisci l'OTP -->
+      <div id="step-2" class="step" style="display: none;">
+        <h2>Inserisci l'OTP</h2>
+        <form>
+          <div class="field">
+            <label class="label">OTP</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Inserisci l'OTP" required>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button id="btn-next-step-3" class="button is-primary">Avanti</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Finestra 3: Inserisci la nuova password -->
+      <div id="step-3" class="step" style="display: none;">
+        <h2>Inserisci la nuova password</h2>
+        <form>
+          <div class="field">
+            <label class="label">Nuova password</label>
+            <div class="control">
+              <input class="input" type="password" placeholder="Inserisci la nuova password" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Ripeti nuova password</label>
+            <div class="control">
+              <input class="input" type="password" placeholder="Ripeti la nuova password" required>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button id="btn-reset-password" class="button is-primary">Resetta Password</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("btn-next-step-2").addEventListener("click", function(e) {
+      e.preventDefault();
+      document.getElementById("step-1").style.display = "none";
+      document.getElementById("step-2").style.display = "block";
+    });
+  
+    document.getElementById("btn-next-step-3").addEventListener("click", function(e) {
+      e.preventDefault();
+      document.getElementById("step-2").style.display = "none";
+      document.getElementById("step-3").style.display = "block";
+    });
+  
+    document.getElementById("btn-reset-password").addEventListener("click", function(e) {
+      e.preventDefault();
+    /*
+        Per Luigi:: Esegui l'azione di reset della password,con invio della nuova password al server per l'aggiornamento nel database.
+    */
+      alert("Password ripristinata con successo!");
+    });
+  </script>
+  
