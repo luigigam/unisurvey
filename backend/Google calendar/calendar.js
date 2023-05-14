@@ -33,7 +33,6 @@ async function createEvent(eventData) {
   try {
     const event = await calendar.events.insert({
       calendarId: 'primary', // ID del calendario
-      resource: eventData,
     });
     return event.data;
   } catch (error) {
