@@ -17,6 +17,7 @@
     "typescript": "^5.0.4"
   },
   "devDependencies": {
+    "@types/express-serve-static-core": "^4.17.35",
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.22"
   }
