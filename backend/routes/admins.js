@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const hashing = require('../middlewares/encrypt_pssw');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('../middlewares/authenticateToken');
-const Event = require('../models/Event');
+const Event = require('../models/event');
 
 // Ottieni tutti gli amministratori
 router.get('/', async (req, res) => {
