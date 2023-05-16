@@ -1,0 +1,50 @@
+GET http://localhost:3000/students
+
+###
+
+GET http://localhost:3000/students/645a69a4b2ad03dc07295897
+
+###
+
+POST http://localhost:3000/students
+Content-Type: application/json
+
+{
+    "name": "tommaso",
+    "surname": "nonnola",
+    "gender": "M",
+    "email": "tomm.naso@pippo.com",
+    "password": "stella",
+    "student_id": "123456",
+    "study_course": "matematica",
+    "study_year": "2020"
+}
+
+###
+
+DELETE http://localhost:3000/students/645a63838c61272ab2f74214
+
+###
+
+PATCH http://localhost:3000/students/645a63838c61272ab2f74214
+Content-Type: application/json
+
+{
+    "gender": "F",
+    "password": "67890"
+}
+
+###
+
+POST http://localhost:3000/students/login
+Content-Type: application/json
+
+{
+    "email": "tomm.naso@pippo.com",
+    "password": "stella"
+}
+
+###
+
+POST http://localhost:3000/students/home
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IjpXVCJ9.eyJfaWQiOiI2NDVhNjlhNGIyYWQwM2RjMDcyOTU4OTciLCJuYW1lIjoidG9tbWFzbyIsInN1cm5hbWUiOiJub25ub2xhIiwiZ2VuZGVyIjoiTSIsImVtYWlsIjoidG9tbS5uYXNvQHBpcHBvLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHlnQ1p5Q0xELjYvRHYya1FoQXNQOHVhMklKRklQaUh4MURjYm14SlNaemVZLm8zVzBkZGwyIiwic3R1ZGVudF9pZCI6IjEyMzQ1NiIsInN0dWR5X2NvdXJzZSI6Im1hdGVtYXRpY2EiLCJzdHVkeV95ZWFyIjoiMjAyMCIsIl9fdiI6MCwiaWF0IjoxNjg0MjY0NDU4fQ.zd99abg0O5cejOtbMYKdMZ_9UAmJtJozqWBX8Uu0S5w
