@@ -26,8 +26,8 @@ PATCH http://localhost:3000/admins/645a63f88c61272ab2f74223
 Content-Type: application/json
 
 {
-    "email": "artemiss@azorius.com",
-    "password": "passWord"
+    "email": "pippo@baudo.it",
+    "password": "kikkko"
 }
 
 ###
@@ -42,4 +42,4 @@ Content-Type: application/json
 ###
 
 POST http://localhost:3000/students/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDVjZmVhMTM3ODk5N2I5NmMwNTU3YTYiLCJuYW1lIjoiUGlwcG8iLCJzdXJuYW1lIjoiQmF1ZG8iLCJlbWFpbCI6InBpcHBvQGJhdWRvLml0IiwicGFzc3dvcmQiOiIkMmIkMTAkQkN2MTY4OXQ3VmM1b1Z1N3p5a1RnZVM2MU42Y1FhTEVjdWNPTEtoSGh0YjNVdjJseVlYTWUiLCJfX3YiOjAsImlhdCI6MTY4MzgxODU3NX0.hSXU0cBiI_RWXLEphTaxp3CwRZTuRRuu75t7IG_G1NI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDVjZmVhMTM3ODk5N2I5NmMwNTU3YTYiLCJuYW1lIjoiUGlwcG8iLCJzdXJuYW1lIjoiQmF1ZG8iLCJlbWFpbCI6InBpcHBvQGJhdWRvLml0IiwicGFzc3dvcmQiOiIkMmIkMTAkQkN2MTY4OXQ3VmM1b1Z1N3p5a1RnZVM2MU42Y1FhTEVjdWNPTEtoSGh0YjNVdjJseVlYTWUiLCJfX3YiOjAsImlhdCI6MTY4NDI2NDcwMX0.h41PwwDbW2k9ujtxhHOjnaupFHNE_rmTUajFhEOMy4s

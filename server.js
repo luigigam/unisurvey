@@ -13,12 +13,11 @@ app.use(express.json());
 
 const studentsRouter = require('./backend/routes/students');
 const adminsRouter = require('./backend/routes/admins');
-//const eventsRouter=require('./backend/routes/events');
-
+const eventsRouter = require('./backend/routes/events');
 
 app.use('/students', studentsRouter);
 app.use('/admins', adminsRouter);
-//app.use('/events', eventsRouter);
+app.use('/events', eventsRouter);
 
 app.use(express.static('frontend'));
 

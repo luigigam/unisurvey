@@ -10,11 +10,11 @@ POST http://localhost:3000/students
 Content-Type: application/json
 
 {
-    "name": "tommaso",
-    "surname": "nonnola",
+    "name": "francesco",
+    "surname": "la rosa",
     "gender": "M",
-    "email": "tomm.naso@pippo.com",
-    "password": "stella",
+    "email": "prova@x",
+    "password": "123",
     "student_id": "123456",
     "study_course": "matematica",
     "study_year": "2020"
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/students/645a63838c61272ab2f74214
+DELETE http://localhost:3000/students/6464cc78c885285a22ad431f
 
 ###
 
@@ -40,11 +40,11 @@ POST http://localhost:3000/students/login
 Content-Type: application/json
 
 {
-    "email": "tomm.naso@pippo.com",
-    "password": "stella"
+    "email": "prova@x",
+    "password": "123"
 }
 
 ###
 
 POST http://localhost:3000/students/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IjpXVCJ9.eyJfaWQiOiI2NDVhNjlhNGIyYWQwM2RjMDcyOTU4OTciLCJuYW1lIjoidG9tbWFzbyIsInN1cm5hbWUiOiJub25ub2xhIiwiZ2VuZGVyIjoiTSIsImVtYWlsIjoidG9tbS5uYXNvQHBpcHBvLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHlnQ1p5Q0xELjYvRHYya1FoQXNQOHVhMklKRklQaUh4MURjYm14SlNaemVZLm8zVzBkZGwyIiwic3R1ZGVudF9pZCI6IjEyMzQ1NiIsInN0dWR5X2NvdXJzZSI6Im1hdGVtYXRpY2EiLCJzdHVkeV95ZWFyIjoiMjAyMCIsIl9fdiI6MCwiaWF0IjoxNjg0MjY0NDU4fQ.zd99abg0O5cejOtbMYKdMZ_9UAmJtJozqWBX8Uu0S5w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY0Y2QyZGM4ODUyODVhMjJhZDQzMzUiLCJuYW1lIjoiZnJhbmNlc2NvIiwic3VybmFtZSI6ImxhIHJvc2EiLCJnZW5kZXIiOiJNIiwiZW1haWwiOiJwcm92YUB4IiwicGFzc3dvcmQiOiIkMmIkMTAkU2MybE9ZZ3cxYXd1Zjg1VkptMU5GLks2ZkVnZldKdWNxNnRudEtwUU5EdHBhSUYuQm1vdXkiLCJzdHVkZW50X2lkIjoiMTIzNDU2Iiwic3R1ZHlfY291cnNlIjoibWF0ZW1hdGljYSIsInN0dWR5X3llYXIiOiIyMDIwIiwiX192IjowLCJpYXQiOjE2ODQzMjc3Mzh9.KpOTnVlkFGHh9ffhA3BJVJfh1F59_cQVdI2XlJvOLNA
