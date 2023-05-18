@@ -18,8 +18,8 @@ body {
 }
 
 .logo {
-  width: auto; /* Imposta la larghezza desiderata per il logo */
-  height: auto; /* Imposta l'altezza in base all'aspetto del logo */
+  width: 90%; /* Imposta la larghezza desiderata per il logo */
+  height: 90%; /* Imposta l'altezza in base all'aspetto del logo */
 }
 
 .box {
