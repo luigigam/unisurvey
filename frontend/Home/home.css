@@ -1,0 +1,166 @@
+/* General styles */
+.container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .side-menu {
+    width: 200px;
+    background-color: #FFCC00;
+    padding: 10px;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    background-color: #FFCC00;
+    color: #2e2e2e;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #FFCC00;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+  }
+  
+  .dropdown-content a {
+    color: #2e2e2e;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .calendar {
+    margin-bottom: 20px;
+  }
+  
+  .calendar-container {
+    background-color: #FFCC00;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .selection-boxes {
+    display: flex;
+    justify-content: space-between;
+    width: 800px;
+    margin-bottom: 20px;
+  }
+  
+  .box {
+    width: 180px;
+    height: 180px;
+    background-color: #FFCC00;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #2e2e2e;
+    font-weight: 700;
+  }
+  
+  .temp-events {
+    width: 800px;
+    background-color: #FFCC00;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .temp-events h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #2e2e2e;
+    font-weight: 700;
+  }
+  
+  /* Light mode */
+  body {
+    background-color: #f5f5f5;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  /* Dark mode */
+  body.dark-mode {
+    background-color: #2e2e2e;
+  }
+  
+  /* Box Swich */
+.switch-container {
+    position: relative;
+    display: inline-block;
+    width: 3.5em;
+    height: 2em;
+  }
+  
+  /* Nascondi funzionalita html per migliore visione */
+  .switch-container input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* Theme swich use */
+  .switch-container .slider {
+    --background: linear-gradient(to right, #090613ef, #18151f);
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--background);
+    transition: background-color 0.5s;
+    border-radius: 30px;
+  }
+  
+  .switch-container .slider:before {
+    position: absolute;
+    content: "";
+    height: 1.4em;
+    width: 1.4em;
+    border-radius: 50%;
+    left: 10%;
+    bottom: 15%;
+    box-shadow: inset 15px -4px 0px 15px #f8ea27;
+    background: var(--background);
+    transition: transform 0.5s, box-shadow 0.5s;
+  }
+  
+  .switch-container input:checked + .slider {
+    background-color: #000;
+  }
+  
+  .switch-container input:checked + .slider:before {
+    transform: translateX(100%);
+    box-shadow: inset 8px -4px 0px 0px #f8f8f4;
+  }
+  
