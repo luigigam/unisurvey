@@ -6,6 +6,35 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@samsungsds/one-ui/latest/one-ui.css">
   <link rel="stylesheet" href="../Uibase.css">
   <link rel="stylesheet" href="resetpassw.css">
+
+  <script>
+    async function resetPassword() {
+      const email = document.getElementById("email").value;
+      const newPassword = document.getElementById("new-password").value;
+      
+      try {
+        const response = await fetch('http://localhost:3000/reset-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, newPassword })
+        });
+        
+        if (response.ok) {
+          // Password reset successful, redirect to login page or display success message
+          window.location.href = 'login.html';
+        } else {
+          // Password reset failed, display error message
+          const errorData = await response.json();
+          console.log('Error:', errorData.message);
+        }
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    }
+  </script>
+
 </head>
 <body>
   <div class="container">
@@ -55,7 +84,7 @@
     </div>
     <div class="field">
       <div class="control">
-        <button id="btn-reset-password" class="button" style="background-color: #917800; color: #2d2d2d;">Resetta Password</button>
+        <button id="btn-reset-password" onclick="resetPassword()">Resetta Password</button>
       </div>
       <!-- Link per tornare alla pagina di login -->
 <div class="field">
@@ -64,9 +93,4 @@
 
     </div>
   </form>
-</div>
-
-<!-- Link per tornare alla pagina di login -->
-<div class="field">
-  <p class="has-text-centered"><a href="login.html" style="font-size: 0.9em; font-weight: 500; color: black;">Torna al Login</a></p>
 </div>

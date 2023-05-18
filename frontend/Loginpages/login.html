@@ -8,6 +8,31 @@
   <link rel="stylesheet" href="login.css">
   
   <script>
+    async function loginUser() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      
+      try {
+        const response = await fetch('http://localhost:3000/students/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+        
+        if (response.ok) {
+          // Login successful, redirect to another page or perform desired actions
+          window.location.href = 'home.html';
+        } else {
+          // Login failed, display error message
+          const errorData = await response.json();
+          console.log('Error:', errorData.message);
+        }
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    }
     document.addEventListener("DOMContentLoaded", function() {
       document.getElementById("reset-password-link").addEventListener("click", function(e) {
         e.preventDefault();
@@ -38,14 +63,12 @@
           <input placeholder="Password" id="password" class="inputField" type="password">
         </div>
         
-        
-        <button id="button">Login</button>
+        <button id="button" onclick="loginUser()">Login</button>
         <div class="reset-password-link">
           <p>Password Dimenticata?</p>
           <a href="#" id="reset-password-link">Reset password</a>
         </div>
         </form>
-        
         </div>
         </div>
         </body>
