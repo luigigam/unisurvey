@@ -7,8 +7,9 @@ const bcrypt = require("bcrypt")
 const hashing = require("../middlewares/encrypt_pssw")
 const jwt = require('jsonwebtoken')
 const authenticateToken = require("../middlewares/authenticateToken")
+const validateEmail = require("../middlewares/validateEmail")
 
-//Getting all
+//Getting All
 router.get('/', async (req,res) => {
     try {
         const students = await Student.find()
@@ -23,8 +24,83 @@ router.get('/:id', getStudent, async (req,res) => {
     res.json(res.student)
 })
 
-//Creating one
-router.post('/', async (req,res) => {
+/**
+ * @swagger
+ * /students/signup:
+ *  post:
+ *      tags: [student]
+ *      summary: register a new student
+ *      description: the student is created after a bunch of checks over the submitted data (email already present in the database, valid email address, password length). An JWT access token is returned and saved as a cookie to keep the user logged.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                          surname:
+ *                              type: string
+ *                          gender:
+ *                              type: string
+ *                          email:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *                          student_id:
+ *                              type: string
+ *                          study_course:
+ *                              type: string
+ *                          study_year:
+ *                              type: string
+ *      responses:
+ *          '409':
+ *              description: 'email already in use: duplicate student'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '400':
+ *              description: 'bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '201':
+ *              description: 'student successfully created'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.post('/signup', async (req,res) => {
+    const duplicateUser = await Student.findOne({'email': req.body.email});
+    if (duplicateUser != null) {
+      return res.status(409).json({ message: 'email-already-in-use' })
+    }
+    if (!validateEmail(req.body.email)) {
+      return res.status(400).json({state: 'invalid-email'})
+    }
     const hashed = await hashing(req.body.password)
     const student = new Student({
       name: req.body.name,
@@ -41,8 +117,85 @@ router.post('/', async (req,res) => {
         const newStudent = await student.save()
         res.status(201).json(newStudent)
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.status(500).json({ message: err.message })
     }
+})
+
+/**
+ * @swagger
+ * /students/login:
+ *  post:
+ *      tags: [student]
+ *      summary: log into an existing student
+ *      description: the student is logged in after validation of his email and password. A JWT token is returned.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *      responses:
+ *          '400':
+ *              description: 'Bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '404':
+ *              description: 'email not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '401':
+ *              description: 'wrong password: failed authentication'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'user logged in'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.post('/login', async (req, res) => {
+  if (!validateEmail(req.body.email)) {
+    return res.status(400).send('Invalid email')
+  }
+  const student = await Student.findOne({ email: req.body.email })
+  if (student == null) {
+    return res.status(404).send('Cannot find student')
+  }
+  try {
+    if (await bcrypt.compare(req.body.password, student.password)) {
+      const accessToken = jwt.sign(student.toJSON(), process.env.ACCESS_TOKEN_SECRET)
+      res.status(200).json({ accessToken: accessToken })
+    } else {
+      res.status(401).send('Not allowed')
+    }
+  } catch {
+    res.status(500).send()
+  }
 })
 
 //Updating one
@@ -87,24 +240,6 @@ router.delete("/:id", getStudent, async (req, res) => {
 	} catch (err) {
 		res.status(500).json({ message: err.message })
 	}
-})
-
-//Login
-router.post('/login', async (req, res) => {
-  const student = await Student.findOne({ email: req.body.email })
-  if (student == null) {
-    return res.status(400).send('Cannot find student')
-  }
-  try {
-    if (await bcrypt.compare(req.body.password, student.password)) {
-      const accessToken = jwt.sign(student.toJSON(), process.env.ACCESS_TOKEN_SECRET)
-      res.json({ accessToken: accessToken })
-    } else {
-      res.send('Not allowed')
-    }
-  } catch {
-    res.status(500).send()
-  }
 })
 
 //Home

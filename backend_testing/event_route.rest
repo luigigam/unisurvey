@@ -1,12 +1,12 @@
-GET http://localhost:3000/events
+GET http://localhost:3000/api/events
 
 ###
 
-GET http://localhost:3000/events/645a63f88c61272ab2f74223
+GET http://localhost:3000/api/events/645a63f88c61272ab2f74223
 
 ###
 
-POST http://localhost:3000/events
+POST http://localhost:3000/api/events
 Content-Type: application/json
 
 {
@@ -20,11 +20,11 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/events/6464d9f71bd4a966c9c0de47
+DELETE http://localhost:3000/api/events/6464d9f71bd4a966c9c0de47
 
 ###
 
-PATCH http://localhost:3000/events/645a63f88c61272ab2f74223
+PATCH http://localhost:3000/api/events/645a63f88c61272ab2f74223
 Content-Type: application/json
 
 {

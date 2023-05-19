@@ -1,32 +1,32 @@
-GET http://localhost:3000/students
+GET http://localhost:3000/api/students
 
 ###
 
-GET http://localhost:3000/students/645a69a4b2ad03dc07295897
+GET http://localhost:3000/api/students/645a69a4b2ad03dc07295897
 
 ###
 
-POST http://localhost:3000/students
+POST http://localhost:3000/api/students/signup
 Content-Type: application/json
 
 {
-    "name": "francesco",
-    "surname": "la rosa",
+    "name": "luigi",
+    "surname": "gammo",
     "gender": "M",
-    "email": "prova@x",
+    "email": "prova2@xp",
     "password": "123",
     "student_id": "123456",
-    "study_course": "matematica",
-    "study_year": "2020"
+    "study_course": "informatica",
+    "study_year": "2002"
 }
 
 ###
 
-DELETE http://localhost:3000/students/6464cc78c885285a22ad431f
+DELETE http://localhost:3000/api/students/64666716b0471112b2d86161
 
 ###
 
-PATCH http://localhost:3000/students/645a63838c61272ab2f74214
+PATCH http://localhost:3000/api/students/645a63838c61272ab2f74214
 Content-Type: application/json
 
 {
@@ -36,15 +36,15 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/students/login
+POST http://localhost:3000/api/students/login
 Content-Type: application/json
 
 {
-    "email": "prova@x",
+    "email": "prova2@xp",
     "password": "123"
 }
 
 ###
 
-POST http://localhost:3000/students/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY0Y2QyZGM4ODUyODVhMjJhZDQzMzUiLCJuYW1lIjoiZnJhbmNlc2NvIiwic3VybmFtZSI6ImxhIHJvc2EiLCJnZW5kZXIiOiJNIiwiZW1haWwiOiJwcm92YUB4IiwicGFzc3dvcmQiOiIkMmIkMTAkU2MybE9ZZ3cxYXd1Zjg1VkptMU5GLks2ZkVnZldKdWNxNnRudEtwUU5EdHBhSUYuQm1vdXkiLCJzdHVkZW50X2lkIjoiMTIzNDU2Iiwic3R1ZHlfY291cnNlIjoibWF0ZW1hdGljYSIsInN0dWR5X3llYXIiOiIyMDIwIiwiX192IjowLCJpYXQiOjE2ODQzMjc3Mzh9.KpOTnVlkFGHh9ffhA3BJVJfh1F59_cQVdI2XlJvOLNA
+POST http://localhost:3000/api/students/home
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY0Y2QyZGM4ODUyODVhMjJhZDQzMzUiLCJuYW1lIjoiZnJhbmNlc2NvIiwic3VybmFtZSI6ImxhIHJvc2EiLCJnZW5kZXIiOiJNIiwiZW1haWwiOiJwcm92YUB4IiwicGFzc3dvcmQiOiIkMmIkMTAkU2MybE9ZZ3cxYXd1Zjg1VkptMU5GLks2ZkVnZldKdWNxNnRudEtwUU5EdHBhSUYuQm1vdXkiLCJzdHVkZW50X2lkIjoiMTIzNDU2Iiwic3R1ZHlfY291cnNlIjoibWF0ZW1hdGljYSIsInN0dWR5X3llYXIiOiIyMDIwIiwiX192IjowLCJpYXQiOjE2ODQ0MzI2NzR9.YsjgFT2vmBuQwsmdTUpJ-oJvaxd7VdFfJwmW1zIZO6E
