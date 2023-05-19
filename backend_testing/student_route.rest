@@ -1,37 +1,27 @@
-GET http://localhost:3000/api/students
-
-###
-
-GET http://localhost:3000/api/students/645a69a4b2ad03dc07295897
-
-###
-
 POST http://localhost:3000/api/students/signup
 Content-Type: application/json
 
 {
-    "name": "luigi",
-    "surname": "gammo",
+    "name": "nino",
+    "surname": "d'angelo",
     "gender": "M",
-    "email": "prova2@xp",
+    "email": "emai1@xp",
     "password": "123",
-    "student_id": "123456",
-    "study_course": "informatica",
-    "study_year": "2002"
+    "student_id": "124456",
+    "study_course": "agraria",
+    "study_year": "1945"
 }
 
 ###
 
-DELETE http://localhost:3000/api/students/64666716b0471112b2d86161
-
-###
-
-PATCH http://localhost:3000/api/students/645a63838c61272ab2f74214
+PATCH http://localhost:3000/api/students/646756d09bdbaaa84edacc4f
 Content-Type: application/json
 
 {
+    "name": "nina",
+    "surname": "d'angela",
     "gender": "F",
-    "password": "67890"
+    "password": "pass1234"
 }
 
 ###
@@ -40,11 +30,15 @@ POST http://localhost:3000/api/students/login
 Content-Type: application/json
 
 {
-    "email": "prova2@xp",
-    "password": "123"
+    "email": "emai1@xp",
+    "password": "pass1234"
 }
 
 ###
 
 POST http://localhost:3000/api/students/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY0Y2QyZGM4ODUyODVhMjJhZDQzMzUiLCJuYW1lIjoiZnJhbmNlc2NvIiwic3VybmFtZSI6ImxhIHJvc2EiLCJnZW5kZXIiOiJNIiwiZW1haWwiOiJwcm92YUB4IiwicGFzc3dvcmQiOiIkMmIkMTAkU2MybE9ZZ3cxYXd1Zjg1VkptMU5GLks2ZkVnZldKdWNxNnRudEtwUU5EdHBhSUYuQm1vdXkiLCJzdHVkZW50X2lkIjoiMTIzNDU2Iiwic3R1ZHlfY291cnNlIjoibWF0ZW1hdGljYSIsInN0dWR5X3llYXIiOiIyMDIwIiwiX192IjowLCJpYXQiOjE2ODQ0MzI2NzR9.YsjgFT2vmBuQwsmdTUpJ-oJvaxd7VdFfJwmW1zIZO6E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NTZkMDliZGJhYWE4NGVkYWNjNGYiLCJuYW1lIjoibmluYSIsInN1cm5hbWUiOiJkJ2FuZ2VsYSIsImdlbmRlciI6IkYiLCJlbWFpbCI6ImVtYWkxQHhwIiwicGFzc3dvcmQiOiIkMmIkMTAkcTA5RnhBcy5SNnRIbDFkd3kwMk9IZTVFQ3JvNlR2R3ZqTERMVHdSYTQ1UTA0M0QvVHhJLjYiLCJzdHVkZW50X2lkIjoiMTI0NDU2Iiwic3R1ZHlfY291cnNlIjoiYWdyYXJpYSIsInN0dWR5X3llYXIiOiIxOTQ1IiwiX192IjowLCJpYXQiOjE2ODQ0OTQyODJ9.eIbtpI847Oe3z3IRTkClKqt-M8Fm89p56_GXZB_Vsjk
+
+###
+
+GET http://localhost:3000/api/students

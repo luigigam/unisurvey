@@ -6,23 +6,9 @@ const Student = require ('../models/student')
 const bcrypt = require("bcrypt")
 const hashing = require("../middlewares/encrypt_pssw")
 const jwt = require('jsonwebtoken')
+const getStudent = require("../middlewares/getStudent")
 const authenticateToken = require("../middlewares/authenticateToken")
 const validateEmail = require("../middlewares/validateEmail")
-
-//Getting All
-router.get('/', async (req,res) => {
-    try {
-        const students = await Student.find()
-        res.json(students)
-    } catch {
-        res.status(500).json({ message: err.message })
-    }
-})
-
-//Getting one
-router.get('/:id', getStudent, async (req,res) => {
-    res.json(res.student)
-})
 
 /**
  * @swagger
@@ -30,7 +16,7 @@ router.get('/:id', getStudent, async (req,res) => {
  *  post:
  *      tags: [student]
  *      summary: register a new student
- *      description: the student is created after a bunch of checks over the submitted data (email already present in the database, valid email address, password length). An JWT access token is returned and saved as a cookie to keep the user logged.
+ *      description: the student is created after some validation checks.
  *      requestBody:
  *          required: true
  *          content:
@@ -209,20 +195,9 @@ router.patch('/:id', getStudent, async (req,res) => {
   if (req.body.gender != null) {
     res.student.gender = req.body.gender
   }
-  if (req.body.email != null) {
-    res.student.email = req.body.email
-  }
   if (req.body.password != null) {
-    res.student.password = req.body.password
-  }
-  if (req.body.student_id != null) {
-    res.student.student_id = req.body.student_id
-  }
-  if (req.body.study_course != null) {
-    res.student.study_course = req.body.study_course
-  }
-  if (req.body.study_year != null) {
-    res.student.study_year = req.body.study_year
+    const hashed = await hashing(req.body.password)
+    res.student.password = hashed
   }
   try {
     const updatedStudent = await res.student.save()
@@ -232,34 +207,19 @@ router.patch('/:id', getStudent, async (req,res) => {
   }
 })
 
-// Deleting One
-router.delete("/:id", getStudent, async (req, res) => {
-	try {
-		await res.student.deleteOne()
-		res.json({ message: "Deleted Student" })
-	} catch (err) {
-		res.status(500).json({ message: err.message })
-	}
-})
-
 //Home
 router.post('/home', authenticateToken, (req, res) => {
   res.send('Homepage')
 })  
 
-async function getStudent(req, res, next) {
-  let student
+//Getting All
+router.get('/', async (req,res) => {
   try {
-    student = await Student.findById(req.params.id)
-    if (student == null) {
-      return res.status(404).json({ message: 'Cannot find student' })
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message })
+      const students = await Student.find()
+      res.json(students)
+  } catch {
+      res.status(500).json({ message: err.message })
   }
-
-  res.student = student
-  next()
-}
+})
 
 module.exports = router

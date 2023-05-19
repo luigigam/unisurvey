@@ -1,9 +1,13 @@
+require('dotenv').config()
+
 const express = require('express')
 const router = express.Router()
 const Admin = require ('../models/admin')
+const Student = require ('../models/student')
 const bcrypt = require("bcrypt")
 const hashing = require("../middlewares/encrypt_pssw")
 const jwt = require('jsonwebtoken')
+const getStudent = require("../middlewares/getStudent")
 const authenticateToken = require("../middlewares/authenticateToken")
 const validateEmail = require("../middlewares/validateEmail")
 
@@ -28,7 +32,7 @@ router.get('/:id', getAdmin, async (req,res) => {
  *  post:
  *      tags: [admin]
  *      summary: register a new admin
- *      description: the admin is created after a bunch of checks over the submitted data (email already present in the database, valid email address, password length). An JWT access token is returned and saved as a cookie to keep the user logged.
+ *      description: the admin is created after some validation checks.
  *      requestBody:
  *          required: true
  *          content:
@@ -195,7 +199,8 @@ router.patch('/:id', getAdmin, async (req,res) => {
     res.admin.email = req.body.email
   }
   if (req.body.password != null) {
-    res.admin.password = req.body.password
+    const hashed = await hashing(req.body.password)
+    res.admin.password = hashed
   }
   try {
     const updatedAdmin = await res.admin.save()
@@ -234,5 +239,55 @@ async function getAdmin(req, res, next) {
   res.admin = admin
   next()
 }
+
+// ************ STUDENTS FUNCTIONS ************
+
+
+//Getting all
+router.get('/studentManager/getstudents', async (req,res) => {
+  try {
+      const students = await Student.find()
+      res.json(students)
+  } catch {
+      res.status(500).json({ message: err.message })
+  }
+})
+
+//Getting one
+router.get('/studentManager/:id', getStudent, async (req,res) => {
+    res.json(res.student)
+})
+
+//Updating one
+router.patch('/studentManager/:id', getStudent, async (req,res) => {
+  if (req.body.email != null) {
+    res.student.email = req.body.email
+  }
+  if (req.body.student_id != null) {
+    res.student.student_id = req.body.student_id
+  }
+  if (req.body.study_course != null) {
+    res.student.study_course = req.body.study_course
+  }
+  if (req.body.study_year != null) {
+    res.student.study_year = req.body.study_year
+  }
+  try {
+    const updatedStudent = await res.student.save()
+    res.json(updatedStudent)
+  } catch (err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
+// Deleting One
+router.delete("/studentManager/:id", getStudent, async (req, res) => {
+	try {
+		await res.student.deleteOne()
+		res.json({ message: "Deleted Student" })
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+})
 
 module.exports = router

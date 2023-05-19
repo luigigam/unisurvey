@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/admins
+GET http://localhost:3000/api/admins/
 
 ###
 
@@ -43,3 +43,27 @@ Content-Type: application/json
 
 POST http://localhost:3000/api/admins/home
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODQ0ODkzNDB9.YRVJad7aA-tBXzd9KRosQ801d5PWQ4U93nhP_YlOlLQ
+
+### STUDENTS
+
+DELETE http://localhost:3000/api/admins/studentManager/646756459bdbaaa84edacc43
+
+###
+
+PATCH http://localhost:3000/api/admins/studentManager/646750067fda68528af89d9d
+Content-Type: application/json
+
+{
+    "email": "nina",
+    "student_id": "d'angela",
+    "study_course": "infermieristica",
+    "study_year": "1965"
+}
+
+###
+
+GET http://localhost:3000/api/admins/studentManager/645a69a4b2ad03dc07295897
+
+###
+
+GET http://localhost:3000/api/admins/studentManager/getstudents
