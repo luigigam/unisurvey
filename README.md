@@ -22,7 +22,7 @@ UniSurvey is an utility web service with the focus on improving students life wi
     $ npm run devStart
 
 # credits
-Francesco La rosa, Unitn
+Francesco La Rosa, Unitn
 Jhon, UniChile
 Luigi Gammino, Unitn
 
