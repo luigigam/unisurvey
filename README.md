@@ -23,7 +23,7 @@ UniSurvey is an utility web service with the focus on improving students life wi
 
 # credits
 Francesco La Rosa, Unitn
-Jhon, UniChile
+Johnjairo Melendez, Adolfo Ibañez University
 Luigi Gammino, Unitn
 
 ![UNISURVEY](/Immagini/Logo.jpg)
