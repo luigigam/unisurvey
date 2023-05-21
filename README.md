@@ -20,7 +20,7 @@ UniSurvey is an utility web service with the focus on improving students life wi
 
 # how to run the project:
     $ npm install
-creare un file .env con DATABASE_URL = <my_link> per connettersi a mongodb e ACCESS_TOKEN_SECRET = <secret>, dove <secret> è una stringa di 64 random Bytes in formato hexadecimale. Per farlo si può ricorrere ai seguenti comandi:
+creare un file .env con DATABASE_URL = <my_link> per connettersi a mongodb e ACCESS_TOKEN_SECRET = <secret_number>, dove <secret_number> è una stringa di 64 random Bytes in formato hexadecimale. Per farlo si può ricorrere ai seguenti comandi:
 
     $ node
     > require('crypto').randomBytes(64).toString('hex')
