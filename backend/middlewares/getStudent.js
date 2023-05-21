@@ -13,6 +13,6 @@ async function getStudent(req, res, next) {
   
     res.student = student
     next()
-  }
+}
 
-  module.exports = getStudent
+module.exports = getStudent

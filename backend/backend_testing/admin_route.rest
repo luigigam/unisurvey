@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/admins/
+GET http://localhost:3000/api/admins/getall
 
 ###
 
-GET http://localhost:3000/api/admins/645a63f88c61272ab2f74223
+GET http://localhost:3000/api/admins/645a6a34fc4bbc2a137ab299
 
 ###
 
@@ -10,23 +10,23 @@ POST http://localhost:3000/api/admins/signup
 Content-Type: application/json
 
 {
-    "name": "Capo",
-    "surname": "Supremo",
-    "email": "capo@sup.it",
+    "name": "Nonno",
+    "surname": "Nanni",
+    "email": "nonno@nanni.it",
     "password": "pass123"
 }
 
 ###
 
-DELETE http://localhost:3000/api/admins/645a64318c61272ab2f7422b
+DELETE http://localhost:3000/api/admins/6469daee9acd0a9eed299d4d
 
 ###
 
-PATCH http://localhost:3000/api/admins/645a63f88c61272ab2f74223
+PATCH http://localhost:3000/api/admins/6469db0d9acd0a9eed299d56
 Content-Type: application/json
 
 {
-    "email": "pippo@baudo.it",
+    "email": "nanni@nonno.it",
     "password": "kikkko"
 }
 
@@ -36,34 +36,61 @@ POST http://localhost:3000/api/admins/login
 Content-Type: application/json
 
 {
-    "email": "capo@sup.it",
+    "email": "nanni@nonno.it",
     "password": "pass123"
 }
 ###
 
 POST http://localhost:3000/api/admins/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODQ0ODkzNDB9.YRVJad7aA-tBXzd9KRosQ801d5PWQ4U93nhP_YlOlLQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY5ZGIwZDlhY2QwYTllZWQyOTlkNTYiLCJuYW1lIjoiTm9ubm8iLCJzdXJuYW1lIjoiTmFubmkiLCJlbWFpbCI6Im5hbm5pQG5vbm5vLml0IiwicGFzc3dvcmQiOiIkMmIkMTAkU2hJcUhxOWVNYU5PTGcvYVJLUlJrdXpZcmhKeWRDb2NBMkZiVDVKbXF2aS5sZ0VhSm5WODYiLCJfX3YiOjAsImlhdCI6MTY4NDY1OTA0N30.eB4DuLFYr7zMhx1VVGqGUkC0ynmbrMDpwNfvookj0zE
 
 ### STUDENTS
 
-DELETE http://localhost:3000/api/admins/studentManager/646756459bdbaaa84edacc43
+DELETE http://localhost:3000/api/admins/studentManager/646756d09bdbaaa84edacc4f
 
 ###
 
-PATCH http://localhost:3000/api/admins/studentManager/646750067fda68528af89d9d
+PATCH http://localhost:3000/api/admins/studentManager/646756d09bdbaaa84edacc4f
 Content-Type: application/json
 
 {
-    "email": "nina",
-    "student_id": "d'angela",
-    "study_course": "infermieristica",
-    "study_year": "1965"
+    "email": "ninella@ehehihi",
+    "student_id": "202020",
+    "study_course": "veterinaria",
+    "study_year": "2023"
 }
 
 ###
 
-GET http://localhost:3000/api/admins/studentManager/645a69a4b2ad03dc07295897
+GET http://localhost:3000/api/admins/studentManager/6469dbe59acd0a9eed299d68
 
 ###
 
 GET http://localhost:3000/api/admins/studentManager/getstudents
+
+### EVENTS
+
+POST http://localhost:3000/api/admins/eventManager/createEvent
+Content-Type: application/json
+
+{
+    "name": "Sagra dell'Uva",
+    "startDate": "6/06/2023",
+    "endDate": "6/09/2023",
+    "description": "Uva per tutti",
+    "location": "Povo 1",
+    "isRegular": "true"
+}
+
+###
+
+PATCH http://localhost:3000/api/admins/eventManager/6469ea568dd80c2a205a7f66
+Content-Type: application/json
+
+{
+    "description": "Acini d'Uva per tutti"
+}
+
+###
+
+DELETE http://localhost:3000/api/admins/eventManager/6469e7ce510e2c5db3bba365

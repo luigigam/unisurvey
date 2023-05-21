@@ -1,30 +1,95 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const express = require('express')
-const router = express.Router()
-const Admin = require ('../models/admin')
-const Student = require ('../models/student')
-const bcrypt = require("bcrypt")
-const hashing = require("../middlewares/encrypt_pssw")
-const jwt = require('jsonwebtoken')
-const getStudent = require("../middlewares/getStudent")
-const authenticateToken = require("../middlewares/authenticateToken")
-const validateEmail = require("../middlewares/validateEmail")
+const express = require("express");
+const router = express.Router();
+const Admin = require("../models/admin");
+const Student = require("../models/student");
+const Event = require("../models/event");
+const bcrypt = require("bcrypt");
+const hashing = require("../middlewares/encrypt_pssw");
+const jwt = require("jsonwebtoken");
+const getStudent = require("../middlewares/getStudent");
+const getEvent = require("../middlewares/getEvent");
+const authenticateToken = require("../middlewares/authenticateToken");
+const validateEmail = require("../middlewares/validateEmail");
 
-//Getting all
-router.get('/', async (req,res) => {
-    try {
-        const admins = await Admin.find()
-        res.json(admins)
-    } catch {
-        res.status(500).json({ message: err.message })
-    }
-})
+/**
+ * @swagger
+ * /admins:
+ *  get:
+ *      tags: [admin]
+ *      summary: search all admins
+ *      description: a list of all admins registered is returned.
+ *      responses:
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'Success: return the list of admins'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              searchingList:
+ *                                  type: list
+ *
+ */
+router.get("/getall", async (req, res) => {
+  try {
+    const admins = await Admin.find();
+    res.status(200).json(admins);
+  } catch {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-//Getting one
-router.get('/:id', getAdmin, async (req,res) => {
-    res.json(res.admin)
-})
+/**
+ * @swagger
+ * /admins/{id}:
+ *  get:
+ *      tags: [admin]
+ *      summary: search admin by id
+ *      description: an admin is submitted and the admin matching that particular id is returned.
+ *      responses:
+ *          '404':
+ *              description: 'admin not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'Success: return specified admin by id'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              searchingList:
+ *                                  type: list
+ *
+ */
+router.get("/:id", getAdmin, async (req, res) => {
+  res.json(res.admin);
+});
 
 /**
  * @swagger
@@ -68,7 +133,7 @@ router.get('/:id', getAdmin, async (req,res) => {
  *                              state:
  *                                  type: string
  *          '500':
- *              description: 'database error'
+ *              description: 'database internal error'
  *              content:
  *                  application/json:
  *                      schema:
@@ -87,28 +152,28 @@ router.get('/:id', getAdmin, async (req,res) => {
  *                                  type: string
  *
  */
-router.post('/signup', async (req,res) => {
-    const duplicateUser = await Admin.findOne({'email': req.body.email});
-    if (duplicateUser != null) {
-      return res.status(409).json({ message: 'email-already-in-use' })
-    }
-    if (!validateEmail(req.body.email)) {
-      return res.status(400).json({state: 'invalid-email'})
-    }
-    const hashed = await hashing(req.body.password)
-    const admin = new Admin({
-        name: req.body.name,
-        surname: req.body.surname,
-        email: req.body.email,
-        password: hashed
-    })
-    try {
-        const newAdmin = await admin.save()
-        res.status(201).json(newAdmin)
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
-})
+router.post("/signup", async (req, res) => {
+  const duplicateUser = await Admin.findOne({ email: req.body.email });
+  if (duplicateUser != null) {
+    return res.status(409).json({ message: "email-already-in-use" });
+  }
+  if (!validateEmail(req.body.email)) {
+    return res.status(400).json({ state: "invalid-email" });
+  }
+  const hashed = await hashing(req.body.password);
+  const admin = new Admin({
+    name: req.body.name,
+    surname: req.body.surname,
+    email: req.body.email,
+    password: hashed,
+  });
+  try {
+    const newAdmin = await admin.save();
+    res.status(201).json(newAdmin);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 /**
  * @swagger
@@ -117,17 +182,6 @@ router.post('/signup', async (req,res) => {
  *      tags: [admin]
  *      summary: log into an existing admin
  *      description: the admin is logged in after validation of his email and password. A JWT token is returned.
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          email:
- *                              type: string
- *                          password:
- *                              type: string
  *      responses:
  *          '400':
  *              description: 'Bad request'
@@ -156,6 +210,16 @@ router.post('/signup', async (req,res) => {
  *                          properties:
  *                              state:
  *                                  type: string
+ *
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
  *          '200':
  *              description: 'user logged in'
  *              content:
@@ -167,127 +231,612 @@ router.post('/signup', async (req,res) => {
  *                                  type: string
  *
  */
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   if (!validateEmail(req.body.email)) {
-    return res.status(400).send('Invalid email')
+    return res.status(400).send("Invalid email");
   }
-  const admin = await Admin.findOne({ email: req.body.email })
+  const admin = await Admin.findOne({ email: req.body.email });
   if (admin == null) {
-    return res.status(404).send('Cannot find admin')
+    return res.status(404).send("Cannot find admin");
   }
   try {
     if (await bcrypt.compare(req.body.password, admin.password)) {
-      const accessToken = jwt.sign(admin.toJSON(), process.env.ACCESS_TOKEN_SECRET)
-      res.json({ accessToken: accessToken })
+      const accessToken = jwt.sign(
+        admin.toJSON(),
+        process.env.ACCESS_TOKEN_SECRET
+      );
+      res.status(200).json({ accessToken: accessToken });
     } else {
-      res.status(401).send('Not allowed')
+      res.status(401).send("Not allowed");
     }
   } catch {
-    res.status(500).send()
+    res.status(500).send();
   }
-})
+});
 
-//Updating one
-router.patch('/:id', getAdmin, async (req,res) => {
+/**
+ * @swagger
+ * /admins/{id}:
+ *  patch:
+ *      tags: [admin]
+ *      summary: update an existing admin
+ *      description: the admin changes some of his datas like name, surname, email and password.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                          surname:
+ *                              type: string
+ *                          email:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *      responses:
+ *          '400':
+ *              description: 'Bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '404':
+ *              description: 'student not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '202':
+ *              description: 'admin information updated succesfully'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.patch("/:id", getAdmin, async (req, res) => {
   if (req.body.name != null) {
-    res.admin.name = req.body.name
+    res.admin.name = req.body.name;
   }
   if (req.body.surname != null) {
-    res.admin.surname = req.body.surname
+    res.admin.surname = req.body.surname;
   }
   if (req.body.email != null) {
-    res.admin.email = req.body.email
+    if (!validateEmail(req.body.email)) {
+      return res.status(400).json({ state: "invalid-email" });
+    }
+    res.admin.email = req.body.email;
   }
   if (req.body.password != null) {
-    const hashed = await hashing(req.body.password)
-    res.admin.password = hashed
+    const hashed = await hashing(req.body.password);
+    res.admin.password = hashed;
   }
   try {
-    const updatedAdmin = await res.admin.save()
-    res.json(updatedAdmin)
+    const updatedAdmin = await res.admin.save();
+    res.status(202).json(updatedAdmin);
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(500).json({ message: err.message });
   }
-})
+});
 
-// Deleting One
+/**
+ * @swagger
+ * /admins/{id}:
+ *  delete:
+ *      tags: [admin]
+ *      summary: remove target admin
+ *      description: the admin identified by the provided id is removed from the web service
+ *      responses:
+ *          '404':
+ *              description: 'admin not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'admin successfully removed from admin list'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
 router.delete("/:id", getAdmin, async (req, res) => {
-	try {
-		await res.admin.deleteOne()
-		res.json({ message: "Deleted Admin" })
-	} catch (err) {
-		res.status(500).json({ message: err.message })
-	}
-})
+  try {
+    await res.admin.deleteOne();
+    res.status(200).json({ message: "Deleted Admin" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 //Home
-router.post('/home', authenticateToken, (req, res) => {
-  res.send('Homepage')
-})
-  
+router.post("/home", authenticateToken, (req, res) => {
+  res.send("Homepage");
+});
+
 async function getAdmin(req, res, next) {
-  let admin
+  let admin;
   try {
-    admin = await Admin.findById(req.params.id)
+    admin = await Admin.findById(req.params.id);
     if (admin == null) {
-      return res.status(404).json({ message: 'Cannot find admin' })
+      return res.status(404).json({ message: "Cannot find admin" });
     }
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({ message: err.message });
   }
 
-  res.admin = admin
-  next()
+  res.admin = admin;
+  next();
 }
 
 // ************ STUDENTS FUNCTIONS ************
 
-
-//Getting all
-router.get('/studentManager/getstudents', async (req,res) => {
+/**
+ * @swagger
+ * /admins/studentManager/getstudents:
+ *  get:
+ *      tags: [admin]
+ *      summary: search all students
+ *      description: a list of all students registered is returned.
+ *      responses:
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'Success: return the list of students'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              searchingList:
+ *                                  type: list
+ *
+ */
+router.get("/studentManager/getstudents", async (req, res) => {
   try {
-      const students = await Student.find()
-      res.json(students)
+    const students = await Student.find();
+    res.status(200).json(students);
   } catch {
-      res.status(500).json({ message: err.message })
+    res.status(500).json({ message: err.message });
   }
-})
+});
 
-//Getting one
-router.get('/studentManager/:id', getStudent, async (req,res) => {
-    res.json(res.student)
-})
+/**
+ * @swagger
+ * /admins/studentManager/{id}:
+ *  get:
+ *      tags: [admin]
+ *      summary: search a student by id
+ *      description: a student is submitted and the student matching that particular id is returned.
+ *      responses:
+ *          '404':
+ *              description: 'student not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'Success: return specified student by id'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              searchingList:
+ *                                  type: list
+ *
+ */
+router.get("/studentManager/:id", getStudent, async (req, res) => {
+  res.status(200).json(res.student);
+});
 
-//Updating one
-router.patch('/studentManager/:id', getStudent, async (req,res) => {
+/**
+ * @swagger
+ * /admins/studentManager/{id}:
+ *  patch:
+ *      tags: [admin]
+ *      summary: update an existing target student
+ *      description: the admin changes some of target student university-related datas like email, student id, study course and study year.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                          student_id:
+ *                              type: string
+ *                          study_course:
+ *                              type: string
+ *                          study_year:
+ *                              type: string
+ *      responses:
+ *          '400':
+ *              description: 'Bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '404':
+ *              description: 'student not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '202':
+ *              description: 'student information updated succesfully'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.patch("/studentManager/:id", getStudent, async (req, res) => {
   if (req.body.email != null) {
-    res.student.email = req.body.email
+    if (!validateEmail(req.body.email)) {
+      return res.status(400).json({ state: "invalid-email" });
+    }
+    res.student.email = req.body.email;
   }
   if (req.body.student_id != null) {
-    res.student.student_id = req.body.student_id
+    res.student.student_id = req.body.student_id;
   }
   if (req.body.study_course != null) {
-    res.student.study_course = req.body.study_course
+    res.student.study_course = req.body.study_course;
   }
   if (req.body.study_year != null) {
-    res.student.study_year = req.body.study_year
+    res.student.study_year = req.body.study_year;
   }
   try {
-    const updatedStudent = await res.student.save()
-    res.json(updatedStudent)
+    const updatedStudent = await res.student.save();
+    res.status(202).json(updatedStudent);
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(500).json({ message: err.message });
   }
-})
+});
 
-// Deleting One
+/**
+ * @swagger
+ * /admins/studentManager/{id}:
+ *  delete:
+ *      tags: [admin]
+ *      summary: remove target student
+ *      description: the student identified by the provided id is removed from the web service
+ *      responses:
+ *          '404':
+ *              description: 'student not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'student successfully removed from student list'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
 router.delete("/studentManager/:id", getStudent, async (req, res) => {
+  try {
+    await res.student.deleteOne();
+    res.json({ message: "Deleted Student" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ************ EVENTS FUNCTIONS ************
+
+/**
+ * @swagger
+ * /admins/eventManager/createEvent:
+ *  post:
+ *      tags: [admin]
+ *      summary: create a new event
+ *      description: the admin creates an event.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                          startDate:
+ *                              type: Date
+ *                          endDate:
+ *                              type: Date
+ *                          description:
+ *                              type: string
+ *                          location:
+ *                              type: string
+ *                          isRegular:
+ *                              type: Boolean
+ *      responses:
+ *          '400':
+ *              description: 'bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '201':
+ *              description: 'event successfully created'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.post("/eventManager/createEvent", async (req, res) => {
+
+  const event = new Event({
+    name: req.body.name,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    description: req.body.description,
+    location: req.body.location,
+    isRegular: req.body.isRegular,
+  });
+
+  try {
+    if (req.body.startDate <= req.body.endDate) {
+      const newEvent = await event.save();
+      res.status(201).json(newEvent);
+    } else {
+      res.status(400).json({ state: "Start Date cannot be later than End Date" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /admins/eventManager/{id}:
+ *  patch:
+ *      tags: [admin]
+ *      summary: update an existing event
+ *      description: the admin changes some of the event informations like name, start date, end date, description, location and the cadentcy.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                          startDate:
+ *                              type: Date
+ *                          description:
+ *                              type: Date
+ *                          location:
+ *                              type: string
+ *                          isRegular:
+ *                              type: boolean
+ *      responses:
+ *          '400':
+ *              description: 'Bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '404':
+ *              description: 'student not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '202':
+ *              description: 'event information updated succesfully'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.patch("/eventManager/:id", getEvent, async (req, res) => {
+  if (req.body.name != null) {
+    res.event.name = req.body.name;
+  }
+  if (req.body.startDate != null) {
+    res.event.startDate = req.body.startDate;
+  }
+  if (req.body.endDate != null) {
+    res.event.endDate = req.body.endDate;
+  }
+  if (req.body.description != null) {
+    res.event.description = req.body.description;
+  }
+  if (req.body.location != null) {
+    res.event.location = req.body.location;
+  }
+  if (req.body.isRegular != null) {
+    res.event.isRegular = req.body.isRegular;
+  }
+  try {
+    if (res.body.startDate <= res.body.endDate)  {
+      const updatedEvent = await res.event.save();
+      res.status(202).json(updatedEvent);
+    } else {
+      res.status(400).json({ state: "Start Date cannot be later than End Date" });
+    }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /admins/eventManager/{id}:
+ *  delete:
+ *      tags: [admin]
+ *      summary: remove target event
+ *      description: the event identified by the provided id is removed from the event list
+ *      responses:
+ *          '404':
+ *              description: 'event not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'event successfully removed from event list'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.delete("/eventManager/:id", getEvent, async (req, res) => {
 	try {
-		await res.student.deleteOne()
-		res.json({ message: "Deleted Student" })
+		await res.event.deleteOne()
+		res.json({ message: "Deleted Event" })
 	} catch (err) {
 		res.status(500).json({ message: err.message })
 	}
 })
 
-module.exports = router
+module.exports = router;

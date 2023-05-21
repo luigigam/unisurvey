@@ -184,7 +184,58 @@ router.post('/login', async (req, res) => {
   }
 })
 
-
+/**
+ * @swagger
+ * /students/{id}:
+ *  patch:
+ *      tags: [student]
+ *      summary: update an existing student
+ *      description: the student changes some of his personal datas like name, surname, gender and password.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                          surname:
+ *                              type: string
+ *                          gender:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *      responses:
+ *          '404':
+ *              description: 'student not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '202':
+ *              description: 'student information updated succesfully'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
 router.patch('/:id', getStudent, async (req,res) => {
   if (req.body.name != null) {
     res.student.name = req.body.name
@@ -201,7 +252,7 @@ router.patch('/:id', getStudent, async (req,res) => {
   }
   try {
     const updatedStudent = await res.student.save()
-    res.json(updatedStudent)
+    res.status(202).json(updatedStudent)
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
@@ -211,15 +262,5 @@ router.patch('/:id', getStudent, async (req,res) => {
 router.post('/home', authenticateToken, (req, res) => {
   res.send('Homepage')
 })  
-
-//Getting All
-router.get('/', async (req,res) => {
-  try {
-      const students = await Student.find()
-      res.json(students)
-  } catch {
-      res.status(500).json({ message: err.message })
-  }
-})
 
 module.exports = router

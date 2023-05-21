@@ -2,32 +2,4 @@ GET http://localhost:3000/api/events
 
 ###
 
-GET http://localhost:3000/api/events/645a63f88c61272ab2f74223
-
-###
-
-POST http://localhost:3000/api/events
-Content-Type: application/json
-
-{
-    "name": "Pippo",
-    "startDate": "October 13, 2023 11:13:00",
-    "endDate": "November 06, 2014 11:13:00",
-    "description": "Pizza per tutti",
-    "location": "Povo 2",
-    "isRegular": "false"
-}
-
-###
-
-DELETE http://localhost:3000/api/events/6464d9f71bd4a966c9c0de47
-
-###
-
-PATCH http://localhost:3000/api/events/645a63f88c61272ab2f74223
-Content-Type: application/json
-
-{
-    "email": "pippo@baudo.it",
-    "password": "kikkko"
-}
+GET http://localhost:3000/api/events/6469de3c3c3499105832abd6
