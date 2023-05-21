@@ -782,6 +782,7 @@ router.patch("/eventManager/:id", getEvent, async (req, res) => {
     res.event.isRegular = req.body.isRegular;
   }
   try {
+    // to fix
     if (res.body.startDate <= res.body.endDate)  {
       const updatedEvent = await res.event.save();
       res.status(202).json(updatedEvent);
