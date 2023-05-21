@@ -184,7 +184,7 @@ router.post('/login', async (req, res) => {
   }
 })
 
-//Updating one
+
 router.patch('/:id', getStudent, async (req,res) => {
   if (req.body.name != null) {
     res.student.name = req.body.name
