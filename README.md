@@ -21,6 +21,9 @@ UniSurvey is an utility web service with the focus on improving students life wi
 # how to run the project:
     $ npm run devStart
 
+# documentation here:
+    https://localhost:3000/api-docs
+
 # credits
 Francesco La Rosa, Unitn
 Johnjairo Melendez, Adolfo Ibañez University
