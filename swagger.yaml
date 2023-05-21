@@ -2,12 +2,12 @@ swagger: '2.0'
 info:
   version: '1.0'
   title: "Unisurvey"
-  description: Polls is a simple API allowing consumers to view polls and vote in them.
+  description: UniSurvey is an utility web service with the focus on improving students life with surveys and in-campus functionalities.
   license:
     name: MIT
     url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
 host: polls.apiblueprint.org
-basePath: /
+basePath: /api/
 schemes:
 - https
 consumes:
@@ -15,106 +15,300 @@ consumes:
 produces:
 - application/json
 paths:
-  /questions:
-    x-summary: Questions Collection
-    get:
-      summary: List All Questions
-      responses:
-        200:
-          description: Successful Response
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Question'
-          examples:
-            application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
+  /student/signup:
     post:
-      description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/QuestionRequest'
+      tags: [student]
+      summary: register a new student
+      description: the student is created after some validation checks.
       responses:
-        201:
-          description: ''
-          schema:
-            $ref: '#/definitions/Question'
-          examples:
-            application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
-definitions:
-  Question:
-    title: Question
-    type: object
-    properties:
-      question:
-        type: string
-      published_at:
-        type: string
-      choices:
-        type: array
-        items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
-          type: string
-    required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+           '409':
+               description: 'email already in use: duplicate student'
+           '400':
+               description: 'bad request'
+           '500':
+               description: 'database error'
+           '201':
+               description: 'student successfully created'
+  /students/login:
+    post:
+       tags: [student]
+       summary: log into an existing student
+       description: the student is logged in after validation of his email and password. A JWT token is returned.
+           
+       responses:
+           '400':
+               description: 'Bad request'
+               
+           '404':
+               description: 'email not found'
+               
+           '401':
+               description: 'wrong password: failed authentication'
+           '200':
+               description: 'user logged in'
+
+  /students/:id:
+   patch:
+       tags: [student]
+       summary: update an existing student
+       description: the student changes some of his personal datas like name, surname, gender and password.
+       responses:
+           '404':
+               description: 'student not found'
+               
+           '500':
+               description: 'database internal error'
+               
+           '202':
+               description: 'student information updated succesfully'
+               
+
+  /admins/getall:
+   get:
+       tags: [admin]
+       summary: search all admins
+       description: a list of all admins registered is returned.
+       responses:
+           '500':
+               description: 'database internal error'
+
+           '200':
+               description: 'Success: return the list of admins'
+
+
+  /admins/getadmin/:id:
+   get:
+       tags: [admin]
+       summary: search admin by id
+       description: an admin is submitted and the admin matching that particular id is returned.
+       responses:
+            '404':
+                description: 'admin not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return specified admin by id'
+
+  /admins/signup:
+    post:
+        tags: [admin]
+        summary: register a new admin
+        description: the admin is created after some validation checks.
+
+        responses:
+            '409':
+                description: 'email already in use: duplicate admin'
+
+            '400':
+                description: 'bad request'
+
+            '500':
+                description: 'database internal error'
+
+            '201':
+                description: 'admin successfully created'
+
+
+  /admins/login:
+    post:
+        tags: [admin]
+        summary: log into an existing admin
+        description: the admin is logged in after validation of his email and password. A JWT token is returned.
+        responses:
+            '400':
+                description: 'Bad request'
+
+            '404':
+                description: 'email not found'
+
+            '401':
+                description: 'wrong password: failed authentication'
+
+  
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'user logged in'
+
+
+  /admins/updateAdmin/:id:
+    patch:
+        tags: [admin]
+        summary: update an existing admin
+        description: the admin changes some of his datas like name, surname, email and password.
+
+        responses:
+            '400':
+                description: 'Bad request'
+
+            '404':
+                description: 'student not found'
+
+            '500':
+                description: 'database internal error'
+
+            '202':
+                description: 'admin information updated succesfully'
+
+
+  /admins/deleteadmin/:id:
+    delete:
+        tags: [admin]
+        summary: remove target admin
+        description: the admin identified by the provided id is removed from the web service
+        responses:
+            '404':
+                description: 'admin not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'admin successfully removed from admin list'
+
+  /admins/studentManager/getstudents:
+    get:
+        tags: [admin]
+        summary: search all students
+        description: a list of all students registered is returned.
+        responses:
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return the list of students'
+
+
+  /admins/studentManager/getstudent/:id:
+    get:
+        tags: [admin]
+        summary: search a student by id
+        description: a student is submitted and the student matching that particular id is returned.
+        responses:
+            '404':
+                description: 'student not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return specified student by id'
+
+  /admins/studentManager/updatestudent/:id:
+    patch:
+        tags: [admin]
+        summary: update an existing target student
+        description: the admin changes some of target student university-related datas like email, student id, study course and study year.
+
+        responses:
+            '400':
+                description: 'Bad request'
+
+            '404':
+                description: 'student not found'
+
+  
+            '500':
+                description: 'database internal error'
+
+            '202':
+                description: 'student information updated succesfully'
+
+  /admins/studentManager/deletestudent/:id:
+    delete:
+        tags: [admin]
+        summary: remove target student
+        description: the student identified by the provided id is removed from the web service
+        responses:
+            '404':
+                description: 'student not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'student successfully removed from student list'
+
+
+  /admins/eventManager/createEvent:
+    post:
+        tags: [admin]
+        summary: create a new event
+        description: the admin creates an event.
+
+        responses:
+            '400':
+                description: 'bad request'
+
+            '500':
+                description: 'database internal error'
+
+            '201':
+                description: 'event successfully created'
+
+
+  /admins/eventManager/updateevent/:id:
+      patch:
+        tags: [admin]
+        summary: update an existing event
+        description: the admin changes some of the event informations like name, start date, end date, description, location and the cadentcy.
+        responses:
+            '400':
+                description: 'Bad request'
+
+            '404':
+                description: 'student not found'
+
+            '500':
+                description: 'database internal error'
+
+            '202':
+                description: 'event information updated succesfully'
+
+  /admins/eventManager/deleteevent/:id:
+    delete:
+        tags: [admin]
+        summary: remove target event
+        description: the event identified by the provided id is removed from the event list
+        responses:
+            '404':
+                description: 'event not found'
+
+            '500':
+                description: 'database internal error'
+
+
+            '200':
+                description: 'event successfully removed from event list'
+
+
+  /events:
+    get:
+        tags: [events]
+        summary: search all events
+        description: a list of all events created is returned.
+        responses:
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return the list of evetns'
+
+ 
+  /events/:id:
+    get:
+        tags: [events]
+        summary: search event by id
+        description: an event is submitted and the event matching that particular id is returned.
+        responses:
+            '404':
+                description: 'event not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return specified event by id'
