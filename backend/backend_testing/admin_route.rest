@@ -2,7 +2,7 @@ GET http://localhost:3000/api/admins/getall
 
 ###
 
-GET http://localhost:3000/api/admins/645a6a34fc4bbc2a137ab299
+GET http://localhost:3000/api/admins/getadmin/645a6a34fc4bbc2a137ab299
 
 ###
 
@@ -18,11 +18,11 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/api/admins/6469daee9acd0a9eed299d4d
+DELETE http://localhost:3000/api/admins/deleteadmin/6469db0d9acd0a9eed299d56
 
 ###
 
-PATCH http://localhost:3000/api/admins/6469db0d9acd0a9eed299d56
+PATCH http://localhost:3000/api/admins/updateAdmin/6469db0d9acd0a9eed299d56
 Content-Type: application/json
 
 {
@@ -46,11 +46,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY5ZGIwZ
 
 ### STUDENTS
 
-DELETE http://localhost:3000/api/admins/studentManager/646756d09bdbaaa84edacc4f
+DELETE http://localhost:3000/api/admins/studentManager/deletestudent/6467412bd9a20eceb3b96475
 
 ###
 
-PATCH http://localhost:3000/api/admins/studentManager/646756d09bdbaaa84edacc4f
+PATCH http://localhost:3000/api/admins/studentManager/updatestudent/6467412bd9a20eceb3b96475
 Content-Type: application/json
 
 {
@@ -62,7 +62,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/admins/studentManager/6469dbe59acd0a9eed299d68
+GET http://localhost:3000/api/admins/studentManager/getstudent/6467412bd9a20eceb3b96475
 
 ###
 
@@ -74,17 +74,17 @@ POST http://localhost:3000/api/admins/eventManager/createEvent
 Content-Type: application/json
 
 {
-    "name": "Sagra dell'Uva",
+    "name": "Sagra del Kiwi",
     "startDate": "6/06/2023",
     "endDate": "6/09/2023",
-    "description": "Uva per tutti",
-    "location": "Povo 1",
+    "description": "Kiwi per tutti",
+    "location": "Orrido di Ponte Alto",
     "isRegular": "true"
 }
 
 ###
 
-PATCH http://localhost:3000/api/admins/eventManager/6469ea568dd80c2a205a7f66
+PATCH http://localhost:3000/api/admins/eventManager/updateevent/6469ea568dd80c2a205a7f66
 Content-Type: application/json
 
 {
@@ -93,4 +93,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/api/admins/eventManager/6469e7ce510e2c5db3bba365
+DELETE http://localhost:3000/api/admins/eventManager/deleteevent/6469f58e1952e90a232336a2

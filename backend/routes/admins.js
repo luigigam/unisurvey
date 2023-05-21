@@ -87,7 +87,7 @@ router.get("/getall", async (req, res) => {
  *                                  type: list
  *
  */
-router.get("/:id", getAdmin, async (req, res) => {
+router.get("/getadmin/:id", getAdmin, async (req, res) => {
   res.json(res.admin);
 });
 
@@ -315,7 +315,7 @@ router.post("/login", async (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/:id", getAdmin, async (req, res) => {
+router.patch("/updateAdmin/:id", getAdmin, async (req, res) => {
   if (req.body.name != null) {
     res.admin.name = req.body.name;
   }
@@ -377,7 +377,7 @@ router.patch("/:id", getAdmin, async (req, res) => {
  *                                  type: string
  *
  */
-router.delete("/:id", getAdmin, async (req, res) => {
+router.delete("/deleteadmin/:id", getAdmin, async (req, res) => {
   try {
     await res.admin.deleteOne();
     res.status(200).json({ message: "Deleted Admin" });
@@ -482,7 +482,7 @@ router.get("/studentManager/getstudents", async (req, res) => {
  *                                  type: list
  *
  */
-router.get("/studentManager/:id", getStudent, async (req, res) => {
+router.get("/studentManager/getstudent/:id", getStudent, async (req, res) => {
   res.status(200).json(res.student);
 });
 
@@ -548,7 +548,7 @@ router.get("/studentManager/:id", getStudent, async (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/studentManager/:id", getStudent, async (req, res) => {
+router.patch("/studentManager/updatestudent/:id", getStudent, async (req, res) => {
   if (req.body.email != null) {
     if (!validateEmail(req.body.email)) {
       return res.status(400).json({ state: "invalid-email" });
@@ -609,7 +609,7 @@ router.patch("/studentManager/:id", getStudent, async (req, res) => {
  *                                  type: string
  *
  */
-router.delete("/studentManager/:id", getStudent, async (req, res) => {
+router.delete("/studentManager/deletestudent/:id", getStudent, async (req, res) => {
   try {
     await res.student.deleteOne();
     res.json({ message: "Deleted Student" });
@@ -762,7 +762,7 @@ router.post("/eventManager/createEvent", async (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/eventManager/:id", getEvent, async (req, res) => {
+router.patch("/eventManager/updateevent/:id", getEvent, async (req, res) => {
   if (req.body.name != null) {
     res.event.name = req.body.name;
   }
@@ -831,7 +831,7 @@ router.patch("/eventManager/:id", getEvent, async (req, res) => {
  *                                  type: string
  *
  */
-router.delete("/eventManager/:id", getEvent, async (req, res) => {
+router.delete("/eventManager/deleteevent/:id", getEvent, async (req, res) => {
 	try {
 		await res.event.deleteOne()
 		res.json({ message: "Deleted Event" })
