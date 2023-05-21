@@ -447,7 +447,7 @@ router.get("/studentManager/getstudents", async (req, res) => {
 
 /**
  * @swagger
- * /admins/studentManager/{id}:
+ * /admins/studentManager/getstudent/{id}:
  *  get:
  *      tags: [admin]
  *      summary: search a student by id
@@ -488,7 +488,7 @@ router.get("/studentManager/getstudent/:id", getStudent, async (req, res) => {
 
 /**
  * @swagger
- * /admins/studentManager/{id}:
+ * /admins/studentManager/updatestudent/{id}:
  *  patch:
  *      tags: [admin]
  *      summary: update an existing target student
@@ -574,7 +574,7 @@ router.patch("/studentManager/updatestudent/:id", getStudent, async (req, res) =
 
 /**
  * @swagger
- * /admins/studentManager/{id}:
+ * /admins/studentManager/deletestudent/{id}:
  *  delete:
  *      tags: [admin]
  *      summary: remove target student
@@ -701,7 +701,7 @@ router.post("/eventManager/createEvent", async (req, res) => {
 
 /**
  * @swagger
- * /admins/eventManager/{id}:
+ * /admins/eventManager/updateevent/{id}:
  *  patch:
  *      tags: [admin]
  *      summary: update an existing event
@@ -796,7 +796,7 @@ router.patch("/eventManager/updateevent/:id", getEvent, async (req, res) => {
 
 /**
  * @swagger
- * /admins/eventManager/{id}:
+ * /admins/eventManager/deleteevent/{id}:
  *  delete:
  *      tags: [admin]
  *      summary: remove target event
