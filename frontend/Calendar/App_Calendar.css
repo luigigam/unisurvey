@@ -1,0 +1,33 @@
+.app-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.selected-date-container {
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px;
+  background-color: yellow;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ffdd66;
+}
+
+.calendar-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: white;
+}

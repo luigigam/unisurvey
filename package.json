@@ -1,10 +1,11 @@
 {
   "name": "unisurvey",
   "version": "1.0.0",
-  "description": "",
+  "description": "This project is the result of the course Ingegneria del Software, UniSurvey is an utility web service with the focus on improving students life with surveys and in-campus functionalities.",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +17,9 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.1.0",
+    "react": "^18.2.0",
+    "react-calendar": "^4.2.1",
+    "react-dom": "^18.2.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3"
   },
@@ -24,5 +28,6 @@
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.22",
     "tailwindcss": "^3.3.2"
-  }
+  },
+  "keywords": []
 }
