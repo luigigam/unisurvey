@@ -332,6 +332,3 @@ async function getSurvey(req, res, next) {
 
 
 module.exports = router;
-
-
-module.exports = router;
