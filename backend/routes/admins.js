@@ -436,7 +436,7 @@ async function getAdmin(req, res, next) {
  *                                  type: list
  *
  */
-router.get("/studentManager/getstudents", async (req, res) => {
+router.get("/studentManager/getstudents", authenticateToken, async (req, res) => {
   try {
     const students = await Student.find();
     res.status(200).json(students);
@@ -548,7 +548,7 @@ router.get("/studentManager/getstudent/:id", getStudent, async (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/studentManager/updatestudent/:id", getStudent, async (req, res) => {
+router.patch("/studentManager/updatestudent/:id", authenticateToken, getStudent, async (req, res) => {
   if (req.body.email != null) {
     if (!validateEmail(req.body.email)) {
       return res.status(400).json({ state: "invalid-email" });

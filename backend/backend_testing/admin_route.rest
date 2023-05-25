@@ -36,7 +36,7 @@ POST http://localhost:3000/api/admins/login
 Content-Type: application/json
 
 {
-    "email": "nanni@nonno.it",
+    "email": "capo@sup.it",
     "password": "pass123"
 }
 ###
@@ -50,7 +50,8 @@ DELETE http://localhost:3000/api/admins/studentManager/deletestudent/6467412bd9a
 
 ###
 
-PATCH http://localhost:3000/api/admins/studentManager/updatestudent/6467412bd9a20eceb3b96475
+PATCH http://localhost:3000/api/admins/studentManager/updatestudent/6469dbe59acd0a9eed299d68
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODUwMDYwNDd9.XOFDTjNnWvQl3TA2UY8RuGZXfp7eGvaemcDQ1U_5gEg
 Content-Type: application/json
 
 {
@@ -67,6 +68,7 @@ GET http://localhost:3000/api/admins/studentManager/getstudent/6467412bd9a20eceb
 ###
 
 GET http://localhost:3000/api/admins/studentManager/getstudents
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODUwMDYwNDd9.XOFDTjNnWvQl3TA2UY8RuGZXfp7eGvaemcDQ1U_5gEg
 
 ### EVENTS
 
