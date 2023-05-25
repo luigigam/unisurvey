@@ -436,6 +436,7 @@ async function getAdmin(req, res, next) {
  *                                  type: list
  *
  */
+
 router.get("/studentManager/getstudents", async (req, res) => {
   try {
     const students = await Student.find();
