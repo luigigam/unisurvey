@@ -1062,6 +1062,3 @@ router.delete('/surveys/:id', authenticateToken, getSurvey, async (req, res) => 
  */
 
 module.exports = router;
-
-
-module.exports = router
