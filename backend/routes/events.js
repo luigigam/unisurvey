@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express')
 const router = express.Router()
 const Event = require ('../models/event')
@@ -31,7 +33,7 @@ const getEvent = require("../middlewares/getEvent")
  *                                  type: list
  *
  */
-router.get('/', async (req,res) => {
+router.get('/getevents', async (req,res) => {
     try {
         const events = await Event.find()
         res.json(events)
