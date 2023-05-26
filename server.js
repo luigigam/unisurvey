@@ -141,10 +141,12 @@ app.use('/api', mainRouter)
 const studentsRouter = require('./backend/routes/students');
 const adminsRouter = require('./backend/routes/admins');
 const eventsRouter = require('./backend/routes/events');
+const bookingsRouter = require('./routes/bookings');
 
 mainRouter.use('/students', studentsRouter);
 mainRouter.use('/admins', adminsRouter);
 mainRouter.use('/events', eventsRouter);
+mainRouter.use('/bookings', bookingsRouter);
 
 app.use(express.static('frontend'));
 

@@ -15,7 +15,7 @@ UniSurvey is an utility web service with the focus on improving students life wi
 * swagger-jsdoc: reads the JSDoc-annotated source code and generates an OpenAPI (Swagger) specification.
 * @types/express:
 * @types/express-serve-static-core:
-* tailwindcss:
+
 
 
 # how to run the project:
