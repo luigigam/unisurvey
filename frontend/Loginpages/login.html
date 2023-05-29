@@ -13,6 +13,7 @@
       const password = document.getElementById("password").value;
       
       try {
+        console.log('pretry:', errorData.message);
         const response = await fetch('http://localhost:3000/api/students/login', {
           method: 'POST',
           headers: {
@@ -24,10 +25,11 @@
         if (response.ok) {
           // Login successful, redirect to another page or perform desired actions
           window.location.href = 'home.html';
+          console.log('Success:', errorData.message);
         } else {
           // Login failed, display error message
           const errorData = await response.json();
-          console.log('Error:', errorData.message);
+          console.log('Failed:', errorData.message);
         }
       } catch (error) {
         console.log('Error:', error);
@@ -46,7 +48,7 @@
   <div class="container">
     <div class="box">
       <div class="logo-container">
-        <img class="logo" src="../../Immagini/Logo.jpg" alt="Unisurvey Logo">
+        <img class="logo" src="../Immagini/Logo.jpg" alt="Unisurvey Logo">
       </div>
       <form class="form_main" action="">
         <p class="heading">Accedi</p>

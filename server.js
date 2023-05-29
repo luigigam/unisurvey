@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path=require('path')
 
 const express = require('express');
 const app = express();
@@ -146,6 +147,10 @@ mainRouter.use('/students', studentsRouter);
 mainRouter.use('/admins', adminsRouter);
 mainRouter.use('/events', eventsRouter);
 
-app.use(express.static('frontend'));
+app.use('/', express.static('frontend'));
+
+app.get('/login', (req, res)=>{
+  res.send('./frontend/static/Loginpages/login.html');
+});
 
 app.listen(3000, () => console.log('Server Started'));

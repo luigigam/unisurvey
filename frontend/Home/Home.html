@@ -1,75 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My App Home</title>
+  <title>Home</title>
   <link rel="stylesheet" type="text/css" href="home.css">
 </head>
 <body>
-    <div class="container">
-      <div class="side-menu">
-        <!-- Dropdown menu -->
-        <div class="dropdown">
-          <button class="dropbtn">Impostazioni</button>
-          <div class="dropdown-content">
-            <label class="switch-container">
-              <input type="checkbox" id="themeSwitch">
-              <span class="slider"></span>
-            </label>
-            <a href="#">Setting 2</a>
-        </div>
-      </div>
-    </div>
-    <div class="content">
-      <div class="calendar">
-        <!-- Calendar display -->
-        <div class="calendar-container">
-          <iframe src="https://calendar.google.com/calendar/embed?src=[YOUR_GOOGLE_CALENDAR_ID]&ctz=America%2FLos_Angeles" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-        </div>
-      </div>
-      <div class="selection-boxes">
-        
-        <div class="card">
-          <h2>Sondaggi</h2>
-          <!-- Definizioni del Box sondaggi -->
-        </div>
+  <header>
+    <div class="columns">
 
-        <div class="card">
-          <h2>Info Personali</h2>
-          
-          <!-- Definizioni del Box Prenota aule -->
-        </div>
+      <a class="theme-switch-container">
+        <label class="switch-container">
+          <input type="checkbox" id="themeSwitch">
+          <span class="slider"></span>
+        </label>
+      </a>
 
-        <div class="card">
-          <h2>Prenota aule</h2>
-          <!-- Definizioni del Box Prenota aule -->
-        </div>
+      <a class="logo">
+        <img src="../Immagini/Logo.jpg" alt="Logo">
+      </a>
+      <a>
+      <button id="button" href="http://localhost:3000/api/students/login">Logout</a>
+      </a>
+      
+  </header>
 
-        <div class="card">
-          <h2>Eventi</h2>
-          <!-- Definizioni del Box Eventi -->
-        </div>
 
-      </div>
-      <div class="temp-events">
-        <!-- Mostra eventi temporanei -->
-        <h2>Eventi Temporanei</h2>
-        <!-- Definizione del Box Eventi temporanei -->
-      </div>
+  <div class="calendar">
+    <div class="calendar-container">
+      <iframe src="https://calendar.google.com/calendar/embed?src=[  ]&ctz=America%2FLos_Angeles" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
 
-  <script>
-    // Swich Dark-lightmode
-    function toggleDarkMode() {
-      const body = document.body;
-      body.classList.toggle('dark-mode');
-    }
+  <div class="buttons">
+    <a button id="button" href="linksondaggi">Sondaggi</a>
+    <a button id="button" href="linkeventi">Eventi</a>
+    <a button id="button" href="linkprenota-aule">Prenota Aule</a>
+  </div>
 
-    // triggher del themeswich
-    const themeSwitch = document.getElementById('themeSwitch');
-    themeSwitch.addEventListener('change', toggleDarkMode);
+  <div class="events-container">
+    <select onchange="filterEvents(this.value)">
+      <option value="today">Oggi</option>
+      <option value="1week">1 Settimana</option>
+      <option value="2weeks">2 Settimane</option>
+      <option value="1month">1 Mese</option>
+    </select>
 
+    <div id="events">
+      <!-- Eventi vengono aggiunti qui dinamicamente -->
+    </div>
+  </div>
 
-  </script>
+  <script src="Home.js"></script>
 </body>
 </html>
+
