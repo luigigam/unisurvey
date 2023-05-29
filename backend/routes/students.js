@@ -9,8 +9,7 @@ const jwt = require('jsonwebtoken')
 const getStudent = require("../middlewares/getStudent")
 const authenticateToken = require("../middlewares/authenticateToken")
 const validateEmail = require("../middlewares/validateEmail")
-const Survey = require('../models/survey');
-const Question = require('../models/question');
+
 /**
  * @swagger
  * /students/signup:
@@ -237,7 +236,6 @@ router.post('/login', async (req, res) => {
  *                                  type: string
  *
  */
-
 router.patch('/:id', getStudent, async (req,res) => {
   if (req.body.name != null) {
     res.student.name = req.body.name
@@ -265,70 +263,4 @@ router.post('/home', authenticateToken, (req, res) => {
   res.send('Homepage')
 })  
 
-
-// Rotte per la creazione e gestione dei sondaggi
-router.post('/surveys', authenticateToken, (req, res) => {
-  // Solo gli amministratori possono creare i sondaggi
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Forbidden' });
-  }
-
-  // Esempio di creazione di un nuovo sondaggio
-  const survey = new Survey({
-    title: req.body.title,
-    description: req.body.description,
-    questions: [],
-  });
-
-  // Esempio di creazione delle domande del sondaggio
-  req.body.questions.forEach((questionData) => {
-    const question = new Question({
-      text: questionData.text,
-      type: questionData.type,
-      options: questionData.options || [],
-    });
-
-    // Aggiungi le domande al sondaggio
-    survey.questions = await Question.insertMany(req.body.questions);
-
-    try {
-      // Salva il nuovo sondaggio nel database
-      const newSurvey = await survey.save();
-      res.status(201).json(newSurvey);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-});
-
-// Rotta per ottenere tutti i sondaggi disponibili
-router.get('/surveys', authenticateToken, async (req, res) => {
-  try {
-    // Recupera tutti i sondaggi dal database
-    const surveys = await Survey.find().populate('questions');
-    res.json(surveys);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Rotta per ottenere un singolo sondaggio
-router.get('/surveys/:id', authenticateToken, getSurvey, (req, res) => {
-  res.json(res.survey);
-});
-
-// Middleware per recuperare un sondaggio da MongoDB
-async function getSurvey(req, res, next) {
-  try {
-    const survey = await Survey.findById(req.params.id).populate('questions');
-    if (survey == null) {
-      return res.status(404).json({ message: 'Survey not found' });
-    }
-    res.survey = survey;
-    next();
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-}
-
-
-module.exports = router;
+module.exports = router
