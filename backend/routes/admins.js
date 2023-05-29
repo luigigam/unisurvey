@@ -12,6 +12,8 @@ const getStudent = require("../middlewares/getStudent");
 const getEvent = require("../middlewares/getEvent");
 const authenticateToken = require("../middlewares/authenticateToken");
 const validateEmail = require("../middlewares/validateEmail");
+const Survey = require('../models/survey');
+const Question = require('../models/question');
 
 /**
  * @swagger
@@ -840,5 +842,224 @@ router.delete("/eventManager/deleteevent/:id", getEvent, async (req, res) => {
 		res.status(500).json({ message: err.message })
 	}
 })
+
+/**
+ * @swagger
+ * /admin/surveys:
+ *   post:
+ *     tags: [admin]
+ *     summary: Create a new survey
+ *     description: Creates a new survey with the provided information.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               questions:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/QuestionInput'
+ *     responses:
+ *       '201':
+ *         description: 'Survey successfully created'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Survey'
+ *       '500':
+ *         description: 'Database error'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+router.post('/surveys', authenticateToken, async (req, res) => {
+  const survey = new Survey({
+    title: req.body.title,
+    description: req.body.description,
+  });
+
+  try {
+    // Aggiungi le domande al sondaggio
+    survey.questions = await Question.insertMany(req.body.questions);
+
+    // Salva il nuovo sondaggio nel database
+    const newSurvey = await survey.save();
+    res.status(201).json(newSurvey);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /admin/surveys/{id}:
+ *   patch:
+ *     tags: [admin]
+ *     summary: Update an existing survey
+ *     description: Updates the details of an existing survey.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the survey to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SurveyInput'
+ *     responses:
+ *       '200':
+ *         description: 'Survey successfully updated'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Survey'
+ *       '404':
+ *         description: 'Survey not found'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '500':
+ *         description: 'Database error'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+router.patch('/surveys/:id', authenticateToken, getSurvey, async (req, res) => {
+  if (req.body.title != null) {
+    res.survey.title = req.body.title;
+  }
+  if (req.body.description != null) {
+    res.survey.description = req.body.description;
+  }
+  try {
+    const updatedSurvey = await res.survey.save();
+    res.status(200).json(updatedSurvey);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /admin/surveys/{id}:
+ *   delete:
+ *     tags: [admin]
+ *     summary: Delete a survey
+ *     description: Deletes a survey and its associated questions.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the survey to delete
+ *     responses:
+ *       '204':
+ *         description: 'Survey successfully deleted'
+ *       '404':
+ *         description: 'Survey not found'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '500':
+ *         description: 'Database error'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+router.delete('/surveys/:id', authenticateToken, getSurvey, async (req, res) => {
+  try {
+    // Elimina tutte le domande associate al sondaggio
+    await Question.deleteMany({ survey: req.params.id });
+
+    // Elimina il sondaggio
+    await res.survey.remove();
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Survey:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         questions:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Question'
+ *     SurveyInput:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *     Question:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         survey:
+ *           type: string
+ *         type:
+ *           type: string
+ *         question:
+ *           type: string
+ *         options:
+ *           type: array
+ *           items:
+ *             type: string
+ *     QuestionInput:
+ *       type: object
+ *       properties:
+ *         type:
+ *           type: string
+ *         question:
+ *           type: string
+ *         options:
+ *           type: array
+ *           items:
+ *             type: string
+ */
 
 module.exports = router;

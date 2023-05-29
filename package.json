@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/express-serve-static-core": "^4.17.35",
     "dotenv": "^16.0.3",
-    "nodemon": "^2.0.22",
+    "nodemon": "^2.0.22"
   },
   "keywords": []
 }
