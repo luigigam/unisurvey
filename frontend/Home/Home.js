@@ -1,6 +1,9 @@
-document.getElementById("themeSwitch").addEventListener("change", function() {
-    document.body.classList.toggle("dark-theme");
-  });
+//Swich tema
+const themeSwitch = document.querySelector("#themeSwitch");
+themeSwitch.addEventListener("change", function() {
+  document.body.classList.toggle("dark-theme",themeSwitch.checked);
+});
+
   
   function filterEvents(value) {
     // Recupera la data odierna con:
@@ -29,7 +32,7 @@ document.getElementById("themeSwitch").addEventListener("change", function() {
     limitDate.setHours(0, 0, 0, 0);
   
     // Effettua la chiamata al backend per recuperare gli eventi
-    fetch("")
+    fetch("backend\backend_testing\event_route.rest")
       .then((response) => response.json())
       .then((data) => {
         // Filtra gli eventi in base alle date

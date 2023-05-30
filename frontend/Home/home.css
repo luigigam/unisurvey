@@ -1,11 +1,15 @@
-body {
+body.dark-theme{
+  background-color: #000000;
+  color: #FFFFFF;
+}
+body{
   background-color: #FFFFFF;
   color: #000000;
 }
 
-.dark-theme body {
-  background-color: #000000;
-  color: #FFFFFF;
+.container {
+  text-align: center;
+  margin-top: 0px;
 }
 
 .utility-page-wrap{
@@ -40,7 +44,22 @@ header {
   /* display: flex; */
   justify-content: space-between;
   align-items: center;
+  padding: 0px;
+}
+.header-container {
+  border: 2px solid #c49216;
+  background-color: #FFCC00;
+  text-align: center;
   padding: 10px;
+}
+
+.Title {
+  background-color: #917800;
+  color: #FFFFFF;
+  padding: 20px;
+  margin: 0;
+  border-radius: 30px;
+
 }
 
 .logo img {
@@ -146,12 +165,23 @@ header {
 }
 
 .calendar {
+  margin-top: 5px;
+  padding: 10px;
+  border: 2px solid #c49216;
+  background-color: #FFCC00;
   text-align: center;
-  margin-top: 20px;
+  text-align: center;
+  border-radius: 30px;
+  width: max-content ;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .calendar-container {
+  padding: 10px;
   display: inline-block;
+  border-radius: 30px;
 }
 
 .buttons {
@@ -175,14 +205,22 @@ header {
 }
 
 .event {
-  margin-bottom: 10px;
+  margin-top: 5px;
   padding: 10px;
-  background-color: #F0F0F0;
+  border: 2px solid #c49216;
+  background-color: #FFCC00;
+  text-align: center;
+  text-align: center;
+  border-radius: 30px;
+  width: max-content ;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #button {
   position: relative;
-  width: 100%;
+  width: 25%;
   border: 2px solid #c49216;
   background-color: #917800;
   height: 40px;

@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Home</title>
-  <link rel="stylesheet" type="text/css" href="home.css">
-</head>
+  <head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="home.css">
+  </head>
 <body>
-  <header>
-    <div class="columns">
-
+    <div class="header-container">
       <a class="theme-switch-container">
         <label class="switch-container">
           <input type="checkbox" id="themeSwitch">
@@ -18,11 +16,14 @@
       <a class="logo">
         <img src="../Immagini/Logo.jpg" alt="Logo">
       </a>
+
       <button id="logoutButton" onclick="window.location.href='../Loginpages/login.html'">
         <a>Logout</a>
       </button>
-      
-  </header>
+      <div class="Title">
+        <p class="heading">Homepage Personale</p>
+      </div>
+    </div>
 
 
   <div class="calendar">
@@ -32,9 +33,9 @@
   </div>
 
   <div class="buttons">
-    <a button id="button" href="linksondaggi">Sondaggi</a>
-    <a button id="button" href="linkeventi">Eventi</a>
-    <a button id="button" href="linkprenota-aule">Prenota Aule</a>
+    <button id="button" onclick="window.location.href='..\Survey\survey.html'"><a>Sondaggi</a>
+    <button id="button" onclick="window.location.href='..\Eventpage\events.html'"><a>Eventi</a>
+    <button id="button" onclick="window.location.href='..\Booking\booking.html'"><a>Prenota Aule</a>
   </div>
 
   <div class="events-container">
@@ -52,5 +53,5 @@
 
   <script src="Home.js"></script>
 </body>
-</html>
 
+</html>

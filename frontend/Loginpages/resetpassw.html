@@ -12,7 +12,7 @@
       const newPassword = document.getElementById("new-password").value;
       
       try {
-        const response = await fetch('http://localhost:3000/api/students/login/reset-password', {
+        const response = await fetch('backend\backend_testing\student_route.rest', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
