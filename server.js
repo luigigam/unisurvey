@@ -1,5 +1,6 @@
 require('dotenv').config();
-const path=require('path')
+const path = require('path');
+
 
 const express = require('express');
 const app = express();
@@ -150,7 +151,24 @@ mainRouter.use('/events', eventsRouter);
 app.use('/', express.static('frontend'));
 
 app.get('/login', (req, res)=>{
-  res.send('./frontend/static/Loginpages/login.html');
+  res.sendFile(path.join(__dirname, './frontend/static/Loginpages/login.html'));
+});
+
+// Definisci l'endpoint per la richiesta di accesso
+app.post('/students/login', (req, res) => {
+  // Recupera i dati di accesso dall'oggetto req.body
+  const { email, password } = req.body;
+
+  // Esegui la logica di autenticazione qui
+  // Verifica l'email e la password nel tuo sistema
+
+  if (email === 'example@example.com' && password === 'password') {
+    // Autenticazione riuscita, invia una risposta di successo
+    res.status(200).json({ message: 'Login successo' });
+  } else {
+    // Autenticazione fallita, invia una risposta di errore
+    res.status(401).json({ error: 'Credenziali di accesso non valide' });
+  }
 });
 
 app.listen(3000, () => console.log('Server Started'));

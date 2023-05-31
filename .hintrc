@@ -4,6 +4,19 @@
   ],
   "hints": {
     "meta-viewport": "off",
-    "button-type": "off"
+    "button-type": "off",
+    "meta-charset-utf-8": "off",
+    "axe/language": [
+      "default",
+      {
+        "html-has-lang": "off"
+      }
+    ],
+    "axe/forms": [
+      "default",
+      {
+        "label": "off"
+      }
+    ]
   }
 }
