@@ -10,7 +10,7 @@ async function loginUser() {
 
     if (response.status === 200) {
       // Login successful, redirect to another page or perform desired actions
-      window.location.href = 'home.html';
+      window.location.href = 'http://localhost:3000/Home/home.html';
     } else {
       // Login failed, display error message
       let errorMessage = 'Login failed. Please try again.';
