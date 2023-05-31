@@ -160,8 +160,8 @@ app.post('/students/login', (req, res) => {
   const { email, password } = req.body;
 
   // Esegui la logica di autenticazione qui
-  // Verifica l'email e la password nel tuo sistema
 
+  // Verifica l'email e la password nel tuo sistema
   if (email === 'example@example.com' && password === 'password') {
     // Autenticazione riuscita, invia una risposta di successo
     res.status(200).json({ message: 'Login successo' });
