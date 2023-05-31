@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="SurveyInterface.css">
-  <title>Survey Interface</title>
+  <title>Survey</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <div class="survey-container">
-    <h1>Survey</h1>
-    <button class="survey-button">Sondaggio 1</button>
-    <button class="survey-button">Sondaggio 2</button>
-    <button class="survey-button">Sondaggio 3</button>
-    <button class="survey-button">Sondaggio 4</button>
-    <div class="command-buttons">
-      <button class="command-button">Indietro</button>
-      <button class="command-button">Fine</button>
-    </div>
+  <h1 class="title">Survey</h1>
+
+  <!-- Botones de encuestas -->
+  <div id="survey-buttons">
+    <!-- Los botones se generan dinámicamente con JavaScript -->
   </div>
+
+  <!-- Botones "Back" y "Finish" -->
+  <div id="button-container">
+    <button class="button">Back</button>
+    <button class="button">Finish</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
+
