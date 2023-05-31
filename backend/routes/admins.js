@@ -12,6 +12,8 @@ const getStudent = require("../middlewares/getStudent");
 const getEvent = require("../middlewares/getEvent");
 const authenticateToken = require("../middlewares/authenticateToken");
 const validateEmail = require("../middlewares/validateEmail");
+const { google } = require('googleapis');
+var calendar_constants = require('../middlewares/calendar_constants');
 
 /**
  * @swagger
@@ -698,6 +700,48 @@ router.post("/eventManager/createEvent", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+router.get("/createEvent",(req,res)=>{
+  var event = {
+    'summary': req.body.name,
+    'location': req.body.location,
+    'description': req.body.description,
+    'start': {
+      'dateTime': "2023-07-12T09:00:00-07:00"
+    },
+    'end': {
+      'dateTime': "2023-07-12T17:00:00-07:00"
+    },
+    'attendees': [],
+    'reminders': {
+      'useDefault': false,
+      'overrides': [
+        {'method': 'email', 'minutes': 24 * 60},
+        {'method': 'popup', 'minutes': 10},
+      ],
+    },
+  };
+    
+  const auth = new google.auth.GoogleAuth({
+    keyFile: './google-calendar-key-path.json',
+    scopes: 'https://www.googleapis.com/auth/calendar',
+  });
+  auth.getClient().then(a=>{
+    calendar_constants.calendar.events.insert({
+      auth:a,
+      calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
+      resource: event,
+    }, function(err, event) {
+      if (err) {
+        console.log('There was an error contacting the Calendar service: ' + err);
+        res.status(500).json({ message: err.message });
+        return;
+      }
+      console.log('Event created: %s', event.data);
+      res.status(201).jsonp("Event successfully created!");
+    });
+  })
+})
 
 /**
  * @swagger
