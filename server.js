@@ -5,7 +5,9 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+
 const { google } = require('googleapis');
+var calendar_constants = require('./backend/middlewares/calendar_constants');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
@@ -41,7 +43,6 @@ const swaggerOptions = {
             {
                 name: 'events',
                 description: 'add, retrieve and delete events'
-            },
             {
                 name: 'classrooms',
                 description: 'add, retrieve and delete classrooms'
@@ -76,11 +77,11 @@ const calendar = google.calendar({
     version: 'v3',
     project: GOOGLE_PROJECT_NUMBER,
     auth: jwtClient
-});
+});*/
 
 app.get('/', (req, res) => {
-    calendar.events.list({
-      calendarId: GOOGLE_CALENDAR_ID,
+    calendar_constants.calendar.events.list({
+      calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
       timeMin: (new Date()).toISOString(),
       maxResults: 10,
       singleEvents: true,
@@ -100,14 +101,14 @@ app.get('/', (req, res) => {
 
 app.get("/createEvent",(req,res)=>{
     var event = {
-      'summary': 'Primo Evento!',
+      'summary': 'Evento Test!',
       'location': 'Povo',
-      'description': 'Primo evento aggiunto al calendario!',
+      'description': 'Test evento aggiunto al calendario!',
       'start': {
-        'dateTime': '2023-06-12T09:00:00-07:00'
+        'dateTime': '2023-07-12T09:00:00-07:00'
       },
       'end': {
-        'dateTime': '2023-07-14T17:00:00-07:00'
+        'dateTime': '2023-07-12T17:00:00-07:00'
       },
       'attendees': [],
       'reminders': {
@@ -124,9 +125,9 @@ app.get("/createEvent",(req,res)=>{
       scopes: 'https://www.googleapis.com/auth/calendar',
     });
     auth.getClient().then(a=>{
-      calendar.events.insert({
+      calendar_constants.calendar.events.insert({
         auth:a,
-        calendarId: GOOGLE_CALENDAR_ID,
+        calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
         resource: event,
       }, function(err, event) {
         if (err) {
@@ -137,7 +138,7 @@ app.get("/createEvent",(req,res)=>{
         res.jsonp("Event successfully created!");
       });
     })
-  })
+})
 
 mongoose.connect(process.env.DATABASE_URL);
 const db = mongoose.connection;

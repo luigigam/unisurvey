@@ -46,7 +46,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY5ZGIwZ
 
 ### STUDENTS
 
-DELETE http://localhost:3000/api/admins/studentManager/deletestudent/6467412bd9a20eceb3b96475
+DELETE http://localhost:3000/api/admins/studentManager/deletestudent/6469dbe59acd0a9eed299d68
 
 ###
 
@@ -72,16 +72,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZ
 
 ### EVENTS
 
-POST http://localhost:3000/api/admins/eventManager/createEvent
-Content-Type: application/json
+GET http://localhost:3000/api/admins/createEvent
+Content-Type: application/application/json
 
 {
-    "name": "Sagra del Kiwi",
-    "startDate": "6/06/2023",
-    "endDate": "6/09/2023",
-    "description": "Kiwi per tutti",
-    "location": "Orrido di Ponte Alto",
-    "isRegular": "true"
+    "name": "Quarto evento da user input",
+    "location": "Pizzeria bell'Italia",
+    "description": "Speriamo funzioni",
+    "startDate": "2023-06-1T10:18:03.000Z",
+    "endDate": "2023-06-1T10:18:03.000Z"
+    //"colorID" : "3"   1985-04-12T23:20:50.52Z
 }
 
 ###
