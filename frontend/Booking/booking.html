@@ -5,9 +5,25 @@
   <link rel="stylesheet" type="text/css" href="booking.css">
 </head>
 <body>
-  <h1>Prenotazione Aula</h1>
+  <div class="header-container">
+
+    <a class="theme-switch-container">
+      <label class="switch-container">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider"></span>
+      </label>
+    </a>
+
+    <div class="Title">
+      <h1 id="nodec">Prenotazione Aula</h1>
+    </div>
+
+    <button id="HomeButton" onclick="window.location.href='../Home/home.html'">
+      <a>Torna alla Home</a>
+    </button>
 
   <div id="classrooms"></div>
+  </header>
 
   <div id="bookingModal" class="modal">
     <div class="modal-content">

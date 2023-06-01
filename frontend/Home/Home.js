@@ -32,7 +32,7 @@ themeSwitch.addEventListener("change", function() {
     limitDate.setHours(0, 0, 0, 0);
   
     // Effettua la chiamata al backend per recuperare gli eventi
-    fetch("backend\backend_testing\event_route.rest")
+    fetch("http://localhost:3000/api/events/getevents")
       .then((response) => response.json())
       .then((data) => {
         // Filtra gli eventi in base alle date

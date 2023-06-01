@@ -1,3 +1,10 @@
+//Swich tema
+const themeSwitch = document.querySelector("#themeSwitch");
+themeSwitch.addEventListener("change", function() {
+  document.body.classList.toggle("dark-theme",themeSwitch.checked);
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const classroomsContainer = document.getElementById('classrooms');
     const bookingModal = document.getElementById('bookingModal');
