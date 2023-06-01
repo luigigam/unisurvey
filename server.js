@@ -43,6 +43,7 @@ const swaggerOptions = {
             {
                 name: 'events',
                 description: 'add, retrieve and delete events'
+            },
             {
                 name: 'classrooms',
                 description: 'add, retrieve and delete classrooms'
@@ -77,7 +78,7 @@ const calendar = google.calendar({
     version: 'v3',
     project: GOOGLE_PROJECT_NUMBER,
     auth: jwtClient
-});*/
+});
 
 app.get('/', (req, res) => {
     calendar_constants.calendar.events.list({
