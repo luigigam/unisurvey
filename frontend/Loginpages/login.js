@@ -3,7 +3,7 @@ async function loginUser() {
   const password = document.getElementById("password").value;
 
   try {
-    const response = await axios.post('/students/login', {
+    const response = await axios.post('/api/students/login', {
       email: username,
       password: password
     });
@@ -31,7 +31,7 @@ async function loginUser() {
   } catch (error) {
     console.log('Error:', error);
     // Handle other errors, such as network issues or server errors
-    alert('An unexpected error occurred. Please try again later.');
+    alert('Server Error');
   }
 }
 

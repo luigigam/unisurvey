@@ -1,0 +1,37 @@
+@@ -0,0 +1,36 @@
+# Get all bookings
+GET http://localhost:3000/bookings/getall
+
+###
+
+# Create a new booking
+POST http://localhost:3000/bookings
+Content-Type: application/json
+
+{
+  "classroomId": "60a83294e6a7d523c8a2c24a",
+  "startTime": "2023-05-25T10:00:00",
+  "endTime": "2023-05-25T12:00:00",
+  "userId": "60a83294e6a7d523c8a2c24b"
+}
+
+###
+
+# Get a specific booking by ID
+GET http://localhost:3000/bookings/60a83294e6a7d523c8a2c24c
+
+###
+
+# Update a specific booking by ID
+PUT http://localhost:3000/bookings/60a83294e6a7d523c8a2c24c
+Content-Type: application/json
+
+{
+  "startTime": "2023-05-25T13:00:00",
+  "endTime": "2023-05-25T15:00:00"
+}
+
+###
+
+# Delete a specific booking by ID
+DELETE http://localhost:3000/bookings/60a83294e6a7d523c8a2c24c
