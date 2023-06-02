@@ -53,4 +53,12 @@ document.addEventListener("DOMContentLoaded", function() {
       window.location.href = "resetpassw.html";
     });
   }
+
+  const Register = document.getElementById("Register");
+  if (Register) {
+    Register.addEventListener("click", function(e) {
+      e.preventDefault();
+      window.location.href = "../Signup/register.html";
+    });
+  }
 });
