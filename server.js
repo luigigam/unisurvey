@@ -49,7 +49,7 @@ const swaggerOptions = {
                 description: 'add, retrieve and delete classrooms'
             },
             {
-                name: 'booking',
+                name: 'bookings',
                 description: 'create and retrieve bookings'
             },
         ]
