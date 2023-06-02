@@ -4,28 +4,6 @@ const Classroom = require('../models/classroom');
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     Classroom:
- *       type: object
- *       properties:
- *         numero:
- *           type: string
- *           description: Numero dell'aula
- *         descrizione:
- *           type: string
- *           description: Descrizione dell'aula
- *         posti:
- *           type: integer
- *           description: Numero di posti disponibili nell'aula
- *       required:
- *         - numero
- *         - descrizione
- *         - posti
- */
-
-/**
- * @swagger
  * /classrooms:
  *   get:
  *     summary: Ottieni tutte le aule
@@ -39,7 +17,17 @@ const Classroom = require('../models/classroom');
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Classroom'
+ *                 type: object
+ *                 properties:
+ *                   numero:
+ *                     type: string
+ *                     description: Numero dell'aula
+ *                   descrizione:
+ *                     type: string
+ *                     description: Descrizione dell'aula
+ *                   posti:
+ *                     type: integer
+ *                     description: Numero di posti disponibili nell'aula
  *       500:
  *         description: Errore interno del server
  */
