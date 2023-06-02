@@ -1,18 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const classroomSchema = new mongoose.Schema({
-  numero: {
+  code: {
     type: String,
-    required: true
+    required: true,
   },
-  descrizione: {
-    type: String,
-    required: true
-  },
-  posti: {
+  seats: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
+  available: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
 });
 
-module.exports = mongoose.model('Classroom', classroomSchema);
+const Classroom = mongoose.model("Classroom", classroomSchema);
+module.exports = Classroom;

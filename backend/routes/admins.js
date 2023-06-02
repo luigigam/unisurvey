@@ -13,7 +13,8 @@ const getEvent = require("../middlewares/getEvent");
 const authenticateToken = require("../middlewares/authenticateToken");
 const validateEmail = require("../middlewares/validateEmail");
 const { google } = require('googleapis');
-var calendar_constants = require('../middlewares/calendar_constants');
+var calendar_constants = require('../middlewares/calendar_constants.js');
+const Classroom = require("../models/classroom");
 
 /**
  * @swagger
@@ -494,7 +495,7 @@ router.get("/studentManager/getstudent/:id", getStudent, async (req, res) => {
  *  patch:
  *      tags: [admin]
  *      summary: update an existing target student
- *      description: the admin changes some of target student university-related datas like email, student id, study course and study year.
+ *      description: the authenticate admin changes some of target student university-related datas like email, student id, study course and study year.
  *      requestBody:
  *          required: true
  *          content:
@@ -883,5 +884,84 @@ router.delete("/eventManager/deleteevent/:id", getEvent, async (req, res) => {
 		res.status(500).json({ message: err.message })
 	}
 })
+
+// CLASSROOMS
+
+/**
+ * @swagger
+ * /admins/classroomManager/createClassroom:
+ *  post:
+ *      tags: [admin]
+ *      summary: register a new classroom
+ *      description: the classroom is created by the authenticated admin after a code-validation check with the input parameters.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          code:
+ *                              type: string
+ *                          seats:
+ *                              type: int
+ *                          available:
+ *                              type: boolean
+ *      responses:
+ *          '409':
+ *              description: 'Classroom code already in use'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '400':
+ *              description: 'bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '201':
+ *              description: 'classroom successfully registered'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.post("/classroomManager/createClassroom", authenticateToken, async (req, res) => {
+  const duplicateClass = await Classroom.findOne({ code: req.body.code });
+  if (duplicateClass != null) {
+    return res.status(409).json({ message: "Classroom code already exists" });
+  }
+  const classroom = new Classroom({
+    code: req.body.code,
+    seats: req.body.seats,
+    available: true,
+  });
+  try {
+    const newClassroom = await classroom.save();
+    res.status(201).json(newClassroom);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;

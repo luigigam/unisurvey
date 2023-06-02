@@ -31,7 +31,7 @@ Content-Type: application/json
 
 {
     "email": "emai1@xp",
-    "password": "pass1234"
+    "password": "123"
 }
 
 ###
@@ -42,3 +42,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NTZkM
 ###
 
 GET http://localhost:3000/api/students
+
+###
+
+PATCH http://localhost:3000/api/students/classroomsBooking/6479b525bca8f7e840ed63b2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc5YjlmNjMyNzM5ZDczODAyNWRjYWYiLCJuYW1lIjoibmlubyIsInN1cm5hbWUiOiJkJ2FuZ2VsbyIsImdlbmRlciI6Ik0iLCJlbWFpbCI6ImVtYWkxQHhwIiwicGFzc3dvcmQiOiIkMmIkMTAkdEs0T3J5ZTdoS3VIQ0Zzazl3TDAuT3VpdDNVaTRqZnUuUHVkYkxMMmxMdGQ1MVMwR0lTNU8iLCJzdHVkZW50X2lkIjoiMTI0NDU2Iiwic3R1ZHlfY291cnNlIjoiYWdyYXJpYSIsInN0dWR5X3llYXIiOiIxOTQ1IiwiX192IjowLCJpYXQiOjE2ODU2OTkwODF9.PBLnrcU_FJuQkaZ58zswn8KOIk9gu_f0sY6Jx4186A4
