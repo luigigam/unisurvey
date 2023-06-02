@@ -1,45 +1,42 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Classroom = require('../models/classroom');
+const Classroom = require("../models/classroom");
 
 /**
  * @swagger
- * /classrooms:
- *   get:
- *     summary: Ottieni tutte le aule
- *     tags:
- *       - Classrooms
- *     responses:
- *       200:
- *         description: Elenco delle aule
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   numero:
- *                     type: string
- *                     description: Numero dell'aula
- *                   descrizione:
- *                     type: string
- *                     description: Descrizione dell'aula
- *                   posti:
- *                     type: integer
- *                     description: Numero di posti disponibili nell'aula
- *       500:
- *         description: Errore interno del server
+ * /classrooms/getclassrooms:
+ *  get:
+ *      tags: [classroom]
+ *      summary: get all classrooms
+ *      description: a list of all classrooms registered is returned.
+ *      responses:
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'Success: return the list of classrooms'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              searchingList:
+ *                                  type: list
+ *
  */
-router.get('/', (req, res) => {
-  Classroom.find({}, (err, aule) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
-    } else {
-      res.json(aule);
-    }
-  });
+router.get("/getclassrooms", async (req, res) => {
+  try {
+    const classrooms = await Classroom.find();
+    res.status(200).json(classrooms);
+  } catch {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;

@@ -96,3 +96,15 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:3000/api/admins/eventManager/deleteevent/6469f58e1952e90a232336a2
+
+### CLASSROOMS
+
+POST http://localhost:3000/api/admins/classroomManager/createClassroom
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODU2OTc2ODl9.tPTUsOamGKc4b-0IV1Hw3hQHpvzAyMbGmAAI3jj3aqM
+Content-Type: application/json
+
+{
+    "code": "B316",
+    "seats": "50",
+    "available": ""
+}

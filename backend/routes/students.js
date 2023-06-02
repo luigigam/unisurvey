@@ -1,14 +1,16 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const express = require('express')
-const router = express.Router()
-const Student = require ('../models/student')
-const bcrypt = require("bcrypt")
-const hashing = require("../middlewares/encrypt_pssw")
-const jwt = require('jsonwebtoken')
-const getStudent = require("../middlewares/getStudent")
-const authenticateToken = require("../middlewares/authenticateToken")
-const validateEmail = require("../middlewares/validateEmail")
+const express = require("express");
+const router = express.Router();
+const Student = require("../models/student");
+const bcrypt = require("bcrypt");
+const hashing = require("../middlewares/encrypt_pssw");
+const jwt = require("jsonwebtoken");
+const getStudent = require("../middlewares/getStudent");
+const authenticateToken = require("../middlewares/authenticateToken");
+const validateEmail = require("../middlewares/validateEmail");
+const Classroom = require("../models/classroom");
+const getClassroom = require("../middlewares/getClassroom");
 
 /**
  * @swagger
@@ -79,33 +81,33 @@ const validateEmail = require("../middlewares/validateEmail")
  *                                  type: string
  *
  */
-router.post('/signup', async (req,res) => {
-    const duplicateUser = await Student.findOne({'email': req.body.email});
-    if (duplicateUser != null) {
-      return res.status(409).json({ message: 'email-already-in-use' })
-    }
-    if (!validateEmail(req.body.email)) {
-      return res.status(400).json({state: 'invalid-email'})
-    }
-    const hashed = await hashing(req.body.password)
-    const student = new Student({
-      name: req.body.name,
-      surname: req.body.surname,
-      gender: req.body.gender,
-      email: req.body.email,
-      password: hashed,
-      student_id: req.body.student_id,
-      study_course: req.body.study_course,
-      study_year: req.body.study_year
-    })
+router.post("/signup", async (req, res) => {
+  const duplicateUser = await Student.findOne({ email: req.body.email });
+  if (duplicateUser != null) {
+    return res.status(409).json({ message: "email-already-in-use" });
+  }
+  if (!validateEmail(req.body.email)) {
+    return res.status(400).json({ state: "invalid-email" });
+  }
+  const hashed = await hashing(req.body.password);
+  const student = new Student({
+    name: req.body.name,
+    surname: req.body.surname,
+    gender: req.body.gender,
+    email: req.body.email,
+    password: hashed,
+    student_id: req.body.student_id,
+    study_course: req.body.study_course,
+    study_year: req.body.study_year,
+  });
 
-    try {
-        const newStudent = await student.save()
-        res.status(201).json(newStudent)
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
-})
+  try {
+    const newStudent = await student.save();
+    res.status(201).json(newStudent);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 /**
  * @swagger
@@ -164,25 +166,28 @@ router.post('/signup', async (req,res) => {
  *                                  type: string
  *
  */
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   if (!validateEmail(req.body.email)) {
-    return res.status(400).send('Invalid email')
+    return res.status(400).send("Invalid email");
   }
-  const student = await Student.findOne({ email: req.body.email })
+  const student = await Student.findOne({ email: req.body.email });
   if (student == null) {
-    return res.status(404).send('Cannot find student')
+    return res.status(404).send("Cannot find student");
   }
   try {
     if (await bcrypt.compare(req.body.password, student.password)) {
-      const accessToken = jwt.sign(student.toJSON(), process.env.ACCESS_TOKEN_SECRET)
-      res.status(200).json({ accessToken: accessToken })
+      const accessToken = jwt.sign(
+        student.toJSON(),
+        process.env.ACCESS_TOKEN_SECRET
+      );
+      res.status(200).json({ accessToken: accessToken });
     } else {
-      res.status(401).send('Not allowed')
+      res.status(401).send("Not allowed");
     }
   } catch {
-    res.status(500).send()
+    res.status(500).send();
   }
-})
+});
 
 /**
  * @swagger
@@ -236,31 +241,46 @@ router.post('/login', async (req, res) => {
  *                                  type: string
  *
  */
-router.patch('/:id', getStudent, async (req,res) => {
+router.patch("/:id", getStudent, async (req, res) => {
   if (req.body.name != null) {
-    res.student.name = req.body.name
+    res.student.name = req.body.name;
   }
   if (req.body.surname != null) {
-    res.student.surname = req.body.surname
+    res.student.surname = req.body.surname;
   }
   if (req.body.gender != null) {
-    res.student.gender = req.body.gender
+    res.student.gender = req.body.gender;
   }
   if (req.body.password != null) {
-    const hashed = await hashing(req.body.password)
-    res.student.password = hashed
+    const hashed = await hashing(req.body.password);
+    res.student.password = hashed;
   }
   try {
-    const updatedStudent = await res.student.save()
-    res.status(202).json(updatedStudent)
+    const updatedStudent = await res.student.save();
+    res.status(202).json(updatedStudent);
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err.message });
   }
-})
+});
 
 //Home
-router.post('/home', authenticateToken, (req, res) => {
-  res.send('Homepage')
-})  
+router.post("/home", authenticateToken, (req, res) => {
+  res.send("Homepage");
+});
 
-module.exports = router
+// Classroom booking
+router.patch("/classroomsBooking/:id", authenticateToken, getClassroom, async (req, res) => {
+  if (!res.classroom.available) {
+    return res.status(400).json({ state: "Classroom not available, can't be booked" });
+  } else {
+    res.classroom.available = false;
+  }
+  try {
+    const updatedClassroom = await res.classroom.save();
+    res.status(202).json(updatedClassroom);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+module.exports = router;

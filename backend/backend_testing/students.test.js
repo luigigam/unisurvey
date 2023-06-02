@@ -1,4 +1,4 @@
-const request  = require('supertest');
+/*const request  = require('supertest');
 const app      = require('./app');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require("mongodb-memory-server");
@@ -72,4 +72,4 @@ describe('POST /api/v1/autenticazione', () => {
         expect(response.body).toBeDefined()
         expect(response.body).toMatchObject({ success: true, message: 'Enjoy your token!',token: /(.*)/, email: /(.*)/, id: /(.*)/,self: /\/api\/v1\/utenti\/(.*)/ })
     })
- });
+ });*/

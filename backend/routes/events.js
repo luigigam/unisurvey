@@ -9,7 +9,7 @@ const getEvent = require("../middlewares/getEvent")
  * @swagger
  * /events:
  *  get:
- *      tags: [events]
+ *      tags: [event]
  *      summary: search all events
  *      description: a list of all events created is returned.
  *      responses:
@@ -46,7 +46,7 @@ router.get('/getevents', async (req,res) => {
  * @swagger
  * /events/{id}:
  *  get:
- *      tags: [events]
+ *      tags: [event]
  *      summary: search event by id
  *      description: an event is submitted and the event matching that particular id is returned.
  *      responses:
