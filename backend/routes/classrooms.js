@@ -39,64 +39,7 @@ router.get("/getclassrooms", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * /classrooms/book:
- *  post:
- *      tags: [classroom]
- *      summary: book a classroom
- *      description: book a specific classroom for a given date and time slot
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          classroomCode:
- *                              type: string
- *                          date:
- *                              type: string
- *                          time:
- *                              type: string
- *      responses:
- *          '200':
- *              description: 'Success: classroom booked successfully'
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              success:
- *                                  type: boolean
- *                                  default: true
- *                              message:
- *                                  type: string
- *          '400':
- *              description: 'Bad request: invalid parameters'
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              success:
- *                                  type: boolean
- *                                  default: false
- *                              message:
- *                                  type: string
- *          '500':
- *              description: 'Internal server error'
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              success:
- *                                  type: boolean
- *                                  default: false
- *                              message:
- *                                  type: string
- */
+/*
 router.post("/book", async (req, res) => {
   try {
     const { classroomCode, date, time } = req.body;
@@ -125,5 +68,6 @@ router.post("/book", async (req, res) => {
       .json({ success: false, message: "An error occurred while booking the classroom" });
   }
 });
+*/
 
 module.exports = router;
