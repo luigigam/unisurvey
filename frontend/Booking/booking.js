@@ -1,76 +1,92 @@
-//Swich tema
-const themeSwitch = document.querySelector("#themeSwitch");
-themeSwitch.addEventListener("change", function() {
-  document.body.classList.toggle("dark-theme",themeSwitch.checked);
-});
+// Function to fetch classrooms from the backend API
+async function getClassrooms() {
+  try {
+    const response = await fetch('/classrooms/getclassrooms');
+    if (!response.ok) {
+      throw new Error('Failed to fetch classrooms');
+    }
+    const classrooms = await response.json();
+    return classrooms;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
 
+// Function to render classrooms on the screen
+function renderClassrooms(classrooms) {
+  const classroomsContainer = document.getElementById('classrooms');
 
-document.addEventListener('DOMContentLoaded', () => {
-    const classroomsContainer = document.getElementById('classrooms');
-    const bookingModal = document.getElementById('bookingModal');
-    const bookingForm = document.getElementById('bookingForm');
-    const closeBtn = document.getElementsByClassName('close')[0];
-  
-    // Funzione per ottenere le aule dal server
-    const getClassrooms = () => {
-      fetch('/api/aule')
-        .then(response => response.json())
-        .then(data => {
-          data.forEach(classroom => {
-            const option = document.createElement('option');
-            option.value = classroom._id;
-            option.text = `${classroom.numero} - ${classroom.descrizione}`;
-            document.getElementById('classroom').appendChild(option);
-          });
-        })
-        .catch(error => console.error('Error:', error));
-    };
-  
-    // Evento di apertura del popup di prenotazione
-    classroomsContainer.addEventListener('click', (event) => {
-      const classroomId = event.target.dataset.classroom;
-      if (classroomId) {
-        bookingModal.style.display = 'block';
-        bookingForm.dataset.classroom = classroomId;
-      }
-    });
-  
-    // Evento di chiusura del popup di prenotazione
-    closeBtn.addEventListener('click', () => {
-      bookingModal.style.display = 'none';
-    });
-  
-    // Evento di invio del modulo di prenotazione
-    bookingForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const classroomId = event.target.dataset.classroom;
-      const date = event.target.date.value;
-      const time = event.target.time.value;
-  
-      const bookingData = {
-        aula: classroomId,
-        data: date,
-        fasciaOraria: time
-      };
-  
-      // Invia i dati al server per la prenotazione
-      fetch('/api/prenotazioni', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bookingData)
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Prenotazione effettuata:', data);
-          // Chiudi il popup di prenotazione e fai altre azioni come aggiornare l'interfaccia utente
-          bookingModal.style.display = 'none';
-        })
-        .catch(error => console.error('Error:', error));
-    });
-  
-    // Ottieni le aule dal server all'avvio
-    getClassrooms();
+  // Clear previous content
+  classroomsContainer.innerHTML = '';
+
+  // Render each classroom
+  classrooms.forEach(classroom => {
+    const classroomElement = document.createElement('div');
+    classroomElement.innerHTML = `
+      <h3>${classroom.code}</h3>
+      <p>Seats: ${classroom.seats}</p>
+      <p>Available: ${classroom.available ? 'Yes' : 'No'}</p>
+    `;
+    classroomsContainer.appendChild(classroomElement);
   });
-  
+}
+
+// Function to check availability and make a booking
+async function bookClassroom(classroomCode, date, time) {
+  try {
+    const response = await fetch('/classrooms/book', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        classroomCode,
+        date,
+        time
+      })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to book classroom');
+    }
+    const bookingResult = await response.json();
+    return bookingResult;
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'An error occurred while booking the classroom' };
+  }
+}
+
+// Function to handle form submission
+async function handleFormSubmit(event) {
+  event.preventDefault();
+
+  const classroomSelect = document.getElementById('classroom');
+  const dateInput = document.getElementById('date');
+  const timeSelect = document.getElementById('time');
+
+  const classroomCode = classroomSelect.value;
+  const date = dateInput.value;
+  const time = timeSelect.value;
+
+  const bookingResult = await bookClassroom(classroomCode, date, time);
+
+  if (bookingResult.success) {
+    alert('Classroom booked successfully!');
+  } else {
+    alert('Failed to book classroom: ' + bookingResult.message);
+  }
+}
+
+// Function to initialize the page
+async function initializePage() {
+  const classrooms = await getClassrooms();
+  renderClassrooms(classrooms);
+
+  const bookingForm = document.getElementById('bookingForm');
+  bookingForm.addEventListener('submit', handleFormSubmit);
+}
+
+// Call the initializePage function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', initializePage);
+
