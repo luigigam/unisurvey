@@ -38,4 +38,4 @@ Johnjairo Melendez, Adolfo Ibañez University
 
 Luigi Gammino, Unitn
 
-![UNISURVEY](/Immagini/Logo.jpg)
+![UNISURVEY](/Frontend/Immagini/Logo.jpg)
