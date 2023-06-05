@@ -1,7 +1,7 @@
 // Function to fetch classrooms from the backend API
 async function getClassrooms() {
   try {
-    const response = await fetch('/classrooms/getclassrooms');
+    const response = await fetch('api/classrooms/getclassrooms');
     if (!response.ok) {
       throw new Error('Failed to fetch classrooms');
     }
