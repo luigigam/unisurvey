@@ -35,7 +35,7 @@ function renderClassrooms(classrooms) {
 // Function to check availability and make a booking
 async function bookClassroom(classroomCode, date, time) {
   try {
-    const response = await fetch('/classrooms/book', {
+    const response = await fetch('api/classrooms/book', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
