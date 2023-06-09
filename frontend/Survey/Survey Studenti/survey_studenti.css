@@ -1,0 +1,51 @@
+body.dark-theme{
+    background-color: #000000;
+    color: #FFFFFF;
+  }
+  
+  body{
+    background-color: #FFFFFF;
+    color: #000000;
+  }
+  
+  header{
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+  }
+  
+  .header-container {
+    border: 2px solid #c49216;
+    background-color: #FFCC00;
+    text-align: center;
+    padding: 10px;
+    border-radius: 30px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .theme-switch-container {
+    text-align: right;
+    padding: 5px;
+    height: 0;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .Homebutton {
+    display: grid;
+    margin: 10px 0;
+    padding: 10px 30px;
+    background-color: #808080;
+    color: #FFFFFF;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+  }
