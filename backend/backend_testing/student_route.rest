@@ -2,14 +2,14 @@ POST http://localhost:3000/api/students/signup
 Content-Type: application/json
 
 {
-    "name": "nino",
-    "surname": "d'angelo",
-    "gender": "M",
-    "email": "emai1@xp",
+    "name": "JJ4",
+    "surname": "Rip",
+    "gender": "F",
+    "email": "orso@grr",
     "password": "123",
-    "student_id": "124456",
-    "study_course": "agraria",
-    "study_year": "1945"
+    "student_id": "202013",
+    "study_course": "Ingegneria Ambientale",
+    "study_year": "2020"
 }
 
 ###

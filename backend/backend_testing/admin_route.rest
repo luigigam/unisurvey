@@ -10,9 +10,9 @@ POST http://localhost:3000/api/admins/signup
 Content-Type: application/json
 
 {
-    "name": "Nonno",
-    "surname": "Nanni",
-    "email": "nonno@nanni.it",
+    "name": "Mario",
+    "surname": "Rossi",
+    "email": "m.rossi@gmail.it",
     "password": "pass123"
 }
 
@@ -73,7 +73,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZ
 ### EVENTS
 
 GET http://localhost:3000/api/admins/createEvent
-Content-Type: application/application/json
 
 {
     "name": "Quarto evento da user input",

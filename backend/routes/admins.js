@@ -12,8 +12,8 @@ const getStudent = require("../middlewares/getStudent");
 const getEvent = require("../middlewares/getEvent");
 const authenticateToken = require("../middlewares/authenticateToken");
 const validateEmail = require("../middlewares/validateEmail");
-const { google } = require('googleapis');
-var calendar_constants = require('../middlewares/calendar_constants.js');
+const { google } = require("googleapis");
+var calendar_constants = require("../middlewares/calendar_constants.js");
 const Classroom = require("../models/classroom");
 
 /**
@@ -439,14 +439,18 @@ async function getAdmin(req, res, next) {
  *                                  type: list
  *
  */
-router.get("/studentManager/getstudents", authenticateToken, async (req, res) => {
-  try {
-    const students = await Student.find();
-    res.status(200).json(students);
-  } catch {
-    res.status(500).json({ message: err.message });
+router.get(
+  "/studentManager/getstudents",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const students = await Student.find();
+      res.status(200).json(students);
+    } catch {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 /**
  * @swagger
@@ -551,29 +555,34 @@ router.get("/studentManager/getstudent/:id", getStudent, async (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/studentManager/updatestudent/:id", authenticateToken, getStudent, async (req, res) => {
-  if (req.body.email != null) {
-    if (!validateEmail(req.body.email)) {
-      return res.status(400).json({ state: "invalid-email" });
+router.patch(
+  "/studentManager/updatestudent/:id",
+  authenticateToken,
+  getStudent,
+  async (req, res) => {
+    if (req.body.email != null) {
+      if (!validateEmail(req.body.email)) {
+        return res.status(400).json({ state: "invalid-email" });
+      }
+      res.student.email = req.body.email;
     }
-    res.student.email = req.body.email;
+    if (req.body.student_id != null) {
+      res.student.student_id = req.body.student_id;
+    }
+    if (req.body.study_course != null) {
+      res.student.study_course = req.body.study_course;
+    }
+    if (req.body.study_year != null) {
+      res.student.study_year = req.body.study_year;
+    }
+    try {
+      const updatedStudent = await res.student.save();
+      res.status(202).json(updatedStudent);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-  if (req.body.student_id != null) {
-    res.student.student_id = req.body.student_id;
-  }
-  if (req.body.study_course != null) {
-    res.student.study_course = req.body.study_course;
-  }
-  if (req.body.study_year != null) {
-    res.student.study_year = req.body.study_year;
-  }
-  try {
-    const updatedStudent = await res.student.save();
-    res.status(202).json(updatedStudent);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+);
 
 /**
  * @swagger
@@ -612,14 +621,18 @@ router.patch("/studentManager/updatestudent/:id", authenticateToken, getStudent,
  *                                  type: string
  *
  */
-router.delete("/studentManager/deletestudent/:id", getStudent, async (req, res) => {
-  try {
-    await res.student.deleteOne();
-    res.json({ message: "Deleted Student" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+router.delete(
+  "/studentManager/deletestudent/:id",
+  getStudent,
+  async (req, res) => {
+    try {
+      await res.student.deleteOne();
+      res.json({ message: "Deleted Student" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 // ************ EVENTS FUNCTIONS ************
 
@@ -680,7 +693,6 @@ router.delete("/studentManager/deletestudent/:id", getStudent, async (req, res) 
  *
  */
 router.post("/eventManager/createEvent", async (req, res) => {
-
   const event = new Event({
     name: req.body.name,
     startDate: req.body.startDate,
@@ -695,54 +707,61 @@ router.post("/eventManager/createEvent", async (req, res) => {
       const newEvent = await event.save();
       res.status(201).json(newEvent);
     } else {
-      res.status(400).json({ state: "Start Date cannot be later than End Date" });
+      res
+        .status(400)
+        .json({ state: "Start Date cannot be later than End Date" });
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-router.get("/createEvent",(req,res)=>{
+router.get("/createEvent", (req, res) => {
   var event = {
-    'summary': req.body.name,
-    'location': req.body.location,
-    'description': req.body.description,
-    'start': {
-      'dateTime': "2023-07-12T09:00:00-07:00"
+    summary: req.body.name.toISOString(),
+    location: `${req.body.location}`,
+    description: `${req.body.description}`,
+    start: {
+      dateTime: "2023-07-15T09:00:00-07:00",
     },
-    'end': {
-      'dateTime': "2023-07-12T17:00:00-07:00"
+    end: {
+      dateTime: "2023-07-15T17:00:00-07:00",
     },
-    'attendees': [],
-    'reminders': {
-      'useDefault': false,
-      'overrides': [
-        {'method': 'email', 'minutes': 24 * 60},
-        {'method': 'popup', 'minutes': 10},
+    attendees: [],
+    reminders: {
+      useDefault: false,
+      overrides: [
+        { method: "email", minutes: 24 * 60 },
+        { method: "popup", minutes: 10 },
       ],
     },
   };
-    
+
   const auth = new google.auth.GoogleAuth({
-    keyFile: './google-calendar-key-path.json',
-    scopes: 'https://www.googleapis.com/auth/calendar',
+    keyFile: "./google-calendar-key-path.json",
+    scopes: "https://www.googleapis.com/auth/calendar",
   });
-  auth.getClient().then(a=>{
-    calendar_constants.calendar.events.insert({
-      auth:a,
-      calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
-      resource: event,
-    }, function(err, event) {
-      if (err) {
-        console.log('There was an error contacting the Calendar service: ' + err);
-        res.status(500).json({ message: err.message });
-        return;
+  auth.getClient().then((a) => {
+    calendar_constants.calendar.events.insert(
+      {
+        auth: a,
+        calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
+        resource: event,
+      },
+      function (err, event) {
+        if (err) {
+          console.log(
+            "There was an error contacting the Calendar service: " + err
+          );
+          res.status(500).json({ message: err.message });
+          return;
+        }
+        console.log("Event created: %s", event.data);
+        res.status(201).jsonp("Event successfully created!");
       }
-      console.log('Event created: %s', event.data);
-      res.status(201).jsonp("Event successfully created!");
-    });
-  })
-})
+    );
+  });
+});
 
 /**
  * @swagger
@@ -828,11 +847,13 @@ router.patch("/eventManager/updateevent/:id", getEvent, async (req, res) => {
   }
   try {
     // to fix
-    if (res.body.startDate <= res.body.endDate)  {
+    if (res.body.startDate <= res.body.endDate) {
       const updatedEvent = await res.event.save();
       res.status(202).json(updatedEvent);
     } else {
-      res.status(400).json({ state: "Start Date cannot be later than End Date" });
+      res
+        .status(400)
+        .json({ state: "Start Date cannot be later than End Date" });
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -877,13 +898,13 @@ router.patch("/eventManager/updateevent/:id", getEvent, async (req, res) => {
  *
  */
 router.delete("/eventManager/deleteevent/:id", getEvent, async (req, res) => {
-	try {
-		await res.event.deleteOne()
-		res.json({ message: "Deleted Event" })
-	} catch (err) {
-		res.status(500).json({ message: err.message })
-	}
-})
+  try {
+    await res.event.deleteOne();
+    res.json({ message: "Deleted Event" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 // CLASSROOMS
 
@@ -946,22 +967,26 @@ router.delete("/eventManager/deleteevent/:id", getEvent, async (req, res) => {
  *                                  type: string
  *
  */
-router.post("/classroomManager/createClassroom", authenticateToken, async (req, res) => {
-  const duplicateClass = await Classroom.findOne({ code: req.body.code });
-  if (duplicateClass != null) {
-    return res.status(409).json({ message: "Classroom code already exists" });
+router.post(
+  "/classroomManager/createClassroom",
+  authenticateToken,
+  async (req, res) => {
+    const duplicateClass = await Classroom.findOne({ code: req.body.code });
+    if (duplicateClass != null) {
+      return res.status(409).json({ message: "Classroom code already exists" });
+    }
+    const classroom = new Classroom({
+      code: req.body.code,
+      seats: req.body.seats,
+      available: true,
+    });
+    try {
+      const newClassroom = await classroom.save();
+      res.status(201).json(newClassroom);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-  const classroom = new Classroom({
-    code: req.body.code,
-    seats: req.body.seats,
-    available: true,
-  });
-  try {
-    const newClassroom = await classroom.save();
-    res.status(201).json(newClassroom);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+);
 
 module.exports = router;
