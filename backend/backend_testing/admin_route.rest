@@ -18,6 +18,15 @@ Content-Type: application/json
 
 ###
 
+POST http://localhost:3000/api/admins/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODYzMjQ4NTN9.cmrCGEww4AP6zLUT44RC39ZXsOkYz7m58lggtKkt1ks"
+}
+
+###
+
 DELETE http://localhost:3000/api/admins/deleteadmin/6469db0d9acd0a9eed299d56
 
 ###
@@ -39,10 +48,20 @@ Content-Type: application/json
     "email": "capo@sup.it",
     "password": "pass123"
 }
+
 ###
 
 POST http://localhost:3000/api/admins/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY5ZGIwZDlhY2QwYTllZWQyOTlkNTYiLCJuYW1lIjoiTm9ubm8iLCJzdXJuYW1lIjoiTmFubmkiLCJlbWFpbCI6Im5hbm5pQG5vbm5vLml0IiwicGFzc3dvcmQiOiIkMmIkMTAkU2hJcUhxOWVNYU5PTGcvYVJLUlJrdXpZcmhKeWRDb2NBMkZiVDVKbXF2aS5sZ0VhSm5WODYiLCJfX3YiOjAsImlhdCI6MTY4NDY1OTA0N30.eB4DuLFYr7zMhx1VVGqGUkC0ynmbrMDpwNfvookj0zE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODYzMjQ4NzAsImV4cCI6MTY4NjMyODQ3MH0.ixmgFRJU9bfdfU_MEhc5NnxcB6USdeqfDgVTuXIYJgo
+
+###
+
+DELETE http://localhost:3000/api/admins/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZDViNjE3MWQyZTFhZDU3NGMiLCJuYW1lIjoiQ2FwbyIsInN1cm5hbWUiOiJTdXByZW1vIiwiZW1haWwiOiJjYXBvQHN1cC5pdCIsInBhc3N3b3JkIjoiJDJiJDEwJHhPcWs1UGhJeHdoNjAzb3FzNG9VTGUyV05iRlBUWjVFNlFKNXhiM2kwSWFDd3ZEU1VtUFVLIiwiX192IjowLCJpYXQiOjE2ODYzMjQ4NTN9.cmrCGEww4AP6zLUT44RC39ZXsOkYz7m58lggtKkt1ks"
+}
 
 ### STUDENTS
 

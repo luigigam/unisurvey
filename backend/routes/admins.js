@@ -178,13 +178,15 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+let refreshTokens = []
+
 /**
  * @swagger
  * /admins/login:
  *  post:
  *      tags: [admin]
  *      summary: log into an existing admin
- *      description: the admin is logged in after validation of his email and password. A JWT token is returned.
+ *      description: the admin is logged in after validation of his email and password. A JWT access token with a duration of 1h and a JWT refresh token are returned.
  *      responses:
  *          '400':
  *              description: 'Bad request'
@@ -244,11 +246,13 @@ router.post("/login", async (req, res) => {
   }
   try {
     if (await bcrypt.compare(req.body.password, admin.password)) {
-      const accessToken = jwt.sign(
+      const accessToken = generateAccessToken(admin.toJSON())
+      const refreshToken = jwt.sign(
         admin.toJSON(),
-        process.env.ACCESS_TOKEN_SECRET
+        process.env.REFRESH_TOKEN_SECRET
       );
-      res.status(200).json({ accessToken: accessToken });
+      refreshTokens.push(refreshToken)
+      res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
     } else {
       res.status(401).send("Not allowed");
     }
@@ -256,6 +260,83 @@ router.post("/login", async (req, res) => {
     res.status(500).send();
   }
 });
+
+/**
+ * @swagger
+ * /admins/token:
+ *  post:
+ *      tags: [admin]
+ *      summary: returns a new fresh access token
+ *      description: the admin is given another fresh JWT token access token after having recognized his JWT refresh token.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json
+ *      responses:
+ *          '403':
+ *              description: 'forbidden'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '401':
+ *              description: 'unauthorized, unknown refresh token'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'new refresh token'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.post("/token", (req, res) => {
+	const refreshToken = req.body.token
+	if (refreshToken == null) return res.status(401)
+	if (!refreshTokens.includes(refreshToken)) return res.status(403)
+	jwt.verify(
+		refreshToken,
+		process.env.REFRESH_TOKEN_SECRET,
+		async (err, admin) => {
+			if (err) return res.status(403)
+			admin = await Admin.findOne({ email: admin.email })
+			const accessToken = generateAccessToken(admin.toJSON())
+			res.json({ accessToken: accessToken })
+		}
+	)
+})
+
+/**
+ * @swagger
+ * /admins/token:
+ *  delete:
+ *      tags: [admin]
+ *      summary: logs a admin out
+ *      description: the given JWT refresh token of a admin is removed from the JWT refresh token list, preventing the creation of new JWT access tokens.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json
+ *      responses:
+ *          '204':
+ *              description: 'no content, logout'
+ *
+ */router.delete("/logout", (req, res) => {
+	refreshTokens = refreshTokens.filter((token) => token !== req.body.token)
+	res.sendStatus(204)
+})
 
 /**
  * @swagger
@@ -407,6 +488,10 @@ async function getAdmin(req, res, next) {
 
   res.admin = admin;
   next();
+}
+
+function generateAccessToken(admin) {
+	return jwt.sign(admin, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" })
 }
 
 // ************ STUDENTS FUNCTIONS ************
