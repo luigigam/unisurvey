@@ -9,8 +9,14 @@ async function loginUser() {
     });
 
     if (response.status === 200) {
-      // Login successful, redirect to another page or perform desired actions
-      window.location.href = 'http://localhost:3000/Home/home.html';
+      // Login successful, check if the user is an admin
+      if (response.data && response.data.isAdmin) {
+        // Admin user, redirect to admin home page
+        window.location.href = "http://localhost:3000/Home/AHome.html";
+      } else {
+        // Student user, redirect to student home page
+        window.location.href = "http://localhost:3000/Home/home.html";
+      }
     } else {
       // Login failed, display error message
       let errorMessage = 'Login failed. Please try again.';
