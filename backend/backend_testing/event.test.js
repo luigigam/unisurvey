@@ -1,67 +1,68 @@
 /*
 const request = require('supertest');
-const app = require('../app'); // Assuming your Express app is exported from app.js
+const app = require('../../server'); 
 const Event = require('../models/event');
 
-describe('Event Routes', () => {
+describe('Percorsi Evento', () => {
   let event;
 
   beforeEach(async () => {
-    // Create a sample event for testing
+    // Crea un evento di esempio per i test
     event = new Event({
-      summary: 'Test Event',
-      location: 'Test Location',
+      summary: 'Evento di prova',
+      location: 'Località di prova',
       start: new Date(),
       end: new Date(),
-      description: 'Test Description',
+      description: 'Descrizione di prova',
       isRegular: false,
     });
     await event.save();
   });
 
   afterEach(async () => {
-    // Clean up the test data after each test
+    // Pulisci i dati di test dopo ogni test
     await Event.deleteMany();
   });
 
   describe('GET /events/getevents', () => {
-    it('should get all events', async () => {
+    it('dovrebbe ottenere tutti gli eventi', async () => {
       const res = await request(app).get('/events/getevents');
       expect(res.status).toBe(200);
-      expect(res.body).toEqual([event]); // Assuming the response is an array of events
+      expect(res.body).toEqual([event]); // Presumendo che la risposta sia un array di eventi
     });
 
-    it('should handle server errors', async () => {
-      jest.spyOn(Event, 'find').mockRejectedValueOnce(new Error('Database error'));
+    it('dovrebbe gestire gli errori del server', async () => {
+      jest.spyOn(Event, 'find').mockRejectedValueOnce(new Error('Errore del database'));
 
       const res = await request(app).get('/events/getevents');
       expect(res.status).toBe(500);
-      expect(res.body).toEqual({ message: 'Database error' });
+      expect(res.body).toEqual({ message: 'Errore del database' });
     });
   });
 
   describe('GET /events/:id', () => {
-    it('should get an event by id', async () => {
+    it('dovrebbe ottenere un evento per ID', async () => {
       const res = await request(app).get(`/events/${event._id}`);
       expect(res.status).toBe(200);
       expect(res.body).toEqual(event);
     });
 
-    it('should handle event not found', async () => {
-      const nonExistentId = '60cda1298265e40a84e8a12b'; // A non-existent event id
+    it('dovrebbe gestire l\'evento non trovato', async () => {
+      const nonExistentId = '60cda1298265e40a84e8a12b'; // Un ID di evento non esistente
 
       const res = await request(app).get(`/events/${nonExistentId}`);
       expect(res.status).toBe(404);
-      expect(res.body).toEqual({ message: 'Event not found' });
+      expect(res.body).toEqual({ message: 'Evento non trovato' });
     });
 
-    it('should handle server errors', async () => {
-      jest.spyOn(Event, 'findById').mockRejectedValueOnce(new Error('Database error'));
+    it('dovrebbe gestire gli errori del server', async () => {
+      jest.spyOn(Event, 'findById').mockRejectedValueOnce(new Error('Errore del database'));
 
       const res = await request(app).get(`/events/${event._id}`);
       expect(res.status).toBe(500);
-      expect(res.body).toEqual({ message: 'Database error' });
+      expect(res.body).toEqual({ message: 'Errore del database' });
     });
   });
 });
-*/
+
+*/  
