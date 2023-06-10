@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Amministrazione Studenti</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="userM.js"></script>
+</head>
+<body>
+  <h1>Amministrazione Studenti</h1>
+  
+  <h2>Visualizza tutti gli studenti</h2>
+  <button onclick="getStudents()">Visualizza studenti</button>
+  <div id="studentsList"></div>
+  
+  <h2>Modifica informazioni studente</h2>
+  <input type="text" id="studentIdInput" placeholder="ID studente">
+  <input type="text" id="studentNameInput" placeholder="Nuovo nome">
+  <input type="text" id="studentAgeInput" placeholder="Nuova età">
+  <button onclick="updateStudent()">Aggiorna studente</button>
+  
+  <h2>Crea nuovo studente</h2>
+  <input type="text" id="newStudentNameInput" placeholder="Nome">
+  <input type="text" id="newStudentAgeInput" placeholder="Età">
+  <button onclick="createStudent()">Crea studente</button>
+  
+  <h2>Elimina studente</h2>
+  <input type="text" id="deleteStudentIdInput" placeholder="ID studente">
+  <button onclick="deleteStudent()">Elimina studente</button>
+  
+  <h2>Visualizza tutti gli Admin</h2>
+  <button onclick="getAdmins()">Visualizza Admin</button>
+  <div id="adminsList"></div>
+
+  <h2>Aggiungi admin</h2>
+  <input type="text" id="newAdminNameInput" placeholder="Nome admin">
+  <button onclick="addAdmin()">Aggiungi admin</button>
+  
+  <h2>Rimuovi admin</h2>
+  <input type="text" id="removeAdminNameInput" placeholder="Nome admin">
+  <button onclick="removeAdmin()">Rimuovi admin</button>
+</body>
+</html>
