@@ -44,29 +44,6 @@ router.get("/getevents", async (req, res) => {
   }
 });
 
-router.get("/getevents", (req, res) => {
-    calendar_constants.calendar.events.list(
-    {
-      calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
-      timeMin: new Date().toISOString(),
-      maxResults: 10,
-      singleEvents: true,
-      orderBy: "startTime",
-    },
-    (error, result) => {
-      if (error) {
-        res.send(JSON.stringify({ error: error }));
-      } else {
-        if (result.data.items.length) {
-          res.send(JSON.stringify({ events: result.data.items }));
-        } else {
-          res.send(JSON.stringify({ message: "No upcoming events found." }));
-        }
-      }
-    }
-  );
-});
-
 /**
  * @swagger
  * /events/{id}:

@@ -91,15 +91,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZ
 
 ### EVENTS
 
-GET http://localhost:3000/api/admins/createEvent
+GET http://localhost:3000/api/admins/eventManager/createEvent
+Content-Type: application/json
 
 {
-    "name": "Quarto evento da user input",
-    "location": "Pizzeria bell'Italia",
-    "description": "Speriamo funzioni",
-    "startDate": "2023-06-1T10:18:03.000Z",
-    "endDate": "2023-06-1T10:18:03.000Z"
-    //"colorID" : "3"   1985-04-12T23:20:50.52Z
+    "summary": "Aperitivo progetto iRace",
+    "location": "Povo 2 - Polo Ferrari, Trento, Italia",
+    "description": "Vieni a questo aperitivo organizzato dai realizzatori del progetto iRace per scoprire di cosa si tratta!",
+    "start": "2023-06-22T18:30:00.020Z",
+    "end": "2023-06-22T20:00:00.000Z",
+    "colorID" : "4"
 }
 
 ###
@@ -113,7 +114,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/api/admins/eventManager/deleteevent/6469f58e1952e90a232336a2
+DELETE http://localhost:3000/api/admins/eventManager/deleteevent/6485cac2671c6e2d821201ea
 
 ### CLASSROOMS
 
@@ -122,7 +123,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY3NDNiZ
 Content-Type: application/json
 
 {
-    "code": "B316",
+    "code": "B103",
     "seats": "50",
     "available": ""
+}
+
+###
+
+PATCH http://localhost:3000/api/admins/classroomManager/resetBooking
+
+### SURVEYS
+
+POST http://localhost:3000/api/admins/surveyManager/createSurvey
+Content-Type: application/json
+
+{
+  "title": "Spazi verdi città",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLSfOVcB7ZVxxfEvnwwpXu4SvskrH6cU80Z8NC1kUrkfC-BYANQ/viewform?usp=sf_link"
 }

@@ -252,7 +252,7 @@ router.post("/token", (req, res) => {
 
 /**
  * @swagger
- * /students/token:
+ * /students/logout:
  *  delete:
  *      tags: [student]
  *      summary: logs a student out
@@ -323,7 +323,7 @@ router.delete("/logout", (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/:id", getStudent, async (req, res) => {
+router.patch("/:id", authenticateToken, getStudent, async (req, res) => {
   if (req.body.name != null) {
     res.student.name = req.body.name;
   }
@@ -356,7 +356,43 @@ router.post("/home", authenticateToken, (req, res) => {
   res.send("Homepage");
 });
 
-// Classroom booking
+/**
+ * @swagger
+ * /classroomsBooking/{id}:
+ *  patch:
+ *      tags: [student]
+ *      summary: book a classroom if available
+ *      description: the student books a classroom if available, otherwise that option is negated
+ *      responses:
+ *          '404':
+ *              description: 'classoom not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '202':
+ *              description: 'classroom booked succesfully'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
 router.patch(
   "/classroomsBooking/:id",
   authenticateToken,

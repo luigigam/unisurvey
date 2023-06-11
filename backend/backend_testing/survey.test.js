@@ -1,62 +1,56 @@
 /*const request = require('supertest');
-const app = require('../--server.js'); 
+const app = require('../--server.js');
+const mongoose = require('mongoose');
+const Survey = require('../models/survey.js');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-describe('Survey Routes', () => {
-  // Test the POST /survey route
-  describe('POST /survey', () => {
-    it('should add a new survey', async () => {
-      const response = await request(app)
-        .post('/survey')
-        .send({
-          title: 'Mensa Povo0',
-          link: 'https://docs.google.com/forms/d/e/1FAIpQLScxGZosjNqVlJEwBZmovJyFfM9sDEB68q0W-tzOudfgnB_bJA/viewform?usp=sf_link'
-        });
+const mongod = new MongoMemoryServer();
 
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({ message: 'Sondaggio salvato nel database' });
-    });
+beforeAll(async () => {
+  const uri = await mongod.getUri();
+  await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+});
 
-    it('should return an error when the survey data is invalid', async () => {
-      const response = await request(app)
-        .post('/survey')
-        .send({
-          // Invalid survey data without title and link properties
-        });
+afterEach(async () => {
+  await Survey.remove({});
+});
 
-      expect(response.status).toBe(500);
-      expect(response.body).toEqual({ error: 'Errore durante il salvataggio del sondaggio' });
+afterAll(async () => {
+  await mongoose.connection.dropDatabase();
+  await mongoose.connection.close();
+  await mongod.stop();
+});
+
+describe('GET /survey/getsurveys', () => {
+  it('dovrebbe restituire un elenco di questionari', async () => {
+    const surveys = [
+      { title: 'Mensa Povo0', link: 'https://docs.google.com/forms/d/e/1FAIpQLScxGZosjNqVlJEwBZmovJyFfM9sDEB68q0W-tzOudfgnB_bJA/viewform?usp=sf_link' },
+      { title: 'Mensa Povo1', link: 'https://docs.google.com/forms/d/e/1FAIpQLSeBaET1CZJmvnnG2KVQwpQ340MTBh1GsqC7wg3VxbWM2O7ZUw/viewform?usp=sf_link' },
+      { title: 'Bibioteca BUP', link: 'https://docs.google.com/forms/d/e/1FAIpQLSc0D5pY2BCDu6SwdYCmBC43bXI1VZ7VVYy4ZUVZK34IgrjpHA/viewform?usp=sf_link' },
+      { title: 'Parcheggi collina', link: 'https://docs.google.com/forms/d/e/1FAIpQLSevxrhfDKN9c_PWIERPtrZX4-R-u_yeVu6MEw0bSkZUC8b6hg/viewform?usp=sf_link' },
+    ];
+
+    for (let survey of surveys) {
+      let newSurvey = new Survey(survey);
+      await newSurvey.save();
+    }
+
+    const response = await supertest(app).get('/surveys/getsurveys');
+
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(2);
+
+    response.body.forEach((survey, idx) => {
+      expect(survey.title).toBe(surveys[idx].title);
+      expect(survey.link).toBe(surveys[idx].link);
     });
   });
 
-  // Test the DELETE /survey/:id route
-  describe('DELETE /survey/:id', () => {
-    let surveyId;
+  it('dovrebbe restituire un array vuoto se non ci sono survey', async () => {
+    const response = await supertest(app).get('/surveys/getsurveys');
 
-    beforeAll(async () => {
-      // Add a new survey before running the test
-      const response = await request(app)
-        .post('/survey')
-        .send({
-          title: 'Mensa Povo0',
-          link: 'https://docs.google.com/forms/d/e/1FAIpQLScxGZosjNqVlJEwBZmovJyFfM9sDEB68q0W-tzOudfgnB_bJA/viewform?usp=sf_link'
-        });
-
-      surveyId = response.body.surveyId; // Assuming the API returns the ID of the created survey
-    });
-
-    it('should remove an existing survey', async () => {
-      const response = await request(app).delete(`/survey/${surveyId}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({ message: 'Sondaggio rimosso dal database' });
-    });
-
-    it('should return an error when the survey ID is invalid', async () => {
-      const response = await request(app).delete('/survey/invalidId');
-
-      expect(response.status).toBe(500);
-      expect(response.body).toEqual({ error: 'Errore durante la rimozione del sondaggio' });
-    });
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(0);
   });
 });
 */

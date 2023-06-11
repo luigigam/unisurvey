@@ -27,7 +27,7 @@ const swaggerOptions = {
         },
       ],
       description:
-        "UniSurvey is a REST API application made with Javascript on the server-side, and html and CSS on the client-side.",
+        "UniSurvey is a REST API application made with Javascript on the server-side, and html and CSS and JavaScript on the client-side.",
     },
     basePath: "/api/",
     tags: [
@@ -46,6 +46,10 @@ const swaggerOptions = {
       {
         name: "classroom",
         description: "retrieve list of all classrooms",
+      },
+      {
+        name: "survey",
+        description: "retrieve list of all surveys",
       },
     ],
   },

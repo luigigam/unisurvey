@@ -10,22 +10,21 @@ const eventSchema = new mongoose.Schema({
     required: true,
   },
   start: {
-    type: Date,
+    type: String,
     required: true,
   },
   end: {
-    type: Date,
+    type: String,
     required: true,
   },
   description: {
     type: String,
     required: true,
   },
-  isRegular: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
+  colorID: {
+    type: String,
+    default: "6",
+  }
 });
 
 const Event = mongoose.model("Event", eventSchema);
