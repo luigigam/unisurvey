@@ -92,7 +92,10 @@ app.get("/", (req, res) => {
   );
 });
 
-mongoose.connect(process.env.DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
@@ -106,11 +109,13 @@ const studentsRouter = require("./backend/routes/students");
 const adminsRouter = require("./backend/routes/admins");
 const eventsRouter = require("./backend/routes/events");
 const classroomsRouter = require("./backend/routes/classrooms");
+const surveysRoutes = require('./backend/routes/surveys');
 
 mainRouter.use("/students", studentsRouter);
 mainRouter.use("/admins", adminsRouter);
 mainRouter.use("/events", eventsRouter);
 mainRouter.use("/classrooms", classroomsRouter);
+mainRouter.use('/survey', surveysRoutes);
 
 app.use("/", express.static("frontend"));
 
@@ -118,4 +123,5 @@ app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "./frontend/static/Loginpages/login.html"));
 });
 
-app.listen(3000, () => console.log("Server Started"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

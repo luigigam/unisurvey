@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="survey.css">
+  <title>STUDENTI SURVEY</title>
+  <style>
+    .button-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .button {
+        margin: 10px;
+    }
+</style>
+</head>
+<body>
+
+  <div class="image-container">
+    <img src="../Immagini/logo.jpg" alt="Logo">
+</div>
+
+  <div>
+  <button id="HomeButton" onclick="window.location.href='../Home/home.html'">
+      <a>Torna alla Home</a>
+  </button>
+  </div>
+
+  <div id="surveyList"></div>
+
+  <script src="survey.js"></script>
+</body>
+</html>
