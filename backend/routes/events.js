@@ -1,9 +1,11 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express')
-const router = express.Router()
-const Event = require ('../models/event')
-const getEvent = require("../middlewares/getEvent")
+const express = require("express");
+const router = express.Router();
+const Event = require("../models/event");
+const getEvent = require("../middlewares/getEvent");
+const { google } = require('googleapis');
+var calendar_constants = require("../middlewares/calendar_constants.js");
 
 /**
  * @swagger
@@ -33,14 +35,37 @@ const getEvent = require("../middlewares/getEvent")
  *                                  type: list
  *
  */
-router.get('/getevents', async (req,res) => {
-    try {
-        const events = await Event.find()
-        res.json(events)
-    } catch {
-        res.status(500).json({ message: err.message })
+router.get("/getevents", async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.json(events);
+  } catch {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get("/getevents", (req, res) => {
+    calendar_constants.calendar.events.list(
+    {
+      calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
+      timeMin: new Date().toISOString(),
+      maxResults: 10,
+      singleEvents: true,
+      orderBy: "startTime",
+    },
+    (error, result) => {
+      if (error) {
+        res.send(JSON.stringify({ error: error }));
+      } else {
+        if (result.data.items.length) {
+          res.send(JSON.stringify({ events: result.data.items }));
+        } else {
+          res.send(JSON.stringify({ message: "No upcoming events found." }));
+        }
+      }
     }
-})
+  );
+});
 
 /**
  * @swagger
@@ -79,8 +104,8 @@ router.get('/getevents', async (req,res) => {
  *                                  type: list
  *
  */
-router.get('/:id', getEvent, async (req,res) => {
-    res.status(200).json(res.event)
-})
+router.get("/:id", getEvent, async (req, res) => {
+  res.status(200).json(res.event);
+});
 
-module.exports = router
+module.exports = router;
