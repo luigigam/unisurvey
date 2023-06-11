@@ -1,0 +1,41 @@
+# POST /survey
+POST http://localhost:3000/api/survey
+Content-Type: application/json
+
+{
+  "title": "Mensa Povo0",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLScxGZosjNqVlJEwBZmovJyFfM9sDEB68q0W-tzOudfgnB_bJA/viewform?usp=sf_link"
+}
+
+{
+  "title": "Aule PC Povo2",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLSf-lr3GtATizjYDA3FDene6Sj6isTSddIlTGg1CRD2P4gVgPg/viewform?usp=sf_link"
+}
+{
+  "title": "Bibioteca BUP",
+  "link": " https://docs.google.com/forms/d/e/1FAIpQLSc0D5pY2BCDu6SwdYCmBC43bXI1VZ7VVYy4ZUVZK34IgrjpHA/viewform?usp=sf_link"
+}
+{
+  "title": "Biblioteca Mesiano",
+  "link": " https://docs.google.com/forms/d/e/1FAIpQLSdoMyQ51NhbwxkwZNFWjyAqgXTpLBsn_VaV8Lz7SelMpqzsyg/viewform?usp=sf_link"
+}
+{
+  "title": "Biblioteca Centrale",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLSeZ7R5iYkX7D2WczpIIc2twYshMRCxXvsYJgI11ozJcMiZDKg/viewform?usp=sf_link"
+}
+{
+  "title": "Parcheggi collina",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLSevxrhfDKN9c_PWIERPtrZX4-R-u_yeVu6MEw0bSkZUC8b6hg/viewform?usp=sf_link"
+}
+{
+  "title": "Parcheggi città",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLScfS86V17kdLE7xHuc_-WmaRllByXxvgqe1eUKIdIkNUUEAnw/viewform?usp=sf_link"
+}
+{
+  "title": "Spazi verdi collina",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLSdJ0qnfsE13rhqgPPg71MRtZmZo7ism6hoijFDD_z0clIcoyA/viewform?usp=sf_link"
+}
+{
+  "title": "Spazi verdi città",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLSfOVcB7ZVxxfEvnwwpXu4SvskrH6cU80Z8NC1kUrkfC-BYANQ/viewform?usp=sf_link"
+}
