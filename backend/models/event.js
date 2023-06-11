@@ -24,7 +24,7 @@ const eventSchema = new mongoose.Schema({
   colorID: {
     type: String,
     default: "6",
-  }
+  },
 });
 
 const Event = mongoose.model("Event", eventSchema);

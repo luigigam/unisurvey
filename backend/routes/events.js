@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 const Event = require("../models/event");
 const getEvent = require("../middlewares/getEvent");
-const { google } = require('googleapis');
+const { google } = require("googleapis");
 var calendar_constants = require("../middlewares/calendar_constants.js");
 
 /**

@@ -113,13 +113,13 @@ const studentsRouter = require("./backend/routes/students");
 const adminsRouter = require("./backend/routes/admins");
 const eventsRouter = require("./backend/routes/events");
 const classroomsRouter = require("./backend/routes/classrooms");
-const surveysRoutes = require('./backend/routes/surveys');
+const surveysRoutes = require("./backend/routes/surveys");
 
 mainRouter.use("/students", studentsRouter);
 mainRouter.use("/admins", adminsRouter);
 mainRouter.use("/events", eventsRouter);
 mainRouter.use("/classrooms", classroomsRouter);
-mainRouter.use('/survey', surveysRoutes);
+mainRouter.use("/survey", surveysRoutes);
 
 app.use("/", express.static("frontend"));
 

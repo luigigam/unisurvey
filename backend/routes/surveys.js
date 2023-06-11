@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Survey = require('../models/survey');
+const Survey = require("../models/survey");
 const authenticateToken = require("../middlewares/authenticateToken");
 
 /**
