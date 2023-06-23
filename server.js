@@ -96,7 +96,7 @@ app.get("/", (req, res) => {
   );
 });
 
-mongoose.connect(process.env.DATABASE_URL.toString(), {
+mongoose.connect("mongodb+srv://luigigammino:gammino57tn@cluster0.lgs0mov.mongodb.net/?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
