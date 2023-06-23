@@ -96,7 +96,7 @@ app.get("/", (req, res) => {
   );
 });
 
-mongoose.connect(process.env.DATABASE_URL, {
+mongoose.connect(process.env.DATABASE_URL.toString(), {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
