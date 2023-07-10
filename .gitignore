@@ -1,2 +1,6 @@
 .env
 node_modules
+frontend\style.css
+frontend\index.html
+frontend/index.html
+frontend/style.css
