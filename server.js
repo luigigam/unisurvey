@@ -27,7 +27,7 @@ const swaggerOptions = {
         },
       ],
       description:
-        "UniSurvey is a REST API application made with Javascript on the server-side, and html and CSS and JavaScript on the client-side.",
+        "UniSurvey is a REST API application made with Javascript on the server-side, and html and CSS and JavaScript and JavaScript on the client-side.",
     },
     basePath: "/api/",
     tags: [
@@ -46,6 +46,10 @@ const swaggerOptions = {
       {
         name: "classroom",
         description: "retrieve list of all classrooms",
+      },
+      {
+        name: "survey",
+        description: "retrieve list of all surveys",
       },
       {
         name: "survey",
@@ -126,6 +130,33 @@ app.get("/", (req, res) => {
     },
   );
 });
+
+mongoose.connect("mongodb+srv://luigigammino:gammino57tn@cluster0.lgs0mov.mongodb.net/?retryWrites=true&w=majority", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+db.on("error", (error) => console.error(error));
+db.once("open", () => console.log("Connected to Database"));
+
+app.use(express.json());
+
+const mainRouter = express.Router();
+app.use("/api", mainRouter);
+
+const studentsRouter = require("./backend/routes/students");
+const adminsRouter = require("./backend/routes/admins");
+const eventsRouter = require("./backend/routes/events");
+const classroomsRouter = require("./backend/routes/classrooms");
+const surveysRoutes = require("./backend/routes/surveys");
+
+mainRouter.use("/students", studentsRouter);
+mainRouter.use("/admins", adminsRouter);
+mainRouter.use("/events", eventsRouter);
+mainRouter.use("/classrooms", classroomsRouter);
+mainRouter.use("/survey", surveysRoutes);
+
+app.use("/", express.static("frontend"));
 
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "./frontend/static/Loginpages"));
