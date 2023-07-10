@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="events.css" />
+    <title>ADMIN</title>
+  </head>
+  <body>
+    <script src="../Home/Home.js"></script>
+    <header>
+      <div class="header-container">
+        <h1>ADMIN</h1>
+      </div>
+      <div class="theme-switch-container"></div>
+    </header>
+
+    <div class="window-container">
+      <div id="calendar" class="calendar-api">
+        <div class="events-container">
+          <div id="events">
+            <!-- Eventi vengono aggiunti qui dinamicamente -->
+          </div>
+        </div>
+      </div>
+
+      <button
+        id="HomeButton"
+        onclick="window.location.href='../Home/Home.html'"
+      >
+        <a>Torna alla Home</a>
+      </button>
+    </div>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+      filterEvents("today", true);
+    </script>
+  </body>
+</html>

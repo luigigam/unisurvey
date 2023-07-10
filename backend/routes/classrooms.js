@@ -39,35 +39,4 @@ router.get("/getclassrooms", async (req, res) => {
   }
 });
 
-/*
-router.post("/book", async (req, res) => {
-  try {
-    const { classroomCode, date, time } = req.body;
-
-    // Check if the classroom is available for the given date and time
-    const classroom = await Classroom.findAvailableByCode(classroomCode);
-    if (!classroom) {
-      return res
-        .status(400)
-        .json({ success: false, message: "The classroom is not available" });
-    }
-
-    // Perform any other business logic or validations before booking the classroom
-
-    // Update the classroom's availability to false
-    classroom.available = false;
-    await classroom.save();
-
-    return res
-      .status(200)
-      .json({ success: true, message: "Classroom booked successfully" });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "An error occurred while booking the classroom" });
-  }
-});
-*/
-
 module.exports = router;

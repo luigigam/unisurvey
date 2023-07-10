@@ -1,7 +1,7 @@
 /*
 const mongoose = require('mongoose');
 const supertest = require('supertest');
-const app = require('../../server');
+const app = require('../../server.js');
 const Classroom = require('../models/classroom');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 

@@ -179,16 +179,14 @@ router.post("/login", async (req, res) => {
       const accessToken = generateAccessToken(student.toJSON());
       const refreshToken = jwt.sign(
         student.toJSON(),
-        process.env.REFRESH_TOKEN_SECRET
+        process.env.REFRESH_TOKEN_SECRET,
       );
       refreshTokens.push(refreshToken);
-      res
-        .status(200)
-        .json({ accessToken: accessToken, refreshToken: refreshToken });
+      res.status(200).json({ accessToken, refreshToken });
     } else {
       res.status(401).send("Not allowed");
     }
-  } catch {
+  } catch (e) {
     res.status(500).send();
   }
 });
@@ -246,13 +244,13 @@ router.post("/token", (req, res) => {
       student = await Student.findOne({ email: student.email });
       const accessToken = generateAccessToken(student.toJSON());
       res.status(200).json({ accessToken: accessToken });
-    }
+    },
   );
 });
 
 /**
  * @swagger
- * /students/token:
+ * /students/logout:
  *  delete:
  *      tags: [student]
  *      summary: logs a student out
@@ -323,7 +321,7 @@ router.delete("/logout", (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/:id", getStudent, async (req, res) => {
+router.patch("/:id", authenticateToken, getStudent, async (req, res) => {
   if (req.body.name != null) {
     res.student.name = req.body.name;
   }
@@ -356,7 +354,43 @@ router.post("/home", authenticateToken, (req, res) => {
   res.send("Homepage");
 });
 
-// Classroom booking
+/**
+ * @swagger
+ * /classroomsBooking/{id}:
+ *  patch:
+ *      tags: [student]
+ *      summary: book a classroom if available
+ *      description: the student books a classroom if available, otherwise that option is negated
+ *      responses:
+ *          '404':
+ *              description: 'classoom not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '202':
+ *              description: 'classroom booked succesfully'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
 router.patch(
   "/classroomsBooking/:id",
   authenticateToken,
@@ -375,7 +409,7 @@ router.patch(
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
-  }
+  },
 );
 
 module.exports = router;

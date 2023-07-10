@@ -1,10 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const surveySchema = new mongoose.Schema({
-  title: String,
-  link: String
+  title: {
+    type: String,
+    required: true,
+  },
+  link: {
+    type: String,
+    required: true,
+  },
 });
 
-const Survey = mongoose.model('Survey', surveySchema);
-
+const Survey = mongoose.model("Survey", surveySchema);
 module.exports = Survey;

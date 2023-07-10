@@ -15,10 +15,11 @@ const validateEmail = require("../middlewares/validateEmail");
 const { google } = require("googleapis");
 var calendar_constants = require("../middlewares/calendar_constants.js");
 const Classroom = require("../models/classroom");
+const Survey = require("../models/survey");
 
 /**
  * @swagger
- * /admins:
+ * /admins/getall:
  *  get:
  *      tags: [admin]
  *      summary: search all admins
@@ -44,7 +45,7 @@ const Classroom = require("../models/classroom");
  *                                  type: list
  *
  */
-router.get("/getall", async (req, res) => {
+router.get("/getall", authenticateToken, async (req, res) => {
   try {
     const admins = await Admin.find();
     res.status(200).json(admins);
@@ -55,7 +56,7 @@ router.get("/getall", async (req, res) => {
 
 /**
  * @swagger
- * /admins/{id}:
+ * /admins/getadmin/{id}:
  *  get:
  *      tags: [admin]
  *      summary: search admin by id
@@ -90,7 +91,7 @@ router.get("/getall", async (req, res) => {
  *                                  type: list
  *
  */
-router.get("/getadmin/:id", getAdmin, async (req, res) => {
+router.get("/getadmin/:id", authenticateToken, getAdmin, async (req, res) => {
   res.json(res.admin);
 });
 
@@ -178,7 +179,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-let refreshTokens = []
+let refreshTokens = [];
 
 /**
  * @swagger
@@ -246,13 +247,15 @@ router.post("/login", async (req, res) => {
   }
   try {
     if (await bcrypt.compare(req.body.password, admin.password)) {
-      const accessToken = generateAccessToken(admin.toJSON())
+      const accessToken = generateAccessToken(admin.toJSON());
       const refreshToken = jwt.sign(
         admin.toJSON(),
         process.env.REFRESH_TOKEN_SECRET
       );
-      refreshTokens.push(refreshToken)
-      res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
+      refreshTokens.push(refreshToken);
+      res
+        .status(200)
+        .json({ accessToken: accessToken, refreshToken: refreshToken });
     } else {
       res.status(401).send("Not allowed");
     }
@@ -303,24 +306,24 @@ router.post("/login", async (req, res) => {
  *
  */
 router.post("/token", (req, res) => {
-	const refreshToken = req.body.token
-	if (refreshToken == null) return res.status(401)
-	if (!refreshTokens.includes(refreshToken)) return res.status(403)
-	jwt.verify(
-		refreshToken,
-		process.env.REFRESH_TOKEN_SECRET,
-		async (err, admin) => {
-			if (err) return res.status(403)
-			admin = await Admin.findOne({ email: admin.email })
-			const accessToken = generateAccessToken(admin.toJSON())
-			res.json({ accessToken: accessToken })
-		}
-	)
-})
+  const refreshToken = req.body.token;
+  if (refreshToken == null) return res.status(401);
+  if (!refreshTokens.includes(refreshToken)) return res.status(403);
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err, admin) => {
+      if (err) return res.status(403);
+      admin = await Admin.findOne({ email: admin.email });
+      const accessToken = generateAccessToken(admin.toJSON());
+      res.json({ accessToken: accessToken });
+    }
+  );
+});
 
 /**
  * @swagger
- * /admins/token:
+ * /admins/logout:
  *  delete:
  *      tags: [admin]
  *      summary: logs a admin out
@@ -333,14 +336,15 @@ router.post("/token", (req, res) => {
  *          '204':
  *              description: 'no content, logout'
  *
- */router.delete("/logout", (req, res) => {
-	refreshTokens = refreshTokens.filter((token) => token !== req.body.token)
-	res.sendStatus(204)
-})
+ */
+router.delete("/logout", (req, res) => {
+  refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
+  res.sendStatus(204);
+});
 
 /**
  * @swagger
- * /admins/{id}:
+ * /admins/updateAdmin/{id}:
  *  patch:
  *      tags: [admin]
  *      summary: update an existing admin
@@ -399,34 +403,39 @@ router.post("/token", (req, res) => {
  *                                  type: string
  *
  */
-router.patch("/updateAdmin/:id", getAdmin, async (req, res) => {
-  if (req.body.name != null) {
-    res.admin.name = req.body.name;
-  }
-  if (req.body.surname != null) {
-    res.admin.surname = req.body.surname;
-  }
-  if (req.body.email != null) {
-    if (!validateEmail(req.body.email)) {
-      return res.status(400).json({ state: "invalid-email" });
+router.patch(
+  "/updateAdmin/:id",
+  authenticateToken,
+  getAdmin,
+  async (req, res) => {
+    if (req.body.name != null) {
+      res.admin.name = req.body.name;
     }
-    res.admin.email = req.body.email;
+    if (req.body.surname != null) {
+      res.admin.surname = req.body.surname;
+    }
+    if (req.body.email != null) {
+      if (!validateEmail(req.body.email)) {
+        return res.status(400).json({ state: "invalid-email" });
+      }
+      res.admin.email = req.body.email;
+    }
+    if (req.body.password != null) {
+      const hashed = await hashing(req.body.password);
+      res.admin.password = hashed;
+    }
+    try {
+      const updatedAdmin = await res.admin.save();
+      res.status(202).json(updatedAdmin);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-  if (req.body.password != null) {
-    const hashed = await hashing(req.body.password);
-    res.admin.password = hashed;
-  }
-  try {
-    const updatedAdmin = await res.admin.save();
-    res.status(202).json(updatedAdmin);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+);
 
 /**
  * @swagger
- * /admins/{id}:
+ * /admins/deleteadmin/{id}:
  *  delete:
  *      tags: [admin]
  *      summary: remove target admin
@@ -461,14 +470,19 @@ router.patch("/updateAdmin/:id", getAdmin, async (req, res) => {
  *                                  type: string
  *
  */
-router.delete("/deleteadmin/:id", getAdmin, async (req, res) => {
-  try {
-    await res.admin.deleteOne();
-    res.status(200).json({ message: "Deleted Admin" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+router.delete(
+  "/deleteadmin/:id",
+  authenticateToken,
+  getAdmin,
+  async (req, res) => {
+    try {
+      await res.admin.deleteOne();
+      res.status(200).json({ message: "Deleted Admin" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 //Home
 router.post("/home", authenticateToken, (req, res) => {
@@ -491,7 +505,7 @@ async function getAdmin(req, res, next) {
 }
 
 function generateAccessToken(admin) {
-	return jwt.sign(admin, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" })
+  return jwt.sign(admin, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 }
 
 // ************ STUDENTS FUNCTIONS ************
@@ -574,9 +588,14 @@ router.get(
  *                                  type: list
  *
  */
-router.get("/studentManager/getstudent/:id", getStudent, async (req, res) => {
-  res.status(200).json(res.student);
-});
+router.get(
+  "/studentManager/getstudent/:id",
+  authenticateToken,
+  getStudent,
+  async (req, res) => {
+    res.status(200).json(res.student);
+  }
+);
 
 /**
  * @swagger
@@ -708,6 +727,7 @@ router.patch(
  */
 router.delete(
   "/studentManager/deletestudent/:id",
+  authenticateToken,
   getStudent,
   async (req, res) => {
     try {
@@ -727,7 +747,7 @@ router.delete(
  *  post:
  *      tags: [admin]
  *      summary: create a new event
- *      description: the admin creates an event.
+ *      description: the admin creates an event in google calendar, the informations are stored also in mongodb.
  *      requestBody:
  *          required: true
  *          content:
@@ -735,28 +755,19 @@ router.delete(
  *                  schema:
  *                      type: object
  *                      properties:
- *                          name:
- *                              type: string
- *                          startDate:
+ *                          summary:
+ *                              type: String
+ *                          start:
  *                              type: Date
- *                          endDate:
+ *                          end:
  *                              type: Date
  *                          description:
- *                              type: string
+ *                              type: String
  *                          location:
- *                              type: string
- *                          isRegular:
- *                              type: Boolean
+ *                              type: String
+ *                          colorID:
+ *                              type: String
  *      responses:
- *          '400':
- *              description: 'bad request'
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              state:
- *                                  type: string
  *          '500':
  *              description: 'database internal error'
  *              content:
@@ -777,42 +788,19 @@ router.delete(
  *                                  type: string
  *
  */
-router.post("/eventManager/createEvent", async (req, res) => {
-  const event = new Event({
-    name: req.body.name,
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    description: req.body.description,
-    location: req.body.location,
-    isRegular: req.body.isRegular,
-  });
-
-  try {
-    if (req.body.startDate <= req.body.endDate) {
-      const newEvent = await event.save();
-      res.status(201).json(newEvent);
-    } else {
-      res
-        .status(400)
-        .json({ state: "Start Date cannot be later than End Date" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-router.get("/createEvent", (req, res) => {
+router.get("/eventManager/createEvent", authenticateToken, async (req, res) => {
   var event = {
-    summary: req.body.name.toISOString(),
+    summary: `${req.body.summary}`,
     location: `${req.body.location}`,
     description: `${req.body.description}`,
     start: {
-      dateTime: "2023-07-15T09:00:00-07:00",
+      dateTime: `${req.body.start}`,
     },
     end: {
-      dateTime: "2023-07-15T17:00:00-07:00",
+      dateTime: `${req.body.end}`,
     },
     attendees: [],
+    colorId: `${req.body.colorID}`,
     reminders: {
       useDefault: false,
       overrides: [
@@ -821,6 +809,15 @@ router.get("/createEvent", (req, res) => {
       ],
     },
   };
+
+  const mongo_event = new Event({
+    summary: req.body.summary,
+    start: req.body.start,
+    end: req.body.end,
+    description: req.body.description,
+    location: req.body.location,
+    colorID: req.body.colorID,
+  });
 
   const auth = new google.auth.GoogleAuth({
     keyFile: "./google-calendar-key-path.json",
@@ -833,7 +830,7 @@ router.get("/createEvent", (req, res) => {
         calendarId: calendar_constants.GOOGLE_CALENDAR_ID,
         resource: event,
       },
-      function (err, event) {
+      async function (err, event) {
         if (err) {
           console.log(
             "There was an error contacting the Calendar service: " + err
@@ -841,8 +838,10 @@ router.get("/createEvent", (req, res) => {
           res.status(500).json({ message: err.message });
           return;
         }
+        const newEvent = await mongo_event.save();
         console.log("Event created: %s", event.data);
-        res.status(201).jsonp("Event successfully created!");
+        //res.status(201).jsonp("Event successfully created!");
+        res.status(201).json(newEvent);
       }
     );
   });
@@ -854,7 +853,7 @@ router.get("/createEvent", (req, res) => {
  *  patch:
  *      tags: [admin]
  *      summary: update an existing event
- *      description: the admin changes some of the event informations like name, start date, end date, description, location and the cadentcy.
+ *      description: the admin changes some of the event informations like summary, start date, end date, description and location. NB this changes are visible only in the database, the changes in google calendar are set up directly there.
  *      requestBody:
  *          required: true
  *          content:
@@ -862,16 +861,14 @@ router.get("/createEvent", (req, res) => {
  *                  schema:
  *                      type: object
  *                      properties:
- *                          name:
- *                              type: string
- *                          startDate:
- *                              type: Date
+ *                          summary:
+ *                              type: String
+ *                          start:
+ *                              type: String
  *                          description:
- *                              type: Date
+ *                              type: String
  *                          location:
- *                              type: string
- *                          isRegular:
- *                              type: boolean
+ *                              type: String
  *      responses:
  *          '400':
  *              description: 'Bad request'
@@ -881,7 +878,7 @@ router.get("/createEvent", (req, res) => {
  *                          type: object
  *                          properties:
  *                              state:
- *                                  type: string
+ *                                  type: String
  *          '404':
  *              description: 'student not found'
  *              content:
@@ -890,7 +887,7 @@ router.get("/createEvent", (req, res) => {
  *                          type: object
  *                          properties:
  *                              state:
- *                                  type: string
+ *                                  type: String
  *          '500':
  *              description: 'database internal error'
  *              content:
@@ -899,7 +896,7 @@ router.get("/createEvent", (req, res) => {
  *                          type: object
  *                          properties:
  *                              message:
- *                                  type: string
+ *                                  type: String
  *          '202':
  *              description: 'event information updated succesfully'
  *              content:
@@ -908,42 +905,37 @@ router.get("/createEvent", (req, res) => {
  *                          type: object
  *                          properties:
  *                              state:
- *                                  type: string
+ *                                  type: String
  *
  */
-router.patch("/eventManager/updateevent/:id", getEvent, async (req, res) => {
-  if (req.body.name != null) {
-    res.event.name = req.body.name;
-  }
-  if (req.body.startDate != null) {
-    res.event.startDate = req.body.startDate;
-  }
-  if (req.body.endDate != null) {
-    res.event.endDate = req.body.endDate;
-  }
-  if (req.body.description != null) {
-    res.event.description = req.body.description;
-  }
-  if (req.body.location != null) {
-    res.event.location = req.body.location;
-  }
-  if (req.body.isRegular != null) {
-    res.event.isRegular = req.body.isRegular;
-  }
-  try {
-    // to fix
-    if (res.body.startDate <= res.body.endDate) {
+router.patch(
+  "/eventManager/updateevent/:id",
+  authenticateToken,
+  getEvent,
+  async (req, res) => {
+    if (req.body.summary != null) {
+      res.event.summary = req.body.summary;
+    }
+    if (req.body.start != null) {
+      res.event.start = req.body.start;
+    }
+    if (req.body.end != null) {
+      res.event.end = req.body.end;
+    }
+    if (req.body.description != null) {
+      res.event.description = req.body.description;
+    }
+    if (req.body.location != null) {
+      res.event.location = req.body.location;
+    }
+    try {
       const updatedEvent = await res.event.save();
       res.status(202).json(updatedEvent);
-    } else {
-      res
-        .status(400)
-        .json({ state: "Start Date cannot be later than End Date" });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
     }
-  } catch (err) {
-    res.status(400).json({ message: err.message });
   }
-});
+);
 
 /**
  * @swagger
@@ -951,7 +943,7 @@ router.patch("/eventManager/updateevent/:id", getEvent, async (req, res) => {
  *  delete:
  *      tags: [admin]
  *      summary: remove target event
- *      description: the event identified by the provided id is removed from the event list
+ *      description: the event identified by the provided id is removed from the event list in mongodb
  *      responses:
  *          '404':
  *              description: 'event not found'
@@ -982,14 +974,19 @@ router.patch("/eventManager/updateevent/:id", getEvent, async (req, res) => {
  *                                  type: string
  *
  */
-router.delete("/eventManager/deleteevent/:id", getEvent, async (req, res) => {
-  try {
-    await res.event.deleteOne();
-    res.json({ message: "Deleted Event" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+router.delete(
+  "/eventManager/deleteevent/:id",
+  authenticateToken,
+  getEvent,
+  async (req, res) => {
+    try {
+      await res.event.deleteOne();
+      res.status(200).json({ message: "Deleted Event" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 // CLASSROOMS
 
@@ -1068,6 +1065,122 @@ router.post(
     try {
       const newClassroom = await classroom.save();
       res.status(201).json(newClassroom);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+);
+
+/**
+ * @swagger
+ * /admins/classroomManager/resetBooking:
+ *  patch:
+ *      tags: [admin]
+ *      summary: reset all room bookings
+ *      description: the admin sets all classrooms available. Is better to call this function at the end of the day.
+ *      responses:
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *          '202':
+ *              description: 'classroom availability updated succesfully to true'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *
+ */
+router.patch(
+  "/classroomManager/resetBooking",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      await Classroom.updateMany(
+        { available: false },
+        { $set: { available: true } }
+      );
+      res.status(202).json({ message: "All classroom are now available" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+);
+
+// ************ SURVEYS FUNCTIONS ************
+
+/**
+ * @swagger
+ * /admins/surveyManager/createSurvey:
+ *   post:
+ *     summary: Aggiungi un nuovo sondaggio nel database
+ *     tags: [admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               link:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Sondaggio salvato nel database
+ *       '500':
+ *         description: Errore durante il salvataggio del sondaggio
+ */
+router.post(
+  "/surveyManager/createSurvey",
+  authenticateToken,
+  async (req, res) => {
+    const duplicateSurvey = await Survey.findOne({ link: req.body.link });
+    if (duplicateSurvey != null) {
+      return res.status(409).json({ message: "Survey already exists" });
+    }
+    const survey = new Survey({
+      title: req.body.title,
+      link: req.body.link,
+    });
+    try {
+      const newSurvey = await survey.save();
+      res.status(201).json(newSurvey);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+);
+
+/**
+ * @swagger
+ * /admins/surveyManager/deleteSurvey/{id}:
+ *   delete:
+ *     summary: Rimuovi un sondaggio esistente dal database
+ *     tags: [admin]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del sondaggio da rimuovere
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Sondaggio rimosso dal database
+ *       '500':
+ *         description: Errore durante la rimozione del sondaggio
+ */
+router.delete(
+  "/surveyManager/deleteSurvey/:id",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      await res.survey.deleteOne();
+      res.status(200).json({ message: "Deleted Survey" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
