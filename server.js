@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const app = express();
@@ -78,7 +79,7 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  },
+  }
 );
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
@@ -123,7 +124,7 @@ app.get("/", (req, res) => {
           res.send(JSON.stringify({ message: "No upcoming events found." }));
         }
       }
-    },
+    }
   );
 });
 
@@ -133,3 +134,114 @@ app.get("/login", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+// Generazione del diagramma ad albero delle pagine HTML
+
+function generateHTMLTree(folderPath, parentName = '') {
+  const files = fs.readdirSync(folderPath);
+  const htmlFiles = files.filter((file) => {
+    const filePath = path.join(folderPath, file);
+    const stats = fs.statSync(filePath);
+    return stats.isFile() && path.extname(file).toLowerCase() === ".html";
+  });
+
+  if (htmlFiles.length === 0) {
+    return "";
+  }
+
+  let htmlTree = "<ul>";
+
+  htmlFiles.forEach((file) => {
+    const fileName = file === "index.html" ? `${parentName}.html` : file;
+    htmlTree += "<li>";
+    htmlTree += `<a href="${fileName}">${file}</a>`;
+    htmlTree += "</li>";
+  });
+
+  const subFolders = files.filter((file) => {
+    const filePath = path.join(folderPath, file);
+    const stats = fs.statSync(filePath);
+    return stats.isDirectory();
+  });
+
+  subFolders.forEach((folder) => {
+    const subFolderPath = path.join(folderPath, folder);
+    const subTree = generateHTMLTree(subFolderPath, folder);
+    if (subTree !== "") {
+      htmlTree += `<li><span class="folder">${folder}</span>${subTree}</li>`;
+    }
+  });
+
+  htmlTree += "</ul>";
+
+  return htmlTree;
+}
+
+function generateDiagram() {
+  const frontendPath = path.join(__dirname, "frontend");
+  const htmlTree = generateHTMLTree(frontendPath);
+
+  const diagramHTML = `
+    <html>
+    <head>
+      <title>HTML Tree Diagram</title>
+      <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+      <h1>HTML Tree Diagram</h1>
+      ${htmlTree}
+    </body>
+    </html>
+  `;
+
+  const styleCSS = `
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+    
+    li {
+      margin-bottom: 10px;
+      position: relative;
+      padding: 10px;
+      border: 1px solid #999;
+      background-color: #f2f2f2;
+    }
+    
+    li:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -10px;
+      border-left: 2px solid #999;
+      height: 100%;
+    }
+    
+    a {
+      color: #333;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    .folder {
+      font-weight: bold;
+    }
+  `;
+
+  fs.writeFileSync(path.join(frontendPath, "index.html"), diagramHTML);
+  fs.writeFileSync(path.join(frontendPath, "style.css"), styleCSS);
+}
+
+generateDiagram();
