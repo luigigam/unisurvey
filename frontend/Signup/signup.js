@@ -17,7 +17,7 @@ document.getElementById('button').addEventListener('click', async () => {
   
       if (response.status === 200) {
         // Registrazione avvenuta con successo, esegui azioni desiderate o reindirizza a un'altra pagina
-        window.location.href = 'http://localhost:3000/Home/home.html';
+        window.location.href = 'http://localhost:3000/Home/';
       } else {
         // La registrazione è fallita, visualizza un messaggio di errore
         let errorMessage = 'Registrazione fallita. Si prega di riprovare.';

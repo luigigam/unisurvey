@@ -15,7 +15,7 @@ async function loginUser() {
         window.location.href = "http://localhost:3000/Home/AHome.html";
       } else {
         // Student user, redirect to student home page
-        window.location.href = "http://localhost:3000/Home/home.html";
+        window.location.href = "http://localhost:3000/Home";
       }
     } else {
       // Login failed, display error message
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (Register) {
     Register.addEventListener("click", function(e) {
       e.preventDefault();
-      window.location.href = "../Signup/register.html";
+      window.location.href = "../Signup";
     });
   }
 });

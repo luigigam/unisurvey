@@ -137,36 +137,41 @@ app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 // Generazione del diagramma ad albero delle pagine HTML
 
-function generateHTMLTree(folderPath, parentName = '') {
+function generateHTMLTree(folderPath, parentPath = '') {
   const files = fs.readdirSync(folderPath);
-  const htmlFiles = files.filter((file) => {
+  const htmlFiles = [];
+  const subFolders = [];
+
+  files.forEach((file) => {
     const filePath = path.join(folderPath, file);
     const stats = fs.statSync(filePath);
-    return stats.isFile() && path.extname(file).toLowerCase() === ".html";
+
+    if (stats.isFile() && path.extname(file).toLowerCase() === ".html") {
+      htmlFiles.push(file);
+    }
+
+    if (stats.isDirectory()) {
+      subFolders.push(file);
+    }
   });
 
-  if (htmlFiles.length === 0) {
+  if (htmlFiles.length === 0 && subFolders.length === 0) {
     return "";
   }
 
   let htmlTree = "<ul>";
 
   htmlFiles.forEach((file) => {
-    const fileName = file === "index.html" ? `${parentName}.html` : file;
+    const fileName = file === "index.html" ? "index.html" : file;
+    const linkPath = path.join(parentPath, fileName).replace(/\\/g, '/');
     htmlTree += "<li>";
-    htmlTree += `<a href="${fileName}">${file}</a>`;
+    htmlTree += `<a href="${linkPath}">${file}</a>`;
     htmlTree += "</li>";
-  });
-
-  const subFolders = files.filter((file) => {
-    const filePath = path.join(folderPath, file);
-    const stats = fs.statSync(filePath);
-    return stats.isDirectory();
   });
 
   subFolders.forEach((folder) => {
     const subFolderPath = path.join(folderPath, folder);
-    const subTree = generateHTMLTree(subFolderPath, folder);
+    const subTree = generateHTMLTree(subFolderPath, path.join(parentPath, folder));
     if (subTree !== "") {
       htmlTree += `<li><span class="folder">${folder}</span>${subTree}</li>`;
     }
