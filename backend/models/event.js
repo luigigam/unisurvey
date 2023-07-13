@@ -25,6 +25,18 @@ const eventSchema = new mongoose.Schema({
     type: String,
     default: "6",
   },
+  targetYear: {
+    type: String,
+    required: true
+  },
+  targetCourse: {
+    type: String,
+    required: true
+  },
+  targetID: {
+    type: String,
+    required: true
+  },
 });
 
 const Event = mongoose.model("Event", eventSchema);

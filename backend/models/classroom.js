@@ -16,9 +16,11 @@ const classroomSchema = new mongoose.Schema({
   },
 });
 
-/*classroomSchema.statics.findAvailableByCode = function (code) {
-  return this.findOne({ code: code, available: true });
-};*/
+classroomSchema.virtual("reservations", {
+  ref: "Reservation",
+  localField: "_id",
+  foreignField: "classroom",
+});
 
 const Classroom = mongoose.model("Classroom", classroomSchema);
 module.exports = Classroom;

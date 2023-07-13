@@ -33,6 +33,9 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Classroom' }],
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+  surveys: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Survey' }]
 });
 
 const Student = mongoose.model("Student", studentSchema);

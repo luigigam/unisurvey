@@ -5,6 +5,7 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
 
 var calendar_constants = require("./backend/middlewares/calendar_constants");
 
@@ -52,6 +53,10 @@ const swaggerOptions = {
         name: "survey",
         description: "retrieve list of all surveys",
       },
+      {
+        name: "reservation",
+        description: "retrieve list of all reservation",
+      },
     ],
   },
   apis: ["./backend/routes/*js"],
@@ -87,6 +92,24 @@ db.once("open", () => console.log("Connected to Database"));
 
 app.use(express.json());
 
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403); // Forbidden
+    }
+
+    req.user = user;
+    next();
+  });
+}
+
 const mainRouter = express.Router();
 app.use("/api", mainRouter);
 
@@ -96,11 +119,11 @@ const eventsRouter = require("./backend/routes/events");
 const classroomsRouter = require("./backend/routes/classrooms");
 const surveysRoutes = require("./backend/routes/surveys");
 
-mainRouter.use("/students", studentsRouter);
-mainRouter.use("/admins", adminsRouter);
-mainRouter.use("/events", eventsRouter);
-mainRouter.use("/classrooms", classroomsRouter);
-mainRouter.use("/survey", surveysRoutes);
+mainRouter.use("/students", authenticateToken, studentsRouter);
+mainRouter.use("/admins", authenticateToken, adminsRouter);
+mainRouter.use("/events", authenticateToken, eventsRouter);
+mainRouter.use("/classrooms", authenticateToken, classroomsRouter);
+mainRouter.use("/survey", authenticateToken, surveysRoutes);
 
 app.use("/", express.static("frontend"));
 

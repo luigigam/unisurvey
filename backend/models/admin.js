@@ -16,7 +16,10 @@ const adminSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Classroom' }],
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+    surveys: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Survey' }]
 })
 
 const Admin = mongoose.model('Admin', adminSchema);

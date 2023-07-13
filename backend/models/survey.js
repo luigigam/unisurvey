@@ -9,6 +9,18 @@ const surveySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  targetYear: {
+    type: String,
+    required: true
+  },
+  targetCourse: {
+    type: String,
+    required: true
+  },
+  targetID: {
+    type: String,
+    required: true
+  },
 });
 
 const Survey = mongoose.model("Survey", surveySchema);
