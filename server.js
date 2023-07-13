@@ -125,6 +125,7 @@ mainRouter.use("/events", authenticateToken, eventsRouter);
 mainRouter.use("/classrooms", authenticateToken, classroomsRouter);
 mainRouter.use("/survey", authenticateToken, surveysRoutes);
 
+
 app.use("/", express.static("frontend"));
 
 app.get("/", (req, res) => {
