@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 
-const User = require('../models/user'); // Update with your user model
-
+const User = require('../models/student');
 router.post('/', async (req, res) => {
   const { username, password } = req.body;
 

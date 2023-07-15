@@ -123,7 +123,7 @@ const adminsRouter = require('./backend/routes/admins');
 const eventsRouter = require('./backend/routes/events');
 const classroomsRouter = require('./backend/routes/classrooms');
 const surveysRoutes = require('./backend/routes/surveys');
-const registrationRouter = require('./routes/registration');
+const registrationRouter = require('./backend/routes/registration');
 
 
 mainRouter.use('/students', authenticateToken, studentsRouter);

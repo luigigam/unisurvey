@@ -1,19 +1,22 @@
+require("dotenv").config();
+
 const express = require('express');
 const router = express.Router();
+const Admin = require("../models/admin");
+const Student = require("../models/student");
+const Event = require("../models/event");
+const bcrypt = require("bcrypt");
+const hashing = require("../middlewares/encrypt_pssw");
+const jwt = require("jsonwebtoken");
+const getStudent = require("../middlewares/getStudent");
+const getEvent = require("../middlewares/getEvent");
+const authenticateToken = require("../middlewares/authenticateToken");
+const validateEmail = require("../middlewares/validateEmail");
+const { google } = require("googleapis");
+var calendar_constants = require("../middlewares/calendar_constants.js");
+const Classroom = require("../models/classroom");
+const Survey = require("../models/survey");
 
-// Middleware per autenticazione del token
-function authenticateToken(req, res, next) {
-  // Verifica la presenza dell'header Authorization con il token
-  const token = req.headers['authorization'];
-  if (token == null) return res.sendStatus(401);
-
-  // Verifica il token
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
 
 // ************ ADMIN FUNCTIONS ************
 
@@ -146,6 +149,22 @@ router.delete('/logout', (req, res) => {
  *                              state:
  *                                  type: string
  */
+
+async function getAdmin(req, res, next) {
+  let admin;
+  try {
+    admin = await Admin.findById(req.params.id);
+    if (admin == null) {
+      return res.status(404).json({ message: "Cannot find admin" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+
+  res.admin = admin;
+  next();
+}
+
 router.patch(
   '/updateAdmin/:id',
   authenticateToken,

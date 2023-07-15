@@ -6,8 +6,6 @@ const jwt = require('jsonwebtoken');
 router.post('/', (req, res) => {
   const { username, password } = req.body;
 
-  // Effettua la logica di autenticazione e verifica delle credenziali
-
  // Esempio di verifica delle credenziali con bcrypt
  if (username === 'admin' && bcrypt.compareSync(password, hashedAdminPassword)) {
     const user = { username: 'admin', role: 'admin' };
