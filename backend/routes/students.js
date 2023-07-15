@@ -50,7 +50,7 @@ const getClassroom = require("../middlewares/getClassroom");
  *                      schema:
  *                          type: object
  *                          properties:
- *                              state:
+ *                              message:
  *                                  type: string
  *          '400':
  *              description: 'bad request'
@@ -179,7 +179,7 @@ router.post("/login", async (req, res) => {
       const accessToken = generateAccessToken(student.toJSON());
       const refreshToken = jwt.sign(
         student.toJSON(),
-        process.env.REFRESH_TOKEN_SECRET,
+        process.env.REFRESH_TOKEN_SECRET
       );
       refreshTokens.push(refreshToken);
       res.status(200).json({ accessToken, refreshToken });
@@ -244,7 +244,7 @@ router.post("/token", (req, res) => {
       student = await Student.findOne({ email: student.email });
       const accessToken = generateAccessToken(student.toJSON());
       res.status(200).json({ accessToken: accessToken });
-    },
+    }
   );
 });
 
@@ -266,7 +266,7 @@ router.post("/token", (req, res) => {
  */
 router.delete("/logout", (req, res) => {
   refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
-  res.status(204);
+  res.status(204).send();
 });
 
 /**
@@ -275,7 +275,7 @@ router.delete("/logout", (req, res) => {
  *  patch:
  *      tags: [student]
  *      summary: update an existing student
- *      description: the student changes some of his personal datas like name, surname, gender and password.
+ *      description: the student changes some of his personal data like name, surname, gender, and password.
  *      requestBody:
  *          required: true
  *          content:
@@ -311,7 +311,7 @@ router.delete("/logout", (req, res) => {
  *                              message:
  *                                  type: string
  *          '202':
- *              description: 'student information updated succesfully'
+ *              description: 'student information updated successfully'
  *              content:
  *                  application/json:
  *                      schema:
@@ -339,7 +339,7 @@ router.patch("/:id", authenticateToken, getStudent, async (req, res) => {
     const updatedStudent = await res.student.save();
     res.status(202).json(updatedStudent);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -349,7 +349,7 @@ function generateAccessToken(student) {
   });
 }
 
-//Home
+// Home
 router.post("/home", authenticateToken, (req, res) => {
   res.send("Homepage");
 });
@@ -363,7 +363,7 @@ router.post("/home", authenticateToken, (req, res) => {
  *      description: the student books a classroom if available, otherwise that option is negated
  *      responses:
  *          '404':
- *              description: 'classoom not found'
+ *              description: 'classroom not found'
  *              content:
  *                  application/json:
  *                      schema:
@@ -381,7 +381,7 @@ router.post("/home", authenticateToken, (req, res) => {
  *                              message:
  *                                  type: string
  *          '202':
- *              description: 'classroom booked succesfully'
+ *              description: 'classroom booked successfully'
  *              content:
  *                  application/json:
  *                      schema:
@@ -409,7 +409,7 @@ router.patch(
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
-  },
+  }
 );
 
 module.exports = router;
