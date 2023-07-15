@@ -1,16 +1,23 @@
-require('dotenv').config()
-const jwt = require("jsonwebtoken")
+// authenticateToken.js
 
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+// Middleware per autenticare il token JWT
 function authenticateToken(req, res, next) {
-	const authHeader = req.headers["authorization"]
-	const token = authHeader && authHeader.split(" ")[1]
-	if (token == null) return res.sendStatus(401)
+  const token = req.header("Authorization");
 
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, any_user) => {
-		if (err) return res.sendStatus(403)
-		req.any_user = any_user
-		next()
-	})
+  if (!token) {
+    return res.status(401).json({ message: "Token di autenticazione mancante" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(500).json({ message: "Token di autenticazione non valido" });
+  }
 }
 
-module.exports = authenticateToken
+module.exports = authenticateToken;
