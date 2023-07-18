@@ -90,6 +90,7 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ state: "invalid-email" });
   }
   const hashed = await hashing(req.body.password);
+  
   const student = new Student({
     name: req.body.name,
     surname: req.body.surname,
@@ -411,5 +412,65 @@ router.patch(
     }
   }
 );
+
+let studentSequenceNumber = 1;
+/**
+ * @swagger
+ * /students/sequenceNumber:
+ *   get:
+ *     summary: Ottieni la sequenza progressiva per gli studenti
+ *     tags: [Students]
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sequenceNumber:
+ *                   type: integer
+ *                   description: Sequenza progressiva attuale
+ *                   example: 1
+ */
+
+router.get('/sequenceNumber', (req, res) => {
+  res.json({ sequenceNumber: studentSequenceNumber });
+});
+
+/**
+ * @swagger
+ * /students/sequenceNumber:
+ *   put:
+ *     summary: Aggiorna la sequenza progressiva per gli studenti
+ *     tags: [Students]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sequenceNumber:
+ *                 type: integer
+ *                 description: Nuova sequenza progressiva
+ *                 example: 2
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Richiesta non valida
+ */
+
+router.put('/sequenceNumber', (req, res) => {
+  const { sequenceNumber } = req.body;
+
+  if (typeof sequenceNumber === 'number') {
+    studentSequenceNumber = sequenceNumber;
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
 
 module.exports = router;
