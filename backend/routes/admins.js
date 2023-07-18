@@ -22,6 +22,254 @@ const Survey = require("../models/survey");
 
 /**
  * @swagger
+ * /admins/getall:
+ *  get:
+ *      tags: [admin]
+ *      summary: search all admins
+ *      description: a list of all admins registered is returned.
+ *      responses:
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'Success: return the list of admins'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              searchingList:
+ *                                  type: list
+ *
+ */
+router.get("/getall", authenticateToken, async (req, res) => {
+  try {
+    const admins = await Admin.find();
+    res.status(200).json(admins);
+  } catch {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+/**
+ * @swagger
+ * /admins/getadmin/{id}:
+ *  get:
+ *      tags: [admin]
+ *      summary: search admin by id
+ *      description: an admin is submitted and the admin matching that particular id is returned.
+ *      responses:
+ *          '404':
+ *              description: 'admin not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'Success: return specified admin by id'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              searchingList:
+ *                                  type: list
+ *
+ */
+router.get("/getadmin/:id", authenticateToken, getAdmin, async (req, res) => {
+  res.json(res.admin);
+});
+
+/**
+ * @swagger
+ * /admins/signup:
+ *  post:
+ *      tags: [admin]
+ *      summary: register a new admin
+ *      description: the admin is created after some validation checks.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                          surname:
+ *                              type: string
+ *                          email:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *      responses:
+ *          '409':
+ *              description: 'email already in use: duplicate admin'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '400':
+ *              description: 'bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '201':
+ *              description: 'admin successfully created'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.post("/signup", async (req, res) => {
+  const duplicateUser = await Admin.findOne({ email: req.body.email });
+  if (duplicateUser != null) {
+    return res.status(409).json({ message: "email-already-in-use" });
+  }
+  if (!validateEmail(req.body.email)) {
+    return res.status(400).json({ state: "invalid-email" });
+  }
+  const hashed = await hashing(req.body.password);
+  const admin = new Admin({
+    name: req.body.name,
+    surname: req.body.surname,
+    email: req.body.email,
+    password: hashed,
+  });
+  try {
+    const newAdmin = await admin.save();
+    res.status(201).json(newAdmin);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+let refreshTokens = [];
+
+/**
+ * @swagger
+ * /admins/login:
+ *  post:
+ *      tags: [admin]
+ *      summary: log into an existing admin
+ *      description: the admin is logged in after validation of his email and password. A JWT access token with a duration of 1h and a JWT refresh token are returned.
+ *      responses:
+ *          '400':
+ *              description: 'Bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '404':
+ *              description: 'email not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '401':
+ *              description: 'wrong password: failed authentication'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ *          '500':
+ *              description: 'database internal error'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          '200':
+ *              description: 'user logged in'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+router.post("/login", async (req, res) => {
+  if (!validateEmail(req.body.email)) {
+    return res.status(400).send("Invalid email");
+  }
+  const admin = await Admin.findOne({ email: req.body.email });
+  if (admin == null) {
+    return res.status(404).send("Cannot find admin");
+  }
+  try {
+    if (await bcrypt.compare(req.body.password, admin.password)) {
+const accessToken = generateAccessToken(admin.toJSON());
+      const refreshToken = jwt.sign(
+        admin.toJSON(),
+        process.env.REFRESH_TOKEN_SECRET
+      );
+ refreshTokens.push(refreshToken);
+      res
+        .status(200)
+        .json({ accessToken: accessToken, refreshToken: refreshToken });
+    } else {
+      res.status(401).send("Not allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
+});
+
+/**
+ * @swagger
  * /admins/token:
  *  post:
  *      tags: [admin]
@@ -51,6 +299,7 @@ const Survey = require("../models/survey");
  *                              state:
  *                                  type: string
  */
+
 router.post('/token', (req, res) => {
   const refreshToken = req.body.token;
   if (refreshToken == null) return res.status(401);
@@ -84,6 +333,7 @@ router.post('/token', (req, res) => {
  *          '204':
  *              description: 'nessun contenuto, logout'
  */
+
 router.delete('/logout', (req, res) => {
   refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
   res.sendStatus(204);
@@ -197,14 +447,13 @@ router.patch(
 
 /**
  * @swagger
- * /admins/deleteadmin/{id}:
  *  delete:
  *      tags: [admin]
- *      summary: rimuovi un amministratore di destinazione
- *      description: rimuove l'amministratore identificato dall'id fornito dal servizio web
+ *      summary: remove target admin
+ *      description: the admin identified by the provided id is removed from the web service
  *      responses:
  *          '404':
- *              description: 'amministratore non trovato'
+ *              description: 'admin not found'
  *              content:
  *                  application/json:
  *                      schema:
@@ -213,7 +462,7 @@ router.patch(
  *                              state:
  *                                  type: string
  *          '500':
- *              description: 'errore interno del database'
+ *              description: 'database internal error'
  *              content:
  *                  application/json:
  *                      schema:
@@ -222,7 +471,7 @@ router.patch(
  *                              state:
  *                                  type: string
  *          '200':
- *              description: 'amministratore rimosso con successo dalla lista degli amministratori'
+ *              description: 'admin successfully removed from admin list'
  *              content:
  *                  application/json:
  *                      schema:
@@ -230,7 +479,9 @@ router.patch(
  *                          properties:
  *                              state:
  *                                  type: string
+ *
  */
+
 router.delete(
   '/deleteadmin/:id',
   authenticateToken,
@@ -244,6 +495,29 @@ router.delete(
     }
   }
 );
+
+
+//Home
+router.post("/home", authenticateToken, (req, res) => {
+  res.send("Homepage");
+});
+async function getAdmin(req, res, next) {
+  let admin;
+  try {
+    admin = await Admin.findById(req.params.id);
+    if (admin == null) {
+      return res.status(404).json({ message: "Cannot find admin" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.admin = admin;
+  next();
+}
+
+function generateAccessToken(admin) {
+ return jwt.sign(admin, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+}
 
 // ************ STUDENTS FUNCTIONS ************
 
@@ -392,6 +666,7 @@ router.get(
  *                              state:
  *                                  type: string
  */
+
 router.patch(
   '/studentManager/updatestudent/:id',
   authenticateToken,
@@ -519,6 +794,7 @@ router.delete(
  *                              state:
  *                                  type: string
  */
+
 router.post('/eventManager/createEvent', authenticateToken, async (req, res) => {
   var event = {
     summary: `${req.body.summary}`,
@@ -569,6 +845,7 @@ router.post('/eventManager/createEvent', authenticateToken, async (req, res) => 
         }
         const newEvent = await mongo_event.save();
         console.log('Event created: %s', event.data);
+         //res.status(201).jsonp("Event successfully created!");
         res.status(201).json(newEvent);
       }
     );
@@ -635,6 +912,7 @@ router.post('/eventManager/createEvent', authenticateToken, async (req, res) => 
  *                              state:
  *                                  type: string
  */
+
 router.patch(
   '/eventManager/updateevent/:id',
   authenticateToken,
@@ -700,6 +978,7 @@ router.patch(
  *                              state:
  *                                  type: string
  */
+
 router.delete(
   '/eventManager/deleteevent/:id',
   authenticateToken,
@@ -714,7 +993,7 @@ router.delete(
   }
 );
 
-// CLASSROOMS
+// ************ CLASSROOMS FUNCTIONS ************
 
 /**
  * @swagger
@@ -774,6 +1053,7 @@ router.delete(
  *                              state:
  *                                  type: string
  */
+
 router.post(
   '/classroomManager/createClassroom',
   authenticateToken,
@@ -817,6 +1097,7 @@ router.post(
  *                      schema:
  *                          type: object
  */
+
 router.patch(
   '/classroomManager/resetBooking',
   authenticateToken,
@@ -858,6 +1139,7 @@ router.patch(
  *       '500':
  *         description: Errore durante il salvataggio del sondaggio
  */
+
 router.post(
   '/surveyManager/createSurvey',
   authenticateToken,
@@ -898,6 +1180,7 @@ router.post(
  *       '500':
  *         description: Errore durante la rimozione del sondaggio
  */
+
 router.delete(
   '/surveyManager/deleteSurvey/:id',
   authenticateToken,
