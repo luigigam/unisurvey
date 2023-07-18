@@ -548,6 +548,7 @@ function generateAccessToken(admin) {
  *                              searchingList:
  *                                  type: list
  */
+
 router.get(
   '/studentManager/getstudents',
   authenticateToken,
@@ -732,6 +733,7 @@ router.patch(
  *                              state:
  *                                  type: string
  */
+
 router.delete(
   '/studentManager/deletestudent/:id',
   authenticateToken,
