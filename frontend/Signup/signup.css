@@ -1,4 +1,4 @@
-    .form_main {
+.form_main {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -8,45 +8,50 @@
     padding: 5% 25%;
     border-radius: 30px;
     box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
-    }
-    
-    .inputGroup {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-    }
-      
-    .inputContainer {
-    width: 100%;
-    }
-    .inputField {
-    width: 100%;
-      }  
-    .heading {
+  }
+  
+  .heading {
     font-size: 2.5em;
     color: #2e2e2e;
     font-weight: 700;
     margin: 15px 0 30px 0;
-    }
+  }
+
+  .inputGroup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
   
-    .inputContainer {
+  .inputContainer { 
     width: 100%;
     position: relative;
     display: flex;
     align-items: center;
+    flex-basis: calc(50% - 5px);
+    margin-bottom: 10px;
     justify-content: center;
-    }
+  }
   
-    .inputIcon {
+  .inputSliderContainer {
+    flex-basis: 100%;
+  }
+
+  .inputSliderContainer input {
+    width: 100%;
+  }
+  
+  .inputIcon {
     position: absolute;
     left: 10px;
-    }
+  }
   
-    .inputField {
-    width: 100%;
+  .inputField {
+    justify-content: center;
+    width: 120%;
     height: 40px;
     background-color: transparent;
-    border: none;
+    border: #917800;
     border-bottom: 2px solid #929292;
     border-radius: 30px;
     margin: 10px 0;
@@ -54,29 +59,23 @@
     font-size: .8em;
     font-weight: 500;
     box-sizing: border-box;
-    padding-left: 30px;
-    }
+    padding-left: 40px;
+  }
   
-    .inputField:focus {
+  .inputField:focus {
     outline: none;
-    border-bottom: 2px solid rgb(199, 114, 255);
-    }
+    border-bottom: 2px solid rgb(114, 255, 114);
+  }
   
-    .inputField::placeholder {
+  .inputField::placeholder {
     color: #929292;
     font-size: 1em;
     font-weight: 500;
-    }
+  }
   
-    .inputField.select-genere {
-    background-color: #c49216;
-    color: black;
-    border-bottom: 2px solid #fff;
-    }
-  
-    #button {
+  #studentButton {
     position: relative;
-    width: 100%;
+    width: 80%;
     border: 2px solid #c49216;
     background-color: #917800;
     height: 40px;
@@ -88,192 +87,81 @@
     margin: 10px;
     cursor: pointer;
     overflow: hidden;
-    }
+  }
   
-    #button::after {
+  #adminButton {
+    position: relative;
+    width: 80%;
+    border: 2px solid #c49216;
+    background-color: #917800;
+    height: 40px;
+    color: #2d2d2d;
+    font-size: .8em;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 30px;
+    margin: 10px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  #adminButton::after {
     content: "";
     position: absolute;
     background-color: #ddb900;
     height: 100%;
-    width: 150px;
+    width: 100px;
     top: 0;
     left: -200px;
     border-bottom-right-radius: 100px;
     border-top-left-radius: 100px;
     filter: blur(10px);
     transition-duration: .5s;
-    }
-  
-    #button:hover::after {
-    transform: translateX(600px);
-    transition-duration: .5s;
-    } 
-  
-    .reset-password-link {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    }
-  
-    .reset-password-link p {
-    font-size: .9em;
-    font-weight: 500;
-    color: black;
-    }
-  
-    .reset-password-link a {
-    font-size: .7em;
-    font-weight: 500;
-    background-color: #929292;
-    color: #1E1E1E;
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    }
-  
-    .Register {
-    position: relative;
-    top: 10px;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    }
-  
-    .Register p {
-    font-size: .9em;
-    font-weight: 500;
-    color: black;
-    }
-  
-    .Register a {
-    font-size: .7em;
-    font-weight: 500;
-    background-color: #929292;
-    color: #1E1E1E;
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    }
-  
-    .checker {
-    display: block;
-    font-size: 25px;
-    height: 1em;
-    width: 2.5em;
-    box-sizing: content-box;
-    padding: 0.15em;
-    border-radius: 0.25em;
-    cursor: pointer;
-    }
-    
-    .checkmark {
-    width: 1em;
-    height: 1em;
-    transform: translateX(-0.4em);
-    z-index: 5;
-    }
+  }
 
-    .checkmark svg {
-    display: block;
-    background: #e5e5e5;
-    transform: translateX(0.4em);
-    border-radius: 0.15em;
-    transition: background-color var(--duration) ease, transform calc(var(--duration) * 1.5) ease;
-    }
-
-    .checkmark svg path {
-    stroke-dasharray: 90 90;
-    stroke-dashoffset: 90;
-    transition: stroke-dashoffset calc(var(--duration) / 3) linear calc(var(--duration) / 3);
-    }
-
-    .checkbox {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0.4;
-    visibility: hidden;
-    }
-
-    .checkbox:checked ~ .checkmark {
-    transform: translate(1.9em);
-    }
-
-    .checkbox:checked ~ .checkmark svg {
-    background: #77c44c;
-    transform: translate(-0.4em);
-    }
-
-    .checkbox:checked ~ .checkmark svg path {
-    stroke-dashoffset: 0;
-    }
-
-    .check-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    background: white;
-    z-index: 2;
-    }
-
-    .check-bg:before, .check-bg:after {
+  #studentButton::after {
     content: "";
     position: absolute;
+    background-color: #ddb900;
+    height: 100%;
+    width: 100px;
     top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    border-radius: inherit;
-    }
-
-    .check-bg:after {
-    background: white;
-    }
-
-    .check-bg:before {
-    transform: translateY(30%);
-    transform-origin: bottom center;
-    background: black;
-    filter: blur(0.25em);
-    opacity: 0.2;
-    z-index: -1;
-    }
-
-    .checker.checker:active {
-    transform: scale(0.85);
-    transition-duration: calc(var(--duration) / 2);
-    }
-
-    .checker.checker:active .check-bg::before {
-    transform: translateY(0) scale(0.8);
-    opacity: 0.2;
-    }
-
-    *,
-    *::before,
-    *::after {
-    box-sizing: border-box;
-    position: relative;
-    }
-
-    html {
-    height: 100%;
-    }
-
-    body {
-    background-color: #f2f2f2;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
+    left: -200px;
+    border-bottom-right-radius: 100px;
+    border-top-left-radius: 100px;
+    filter: blur(10px);
+    transition-duration: .5s;
+  }
+  
+  #studentButton:hover::after {
+    transform: translateX(600px);
+    transition-duration: .5s;
+  }
+  
+  #adminButton:hover::after {
+    transform: translateX(600px);
+    transition-duration: .5s;
+  }
+  
+  .switch-label{
+    --key-text-color: #040668;
+    --docsearch-key-shadow: inset 0 -2px 0 0 #c49216,inset 0 0 1px 1px #c49216,0 1px 2px 1px rgba(30,35,90,0.4);
+    --docsearch-key-gradient: linear-gradient(-225deg,#ddb900,#917800);
+    border: none;
+    background: var(--docsearch-key-gradient);
+    border-radius: 3px;
+    box-shadow: var(--docsearch-key-shadow);
+    color: var(--key-text-color);
+    height: 2.5em;
+    text-align: center;
+    padding: 0.6em;
+    margin: 0 0.6em;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1em;
+    min-width: 1em;
+    line-height: 1em;
+    user-select: none;
+  }
+  

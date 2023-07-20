@@ -3,72 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Signup</title>
+  <title>Student Signup</title>
   <link rel="stylesheet" href="signup.css">
 </head>
 <body>
   <div class="container">
     <div class="box">
-      <div class="logo-container">
-        <img src="../Immagini/Logo.jpg" alt="Logo" class="logo">
-      </div>
       <form class="form_main" id="signupForm">
-
-       <!-- Gruppo di input -->
-       <div id="inputGroup">
-          <label class="checker">
-           <input type="checkbox" class="checkbox">
-            <div class="check-bg">
-            </div>
-            <div class="checkmark">
-              <svg viewBox="0 0 100 100">
-               <path stroke-linejoin="round" stroke-linecap="round" stroke-width="15" stroke="#FFF" fill="none" d="M20,55 L40,75 L77,27"></path>
-              </svg>
-            </div>
-          </label>
+        <div class="logo-container">
+          <img src="../Immagini/Logo.jpg" alt="Logo" class="logo">
         </div>
-
-        <h1 class="heading">Registrazione</h1>
-      </div>
-      <!-- Fine del gruppo di input -->
+        <h1 class="heading">Registrazione Studente</h1>
+        <div class="switch-container">
+          <a href="adminsignup.html" class="switch-label">Admin?</a>
+        </div>
 
         <!-- Gruppo di input -->
         <div class="inputGroup">
-
-         <div class="inputContainer">
-           
+          <div class="inputContainer">
             <input type="text" id="name" class="inputField" placeholder="Nome" required>
           </div>
 
           <div class="inputContainer">
-            
             <input type="text" id="surname" class="inputField" placeholder="Cognome" required>
           </div>
-
         </div>
         <!-- Fine del gruppo di input -->
 
         <!-- Gruppo di input -->
         <div class="inputGroup">
-
           <div class="inputContainer">
-            
             <input type="password" id="password" class="inputField" placeholder="Password" required>
           </div>
 
           <div class="inputContainer">
-            
             <input type="password" id="confirm_password" class="inputField" placeholder="Conferma password" required>
           </div>
-
         </div>
         <!-- Fine del gruppo di input -->
 
         <!-- Gruppo di input -->
         <div class="inputGroup">
-
           <div class="inputContainer">
-            
             <input type="text" id="study_course" class="inputField" placeholder="Corso di Studio" required>
           </div>
 
@@ -76,33 +52,30 @@
             <span class="slider-value">Anno di Studio:</span>
             <input type="range" id="study_year" class="inputField" min="1" max="6" required>
           </div>
-
         </div>
         <!-- Fine del gruppo di input -->
 
         <!-- Gruppo di input -->
         <div class="inputGroup">
-          <div id="extraFieldsContainer">
-            <div class="inputContainer">
-             <select id="gender" class="inputField">
-               <option value="">Seleziona Genere</option>
-                <option value="M">Maschio</option>
-                <option value="F">Femmina</option>
-                <option value="NB">Non binario</option>
-                <option value="Altro">Altro</option>
-             </select>
-            </div>
+          <div class="inputSlider">
+            <select id="gender" class="inputField">
+              <option value="">Seleziona Genere</option>
+              <option value="M">Maschio</option>
+              <option value="F">Femmina</option>
+              <option value="NB">Non binario</option>
+              <option value="Altro">Altro</option>
+            </select>
           </div>
-
-          <button id="button" class="form-button">Registrati</button>
         </div>
-        <!-- Fine del gruppo di input -->   
-        
+        <!-- Fine del gruppo di input -->
+
+        <button id="studentButton" class="form-button">Registrati come Studente</button>
       </form>
+
+      
     </div>
   </div>
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="signup.js"></script>
+  <script src="signupstudent.js"></script>
 </body>
 </html>
