@@ -1,13 +1,13 @@
+
 const study_yearSlider = document.getElementById('study_year');
 const study_yearValue = document.querySelector('.slider-value');
+const userTypeToggle = document.getElementById('userTypeToggle');
 
 study_yearSlider.addEventListener('input', function () {
   study_yearValue.textContent = 'Anno di Studio: ' + this.value;
 });
 
-document.getElementById('button').addEventListener('click', async function (e) {
-  e.preventDefault();
-
+async function handleRegistration() {
   const name = document.getElementById('name').value;
   const surname = document.getElementById('surname').value;
   const password = document.getElementById('password').value;
@@ -28,40 +28,57 @@ document.getElementById('button').addEventListener('click', async function (e) {
     const study_year = document.getElementById('study_year').value;
 
     // Genera l'email dinamicamente
-    email = `${name.toLowerCase()}.${surname.toLowerCase()}@student.unisurvey`;
-
-    // Genera lo student_id sequenziale
-    const student_id = await generatestudent_id();
-
-    // Effettua il resto delle operazioni per la registrazione dello studente
-    try {
-      const response = await axios.post('/api/students/signup', {
-        name,
-        surname,
-        password,
-        email,
-        gender,
-        study_course,
-        study_year,
-        student_id,
-      });
-
-      if (response.status === 200) {
-        // Registrazione avvenuta con successo, esegui azioni desiderate o reindirizza a un'altra pagina
-        alert('Registrazione studente avvenuta con successo!');
-        window.location.href = 'http://localhost:3000/Home/';
+    let counter = 0;
+    do {
+      if (counter > 0) {
+        email = `${name.toLowerCase()}.${surname.toLowerCase()}${counter}@student.unisurvey`;
       } else {
-        // La registrazione è fallita, visualizza un messaggio di errore
-        alert('Registrazione studente fallita. Si prega di riprovare.');
+        email = `${name.toLowerCase()}.${surname.toLowerCase()}@student.unisurvey`;
       }
-    } catch (error) {
-      console.log('Errore:', error);
-      // Gestisci altri tipi di errori, come problemi di rete o errori del server
-      alert('Errore del server');
-    }
+      counter++;
+      try {
+        const response = await axios.post('/api/students/signup', {
+          name,
+          surname,
+          password,
+          email,
+          gender,
+          study_course,
+          study_year,
+          student_id,
+        });
+
+        if (response.status === 201) {
+          // Registrazione avvenuta con successo, esegui azioni desiderate o reindirizza a un'altra pagina
+          alert('Registrazione studente avvenuta con successo!');
+          window.location.href = 'http://localhost:3000/Home/';
+        } else if (response.status === 409) {
+          // Email duplicata, riprova con una nuova email
+          continue;
+        } else {
+          // La registrazione è fallita, visualizza un messaggio di errore
+          alert('Registrazione studente fallita. Si prega di riprovare.');
+        }
+      } catch (error) {
+        // Handle other types of errors, such as network problems or server errors
+        if (error.response && error.response.status === 409) {
+          // Email duplicata, riprova con una nuova email
+          continue;
+        } else {
+          console.log('Errore:', error);
+          alert('Errore del server');
+          break;
+        }
+      }
+    } while (true);
   }
 
   resetForm();
+}
+
+document.getElementById('button').addEventListener('click', function (e) {
+  e.preventDefault();
+  handleRegistration();
 });
 
 function resetForm() {
