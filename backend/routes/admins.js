@@ -539,7 +539,7 @@ function generateAccessToken(admin) {
  *                              state:
  *                                  type: string
  *          '200':
- *              description: 'Successo: restituisce l'elenco degli studenti'
+ *              description: 'Successo: restituisce un elenco di studenti'
  *              content:
  *                  application/json:
  *                      schema:
@@ -724,7 +724,7 @@ router.patch(
  *                              state:
  *                                  type: string
  *          '200':
- *              description: 'studente rimosso con successo dall'elenco degli studenti'
+ *              description: 'studente rimosso con successo'
  *              content:
  *                  application/json:
  *                      schema:
