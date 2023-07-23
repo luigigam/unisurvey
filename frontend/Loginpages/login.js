@@ -1,47 +1,55 @@
+
+let loginApiEndpoint, errorMessage;
+
 async function loginUser() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
+  if (username.endsWith("@student.unisurvey")) {
+    loginApiEndpoint = '/api/student/login';
+  } else if (username.endsWith("@admin.unisurvey")) {
+    loginApiEndpoint = '/api/admin/login';
+  } else {
+    errorMessage = 'Login failed. Please try again.';
+  }
+
   try {
-    const response = await axios.post('/api/students/login', {
-      email: username,
-      password: password
+    const response = await fetch(loginApiEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
     });
 
     if (response.status === 200) {
-      // Login successful, check if the user is an admin
-      if (response.data && response.data.isAdmin) {
-        // Admin user, redirect to admin home page
-        window.location.href = "http://localhost:3000/Home/AHome.html";
-      } else {
-        // Student user, redirect to student home page
+      if (username.endsWith("@student.unisurvey")) {
         window.location.href = "http://localhost:3000/Home";
+      } else if (username.endsWith("@admin.unisurvey")) {
+        window.location.href = "http://localhost:3000/Home/AHome.html";
       }
+    } else if (response.status === 400) {
+      const data = await response.json();
+      errorMessage = data.error;
     } else {
-      // Login failed, display error message
-      let errorMessage = 'Login failed. Please try again.';
-
-      if (response.data && response.data.state) {
-        errorMessage = response.data.state;
-      }
-
-      // Display pop-up alert based on error message
-      if (errorMessage === 'invalid-email') {
-        alert('Invalid Email. Please enter a valid email address.');
-      } else if (errorMessage === 'Not allowed') {
-        alert('Invalid Password. Please enter a valid password.');
-      } else {
-        alert(errorMessage);
-      }
+      errorMessage = 'Server Error';
     }
   } catch (error) {
     console.log('Error:', error);
-    // Handle other errors, such as network issues or server errors
-    alert('Server Error');
+    errorMessage = 'Server Error';
+  }
+
+  //gestione errori 
+  if (errorMessage === 'invalid-email') {
+    alert('Invalid Email. Please enter a valid email address.');
+  } else if (errorMessage === 'Not allowed') {
+    alert('Invalid Password. Please enter a valid password.');
+  } else if (errorMessage) {
+    alert(errorMessage);
   }
 }
 
-// Event listener for the login button
+// Gestione bottone Login
 document.addEventListener("DOMContentLoaded", function() {
   const loginButton = document.getElementById("button");
   if (loginButton) {
@@ -51,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Event listener for the password reset link
+  // Gestione Resetpasswd
   const resetPasswordLink = document.getElementById("reset-password-link");
   if (resetPasswordLink) {
     resetPasswordLink.addEventListener("click", function(e) {
@@ -60,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
+  // EGEstione Registrati
   const Register = document.getElementById("Register");
   if (Register) {
     Register.addEventListener("click", function(e) {
