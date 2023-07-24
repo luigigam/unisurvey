@@ -316,5 +316,33 @@ function generateDiagram() {
 
 generateDiagram();
 
+function deleteDiagramFiles() {
+  const frontendPath = path.join(__dirname, 'frontend');
+  const indexFilePath = path.join(frontendPath, 'index.html');
+  const styleFilePath = path.join(frontendPath, 'style.css');
+
+  try {
+    fs.unlinkSync(indexFilePath);
+    fs.unlinkSync(styleFilePath);
+    console.log('Deleted index.html and style.css');
+  } catch (err) {
+    console.error('Error deleting files:', err);
+  }
+}
+
+process.on('beforeExit', deleteDiagramFiles);
+
+process.on('SIGINT', () => {
+  console.log('Received SIGINT. Cleaning up before exiting...');
+  deleteDiagramFiles();
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM. Cleaning up before exiting...');
+  deleteDiagramFiles();
+  process.exit(0);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
