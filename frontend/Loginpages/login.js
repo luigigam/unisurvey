@@ -1,16 +1,16 @@
-
 let loginApiEndpoint, errorMessage;
 
 async function loginUser() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
+//check tipologia
 
   if (username.endsWith("@student.unisurvey")) {
     loginApiEndpoint = '/api/student/login';
   } else if (username.endsWith("@admin.unisurvey")) {
     loginApiEndpoint = '/api/admin/login';
   } else {
-    errorMessage = 'Login failed. Please try again.';
+    errorMessage = 'Login fallito,se non si utilizza una mail @type.unisurvey,si prega di registrarsi con nuovo profilo.';
   }
 
   try {
