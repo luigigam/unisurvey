@@ -1,0 +1,426 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: "Unisurvey"
+  description: UniSurvey is an utility web service with the focus on improving students life with surveys and in-campus functionalities.
+  license:
+    name: MIT
+    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
+host: polls.apiblueprint.org
+basePath: /api/
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /student/signup:
+    post:
+      tags: [Student]
+      summary: register a new student
+      description: the student is created after some validation checks.
+      responses:
+           '409':
+               description: 'email already in use: duplicate student'
+           '400':
+               description: 'bad request'
+           '500':
+               description: 'database error'
+           '201':
+               description: 'student successfully created'
+  
+  /students/login:
+    post:
+       tags: [Student]
+       summary: log into an existing student
+       description: the student is logged in after validation of his email and password. A JWT token is returned.
+           
+       responses:
+           '400':
+               description: 'Bad request'
+               
+           '404':
+               description: 'email not found'
+               
+           '401':
+               description: 'wrong password: failed authentication'
+           '200':
+               description: 'user logged in'
+               
+  /students/logout:
+    delete:
+        tags: [Student]
+        summary: logs a student out
+        description: the given JWT refresh token of a student is removed from the JWT refresh token list, preventing the creation of new JWT access tokens.
+        responses:
+            '204':
+                description: 'no content, logout'
+
+  /students/token:
+    post:
+        tags: [Student]
+        summary: returns a new fresh access token
+        description: the student is given another fresh JWT token access token after having recognized his JWT refresh token.
+        responses:
+            '403':
+                description: 'forbidden'
+            '401':
+                description: 'unauthorized, unknown refresh token'
+            '200':
+                description: 'new refresh token'
+
+  /students/:id:
+   patch:
+       tags: [Student]
+       summary: update an existing student
+       description: the student changes some of his personal datas like name, surname, gender and password.
+       responses:
+           '404':
+               description: 'student not found'
+               
+           '500':
+               description: 'database internal error'
+               
+           '202':
+               description: 'student information updated succesfully'
+               
+  /classroomsBooking/:id:
+    patch:
+        tags: [Student]
+        summary: book a classroom if available
+        description: the student books a classroom if available, otherwise that option is negated
+        responses:
+            '404':
+                description: 'classoom not found'
+
+            '500':
+                description: 'database internal error'
+
+            '202':
+                description: 'classroom booked succesfully'
+  /admins/getall:
+   get:
+       tags: [Admin]
+       summary: search all admins
+       description: a list of all admins registered is returned.
+       responses:
+           '500':
+               description: 'database internal error'
+
+           '200':
+               description: 'Success: return the list of admins'
+
+
+  /admins/getadmin/:id:
+   get:
+       tags: [Admin]
+       summary: search admin by id
+       description: an admin is submitted and the admin matching that particular id is returned.
+       responses:
+            '404':
+                description: 'admin not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return specified admin by id'
+
+  /admins/signup:
+    post:
+        tags: [Admin]
+        summary: register a new admin
+        description: the admin is created after some validation checks.
+
+        responses:
+            '409':
+                description: 'email already in use: duplicate admin'
+
+            '400':
+                description: 'bad request'
+
+            '500':
+                description: 'database internal error'
+
+            '201':
+                description: 'admin successfully created'
+
+
+  /admins/login:
+    post:
+        tags: [Admin]
+        summary: log into an existing admin
+        description: the admin is logged in after validation of his email and password. A JWT token is returned.
+        responses:
+            '400':
+                description: 'Bad request'
+
+            '404':
+                description: 'email not found'
+
+            '401':
+                description: 'wrong password: failed authentication'
+
+  
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'user logged in'
+
+  /admins/token:
+    post:
+        tags: [Admin]
+        summary: returns a new fresh access token
+        description: the admin is given another fresh JWT token access token after having recognized his JWT refresh token.
+        responses:
+            '403':
+                description: 'forbidden'
+            '401':
+                description: 'unauthorized, unknown refresh token'
+            '200':
+                description: 'new refresh token'
+                
+  /admins/logout:
+    delete:
+        tags: [Admin]
+        summary: logs a admin out
+        description: the given JWT refresh token of a admin is removed from the JWT refresh token list, preventing the creation of new JWT access tokens.
+        responses:
+            '204':
+                description: 'no content, logout'
+
+  /admins/updateAdmin/:id:
+    patch:
+        tags: [Admin]
+        summary: update an existing admin
+        description: the admin changes some of his datas like name, surname, email and password.
+
+        responses:
+            '400':
+                description: 'Bad request'
+
+            '404':
+                description: 'student not found'
+
+            '500':
+                description: 'database internal error'
+
+            '202':
+                description: 'admin information updated succesfully'
+
+
+  /admins/deleteadmin/:id:
+    delete:
+        tags: [Admin]
+        summary: remove target admin
+        description: the admin identified by the provided id is removed from the web service
+        responses:
+            '404':
+                description: 'admin not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'admin successfully removed from admin list'
+
+  /admins/studentManager/getstudents:
+    get:
+        tags: [Admin]
+        summary: search all students
+        description: a list of all students registered is returned.
+        responses:
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return the list of students'
+
+
+  /admins/studentManager/getstudent/:id:
+    get:
+        tags: [Admin]
+        summary: search a student by id
+        description: a student is submitted and the student matching that particular id is returned.
+        responses:
+            '404':
+                description: 'student not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return specified student by id'
+
+  /admins/studentManager/updatestudent/:id:
+    patch:
+        tags: [Admin]
+        summary: update an existing target student
+        description: the admin changes some of target student university-related datas like email, student id, study course and study year.
+
+        responses:
+            '400':
+                description: 'Bad request'
+
+            '404':
+                description: 'student not found'
+
+  
+            '500':
+                description: 'database internal error'
+
+            '202':
+                description: 'student information updated succesfully'
+
+  /admins/studentManager/deletestudent/:id:
+    delete:
+        tags: [Admin]
+        summary: remove target student
+        description: the student identified by the provided id is removed from the web service
+        responses:
+            '404':
+                description: 'student not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'student successfully removed from student list'
+
+
+  /admins/eventManager/createEvent:
+    post:
+        tags: [Admin]
+        summary: create a new event
+        description: the admin creates an event in google calendar, the informations are stored also in mongodb.
+        responses:
+            '500':
+                description: 'database internal error'
+            '201':
+                description: 'event successfully created'
+
+  /admins/eventManager/updateevent/:id:
+    patch:
+        tags: [Admin]
+        summary: update an existing event
+        description: the admin changes some of the event informations like summary, start date, end date, description and location. NB this changes are visible only in the database, the changes in google calendar are set up directly there.
+
+        responses:
+            '400':
+                description: 'Bad request'
+            '404':
+                description: 'student not found'
+            '500':
+                description: 'database internal error'
+            '202':
+                description: 'event information updated succesfully'
+
+  /admins/eventManager/deleteevent/:id:
+    delete:
+        tags: [Admin]
+        summary: remove target event
+        description: the event identified by the provided id is removed from the event list in mongodb
+        responses:
+            '404':
+                description: 'event not found'
+            '500':
+                description: 'database internal error'
+            '200':
+                description: 'event successfully removed from event list'
+
+  /admins/classroomManager/createClassroom:
+    post:
+        tags: [Admin]
+        summary: register a new classroom
+        description: the classroom is created by the authenticated admin after a code-validation check with the input parameters.
+        responses:
+            '409':
+                description: 'Classroom code already in use'
+            '400':
+                description: 'bad request'
+            '500':
+                description: 'database internal error'
+            '201':
+                description: 'classroom successfully registered'
+ 
+  /admins/classroomManager/resetBooking:
+    patch:
+        tags: [Admin]
+        summary: reset all room bookings
+        description: the admin sets all classrooms available. Is better to call this function at the end of the day.
+        responses:
+            '500':
+                description: 'database internal error'
+            '202':
+                description: 'classroom availability updated succesfully to true'
+ 
+  /admins/surveyManager/createSurvey:
+     post:
+       summary: Aggiungi un nuovo sondaggio nel database
+       tags: [Admin]
+       responses:
+         '200':
+           description: Sondaggio salvato nel database
+         '500':
+           description: Errore durante il salvataggio del sondaggio
+ 
+  /admins/surveyManager/deleteSurvey/:id:
+     delete:
+       summary: Rimuovi un sondaggio esistente dal database
+       tags: [Admin]
+       responses:
+         '200':
+           description: Sondaggio rimosso dal database
+         '500':
+           description: Errore durante la rimozione del sondaggio
+
+  /events:
+    get:
+        tags: [Events]
+        summary: search all events
+        description: a list of all events created is returned.
+        responses:
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return the list of evetns'
+
+ 
+  /events/:id:
+    get:
+        tags: [Events]
+        summary: search event by id
+        description: an event is submitted and the event matching that particular id is returned.
+        responses:
+            '404':
+                description: 'event not found'
+
+            '500':
+                description: 'database internal error'
+
+            '200':
+                description: 'Success: return specified event by id'
+                
+  /classrooms/getclassrooms:
+    get:
+        tags: [Classroom]
+        summary: get all classrooms
+        description: a list of all classrooms registered is returned.
+        responses:
+            '500':
+                description: 'database internal error'
+            '200':
+                description: 'Success: return the list of classrooms'
+  /surveys/getsurveys:
+    get:
+        tags: [Survey]
+        summary: get all surveys
+        description: a list of all surveys is returned. Only authenticated users can access the links, both students or admins.
+        responses:
+            '500':
+                description: 'database internal error'
+            '200':
+                description: 'Success: return the list of surveys'

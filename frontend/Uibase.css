@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
   background-color: black;
 }
@@ -18,8 +14,8 @@ body {
 }
 
 .logo {
-  width: auto; /* Imposta la larghezza desiderata per il logo */
-  height: auto; /* Imposta l'altezza in base all'aspetto del logo */
+  width: 90%; /* Imposta la larghezza desiderata per il logo */
+  height: 90%; /* Imposta l'altezza in base all'aspetto del logo */
 }
 
 .box {
@@ -54,3 +50,122 @@ body {
   border-color: #0B3B9E;
 }
 
+.form_main {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFCC00;
+  padding: 5% 25%;
+  border-radius: 30px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
+}
+
+.heading {
+  font-size: 2.5em;
+  color: #2e2e2e;
+  font-weight: 700;
+  margin: 15px 0 30px 0;
+}
+
+.inputContainer { 
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 10px;
+}
+
+.inputField {
+  width: 100%;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #929292;
+  border-radius: 30px;
+  margin: 10px 0;
+  color: black;
+  font-size: .8em;
+  font-weight: 500;
+  box-sizing: border-box;
+  padding-left: 30px;
+}
+
+.inputField:focus {
+  outline: none;
+  border-bottom: 2px solid rgb(199, 114, 255);
+}
+
+.inputField::placeholder {
+  color: #929292;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+#button {
+  position: relative;
+  width: 100%;
+  border: 2px solid #c49216;
+  background-color: #917800;
+  height: 40px;
+  color: #2d2d2d;
+  font-size: .8em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-radius: 30px;
+  margin: 10px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#button::after {
+  content: "";
+  position: absolute;
+  background-color: #ddb900;
+  height: 100%;
+  width: 150px;
+  top: 0;
+  left: -200px;
+  border-bottom-right-radius: 100px;
+  border-top-left-radius: 100px;
+  filter: blur(10px);
+  transition-duration: .5s;
+}
+
+#button:hover::after {
+  transform: translateX(600px);
+  transition-duration: .5s;
+}
+
+.reset-password-link {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.reset-password-link p {
+  font-size: .9em;
+  font-weight: 500;
+  color: black;
+}
+
+.reset-password-link a {
+  font-size: .7em;
+  font-weight: 500;
+  background-color: #929292;
+  color: #1E1E1E;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+}
+
+  

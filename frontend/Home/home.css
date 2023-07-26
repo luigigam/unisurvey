@@ -1,0 +1,261 @@
+body.dark-theme{
+  background-color: #000000;
+  color: #FFFFFF;
+}
+body{
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.container {
+  text-align: center;
+  margin-top: 0px;
+}
+
+.utility-page-wrap{
+  width: 10%;
+  height: 100vh;
+  max-height: 20%;
+  max-width: 100%;
+  justify-content:center;
+  align-items:center;
+  display:flex;
+}
+
+.utility-page-content{
+  width: 260px;
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+}
+
+.utility-page-form{
+  flex-direction: column;
+  align-items: stretch;
+  display: flex;
+}
+
+.header-columns{
+  justify-content: center;
+  width: 100%;
+}
+
+header {
+  /* display: flex; */
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+}
+.header-container {
+  border: 2px solid #c49216;
+  background-color: #FFCC00;
+  text-align: center;
+  padding: 10px;
+}
+
+.Title {
+  background-color: #917800;
+  color: #FFFFFF;
+  padding: 20px;
+  margin: 0;
+  border-radius: 30px;
+
+}
+
+.logo img {
+  align-content: center;
+  height: -100px
+}
+
+.logout button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.theme-switch-container {
+  text-align: right;
+  padding: 5px;
+  height: 0;
+}
+
+.switch-container {
+  display: inline-block;
+  position: relative;
+  width: 10px;
+  height: 20px;
+}
+
+.switch-container input[type="checkbox"] {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 10px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+/* Box Switch */
+.switch-container {
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+}
+
+/* Nascondi funzionalità HTML per una migliore visione */
+.switch-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Theme switch use */
+.switch-container .slider {
+  --background: linear-gradient(to right, #090613ef, #18151f);
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--background);
+  transition: background-color 0.5s;
+  border-radius: 30px;
+}
+
+.switch-container .slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 50%;
+  left: 10%;
+  bottom: 15%;
+  box-shadow: inset 15px -4px 0px 15px #f8ea27;
+  background: var(--background);
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+
+.switch-container input:checked + .slider {
+  background-color: #000;
+}
+
+.switch-container input:checked + .slider:before {
+  transform: translateX(100%);
+  box-shadow: inset 8px -4px 0px 0px #f8f8f4;
+}
+
+.calendar {
+  margin-top: 5px;
+  padding: 10px;
+  border: 2px solid #c49216;
+  background-color: #FFCC00;
+  text-align: center;
+  text-align: center;
+  border-radius: 30px;
+  width: max-content ;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calendar-container {
+  padding: 10px;
+  display: inline-block;
+  border-radius: 30px;
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.button {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #808080;
+  color: #FFFFFF;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.events-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.event {
+  margin-top: 5px;
+  padding: 10px;
+  border: 2px solid #c49216;
+  background-color: #FFCC00;
+  text-align: center;
+  text-align: center;
+  border-radius: 30px;
+  width: max-content ;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#button {
+  position: relative;
+  width: 25%;
+  border: 2px solid #c49216;
+  background-color: #917800;
+  height: 40px;
+  color: #2d2d2d;
+  font-size: .8em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-radius: 30px;
+  margin: 10px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.logoutbutton {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #808080;
+  color: #FFFFFF;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+#logoutButton {
+  position: relative;
+  width: 80px;
+  border: 2px solid #c49216;
+  background-color: #917800;
+  height: 40px;
+  color: #2d2d2d;
+  font-size: .8em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-radius: 30px;
+  margin: 10px;
+  cursor: pointer;
+  overflow: hidden;
+}

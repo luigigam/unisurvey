@@ -1,0 +1,9 @@
+GET http://localhost:3000/api/events/getevents
+
+###
+
+GET http://localhost:3000/api/events/6469de3c3c3499105832abd6
+
+###
+
+GET http://localhost:3000/api/events/

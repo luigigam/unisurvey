@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Signup</title>
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="box">
+      <form class="form_main" id="signupForm">
+        <div class="logo-container">
+          <img src="../Immagini/Logo.jpg" alt="Logo" class="logo">
+        </div>
+        <h1 class="heading">Registrazione Studente</h1>
+        <div class="switch-container">
+          <a href="adminsignup.html" class="switch-label">Admin?</a>
+        </div>
+
+        <!-- Gruppo di input -->
+        <div class="inputGroup">
+          <div class="inputContainer">
+            <input type="text" id="name" class="inputField" placeholder="Nome" required>
+          </div>
+
+          <div class="inputContainer">
+            <input type="text" id="surname" class="inputField" placeholder="Cognome" required>
+          </div>
+        </div>
+        <!-- Fine del gruppo di input -->
+
+        <!-- Gruppo di input -->
+        <div class="inputGroup">
+          <div class="inputContainer">
+            <input type="password" id="password" class="inputField" placeholder="Password" required>
+          </div>
+
+          <div class="inputContainer">
+            <input type="password" id="confirm_password" class="inputField" placeholder="Conferma password" required>
+          </div>
+        </div>
+        <!-- Fine del gruppo di input -->
+
+        <!-- Gruppo di input -->
+        <div class="inputGroup">
+          <div class="inputContainer">
+            <input type="text" id="study_course" class="inputField" placeholder="Corso di Studio" required>
+          </div>
+
+          <div class="inputContainer">
+            <span class="slider-value">Anno di Studio:</span>
+            <input type="range" id="study_year" class="inputField" min="1" max="6" required>
+          </div>
+        </div>
+        <!-- Fine del gruppo di input -->
+
+        <!-- Gruppo di input -->
+        <div class="inputGroup">
+          <div class="inputSlider">
+            <select id="gender" class="inputField">
+              <option value="">Seleziona Genere</option>
+              <option value="M">Maschio</option>
+              <option value="F">Femmina</option>
+              <option value="NB">Non binario</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+        </div>
+        <!-- Fine del gruppo di input -->
+
+        <button id="studentButton" class="form-button">Registrati come Studente</button>
+      </form>
+
+      
+    </div>
+  </div>
+
+  <script src="signupstudent.js"></script>
+</body>
+</html>

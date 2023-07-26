@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Management</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <h1>Event Management</h1>
+
+  <h2>Events</h2>
+  <ul id="eventList"></ul>
+
+  <h2>Create Event</h2>
+  <form id="createEventForm">
+    <label for="summary">Summary:</label>
+    <input type="text" id="summary" required>
+    <br>
+    <label for="location">Location:</label>
+    <input type="text" id="location" required>
+    <br>
+    <label for="start">Start Date and Time:</label>
+    <input type="datetime-local" id="start" required>
+    <br>
+    <label for="end">End Date and Time:</label>
+    <input type="datetime-local" id="end" required>
+    <br>
+    <label for="description">Description:</label>
+    <textarea id="description" required></textarea>
+    <br>
+    <button type="submit">Create Event</button>
+  </form>
+
+  <hr>
+
+  <script src="eventM.js"></script>
+</body>
+</html>

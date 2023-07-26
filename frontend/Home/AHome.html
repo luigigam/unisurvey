@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="home.css">
+  </head>
+  <body>
+    <div class="header-container">
+      <a class="theme-switch-container">
+        <label class="switch-container">
+          <input type="checkbox" id="themeSwitch">
+          <span class="slider"></span>
+        </label>
+      </a>
+
+      <a class="logo">
+        <img src="../Immagini/Logo.jpg" alt="Logo">
+      </a>
+
+      <button id="logoutButton" onclick="window.location.href='../Loginpages'">
+        <a>Logout</a>
+      </button>
+      <div class="Title">
+        <p class="heading">Homepage Personale</p>
+      </div>
+    </div>
+
+    <div class="calendar">
+      <div class="calendar-container">
+        <iframe src="https://calendar.google.com/calendar/embed?src=4d30161fb001f9645072b63bf3095f88b6b9937d716ee7b4d4125b47b1809492%40group.calendar.google.com&ctz=Europe%2FRome" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+      </div>
+    </div>
+    
+    <div class="buttons">
+      <button id="button" onclick="window.location.href='../Survey'"><a>Sondaggi</a></button>
+      <button id="button" onclick="window.location.href='../Eventpage'"><a>Eventi</a></button>
+      <button id="button" onclick="window.location.href='../Booking/'"><a>Prenota Aule</a></button>
+      <button id="button" onclick="window.location.href='../Adminpages/Eventmanagement'"><a>Gestione eventi</a></button>
+      <button id="button" onclick="window.location.href='../Adminpages/SurveyManagement'"><a>Gestione sondaggi</a></button>
+      <button id="button" onclick="window.location.href='../Adminpages/UserManagement'"><a>Gestione utenti</a></button>
+    </div>
+
+    
+
+    <div class="events-container">
+      <select onchange="filterEvents(this.value)">
+        <option value="today">Oggi</option>
+        <option value="1week">1 Settimana</option>
+        <option value="2weeks">2 Settimane</option>
+        <option value="1month">1 Mese</option>
+      </select>
+
+      <div id="events">
+        <!-- Eventi vengono aggiunti qui dinamicamente -->
+      </div>
+    </div>
+
+    <script src="Home.js"></script>
+  </body>
+</html>

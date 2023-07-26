@@ -1,31 +1,42 @@
 const mongoose = require("mongoose");
 
 const eventSchema = new mongoose.Schema({
-  name: {
+  summary: {
     type: String,
     required: true,
   },
-  startDate: {
-    type: Date,
+  location: {
+    type: String,
     required: true,
   },
-  endDate: {
-    type: Date,
+  start: {
+    type: String,
+    required: true,
+  },
+  end: {
+    type: String,
     required: true,
   },
   description: {
     type: String,
-    required: true
-},
-  location:
-  { type: String,
-    required: true
-},
-  isRegular: {
-    type: Boolean,
     required: true,
-    default: false
-}
+  },
+  colorID: {
+    type: String,
+    default: "6",
+  },
+  targetYear: {
+    type: String,
+    required: true
+  },
+  targetCourse: {
+    type: String,
+    required: true
+  },
+  targetID: {
+    type: String,
+    required: true
+  },
 });
 
 const Event = mongoose.model("Event", eventSchema);

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Signup</title>
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="box">
+      <form class="form_main" id="signupForm">
+        <div class="logo-container">
+            <img src="../Immagini/Logo.jpg" alt="Logo" class="logo">
+          </div>
+        <h1 class="heading">Registrazione Amministratore</h1>
+        <div class="switch-container">
+            <a href="index.html" class="switch-label">Studente?</a>
+        </div>
+
+        <!-- Gruppo di input -->
+        <div class="inputGroup">
+          <div class="inputContainer">
+            <input type="text" id="name" class="inputField" placeholder="Nome" required>
+          </div>
+
+          <div class="inputContainer">
+            <input type="text" id="surname" class="inputField" placeholder="Cognome" required>
+          </div>
+        </div>
+        <!-- Fine del gruppo di input -->
+
+        <!-- Gruppo di input -->
+        <div class="inputGroup">
+          <div class="inputContainer">
+            <input type="password" id="password" class="inputField" placeholder="Password" required>
+          </div>
+
+          <div class="inputContainer">
+            <input type="password" id="confirm_password" class="inputField" placeholder="Conferma password" required>
+          </div>
+        </div>
+        <!-- Fine del gruppo di input -->
+
+        <button id="adminButton" class="form-button">Registrati come Amministratore</button>
+      </form>
+
+      
+    </div>
+  </div>
+
+  <script src="signupadmin.js"></script>
+</body>
+</html>

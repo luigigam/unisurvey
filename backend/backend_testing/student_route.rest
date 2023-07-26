@@ -1,0 +1,63 @@
+POST http://localhost:3000/api/students/signup
+Content-Type: application/json
+
+{
+    "name": "JJ4",
+    "surname": "Rip",
+    "gender": "F",
+    "email": "orso@grr",
+    "password": "123",
+    "student_id": "202013",
+    "study_course": "Ingegneria Ambientale",
+    "study_year": "2020"
+}
+
+###
+
+PATCH http://localhost:3000/api/students/646756d09bdbaaa84edacc4f
+Content-Type: application/json
+
+{
+    "name": "nina",
+    "surname": "d'angela",
+    "gender": "F",
+    "password": "pass1234"
+}
+
+###
+
+POST http://localhost:3000/api/students/login
+Content-Type: application/json
+
+{
+    "email": "emai1@xp",
+    "password": "123"
+}
+
+###
+
+POST http://localhost:3000/api/students/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc5YjlmNjMyNzM5ZDczODAyNWRjYWYiLCJuYW1lIjoibmlubyIsInN1cm5hbWUiOiJkJ2FuZ2VsbyIsImdlbmRlciI6Ik0iLCJlbWFpbCI6ImVtYWkxQHhwIiwicGFzc3dvcmQiOiIkMmIkMTAkdEs0T3J5ZTdoS3VIQ0Zzazl3TDAuT3VpdDNVaTRqZnUuUHVkYkxMMmxMdGQ1MVMwR0lTNU8iLCJzdHVkZW50X2lkIjoiMTI0NDU2Iiwic3R1ZHlfY291cnNlIjoiYWdyYXJpYSIsInN0dWR5X3llYXIiOiIxOTQ1IiwiX192IjowLCJpYXQiOjE2ODYzMjUxNDh9.eqQahBNkE3Mwpi-xRWGudsJ1Y0pPzvnUBO9GvWaDmV8"
+}
+
+###
+
+POST http://localhost:3000/api/students/home
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc5YjlmNjMyNzM5ZDczODAyNWRjYWYiLCJuYW1lIjoibmlubyIsInN1cm5hbWUiOiJkJ2FuZ2VsbyIsImdlbmRlciI6Ik0iLCJlbWFpbCI6ImVtYWkxQHhwIiwicGFzc3dvcmQiOiIkMmIkMTAkdEs0T3J5ZTdoS3VIQ0Zzazl3TDAuT3VpdDNVaTRqZnUuUHVkYkxMMmxMdGQ1MVMwR0lTNU8iLCJzdHVkZW50X2lkIjoiMTI0NDU2Iiwic3R1ZHlfY291cnNlIjoiYWdyYXJpYSIsInN0dWR5X3llYXIiOiIxOTQ1IiwiX192IjowLCJpYXQiOjE2ODYzMjUxNzgsImV4cCI6MTY4NjMyODc3OH0.8MX-WIO1E2nJzOGSnYzjKRcx-RiVCo8x7rzGtrSJ4AE
+
+###
+
+DELETE http://localhost:3000/api/students/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc5YjlmNjMyNzM5ZDczODAyNWRjYWYiLCJuYW1lIjoibmlubyIsInN1cm5hbWUiOiJkJ2FuZ2VsbyIsImdlbmRlciI6Ik0iLCJlbWFpbCI6ImVtYWkxQHhwIiwicGFzc3dvcmQiOiIkMmIkMTAkdEs0T3J5ZTdoS3VIQ0Zzazl3TDAuT3VpdDNVaTRqZnUuUHVkYkxMMmxMdGQ1MVMwR0lTNU8iLCJzdHVkZW50X2lkIjoiMTI0NDU2Iiwic3R1ZHlfY291cnNlIjoiYWdyYXJpYSIsInN0dWR5X3llYXIiOiIxOTQ1IiwiX192IjowLCJpYXQiOjE2ODYzMjUxNDh9.eqQahBNkE3Mwpi-xRWGudsJ1Y0pPzvnUBO9GvWaDmV8"
+}
+
+###
+
+PATCH http://localhost:3000/api/students/classroomsBooking/6479b4bb2e3e4b699a2be3c2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc5YjlmNjMyNzM5ZDczODAyNWRjYWYiLCJuYW1lIjoibmlubyIsInN1cm5hbWUiOiJkJ2FuZ2VsbyIsImdlbmRlciI6Ik0iLCJlbWFpbCI6ImVtYWkxQHhwIiwicGFzc3dvcmQiOiIkMmIkMTAkdEs0T3J5ZTdoS3VIQ0Zzazl3TDAuT3VpdDNVaTRqZnUuUHVkYkxMMmxMdGQ1MVMwR0lTNU8iLCJzdHVkZW50X2lkIjoiMTI0NDU2Iiwic3R1ZHlfY291cnNlIjoiYWdyYXJpYSIsInN0dWR5X3llYXIiOiIxOTQ1IiwiX192IjowLCJpYXQiOjE2ODY0OTI1ODUsImV4cCI6MTY4NjQ5NjE4NX0.Qi_MIFEBi1q5ZNWI9p8SxiKJDwmePmm5g-IjRDKdKXM
