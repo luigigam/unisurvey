@@ -126,8 +126,8 @@ const surveysRoutes = require('./backend/routes/surveys');
 const registrationRouter = require('./backend/routes/registration');
 
 
-mainRouter.use('/students', authenticateToken, studentsRouter);
-mainRouter.use('/admins', authenticateToken, adminsRouter);
+//mainRouter.use('/students', authenticateToken, studentsRouter);
+//mainRouter.use('/admins', authenticateToken, adminsRouter);
 mainRouter.use('/events', authenticateToken, eventsRouter);
 mainRouter.use('/classrooms', authenticateToken, classroomsRouter);
 mainRouter.use('/surveys', authenticateToken, surveysRoutes);

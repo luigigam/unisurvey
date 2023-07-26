@@ -1,18 +1,19 @@
-/*const request = require('supertest');
-const app = require('../--server.js');
+const supertest = require('supertest');
+const app = require('../../server.js');
 const mongoose = require('mongoose');
 const Survey = require('../models/survey.js');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-const mongod = new MongoMemoryServer();
+let mongod;
 
 beforeAll(async () => {
+  mongod = await MongoMemoryServer.create();
   const uri = await mongod.getUri();
   await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 });
 
 afterEach(async () => {
-  await Survey.remove({});
+  await Survey.deleteOne();
 });
 
 afterAll(async () => {
@@ -21,7 +22,7 @@ afterAll(async () => {
   await mongod.stop();
 });
 
-describe('GET /survey/getsurveys', () => {
+describe('GET /surveys/getsurveys', () => {
   it('dovrebbe restituire un elenco di questionari', async () => {
     const surveys = [
       { title: 'Mensa Povo0', link: 'https://docs.google.com/forms/d/e/1FAIpQLScxGZosjNqVlJEwBZmovJyFfM9sDEB68q0W-tzOudfgnB_bJA/viewform?usp=sf_link' },
@@ -53,4 +54,3 @@ describe('GET /survey/getsurveys', () => {
     expect(response.body.length).toBe(0);
   });
 });
-*/

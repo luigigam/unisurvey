@@ -1,4 +1,3 @@
-/*
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../../server.js');
@@ -54,5 +53,3 @@ describe('GET /classrooms/getclassrooms', () => {
     expect(response.body.length).toBe(0);
   });
 });
-
-*/

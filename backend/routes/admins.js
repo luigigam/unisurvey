@@ -399,22 +399,6 @@ router.delete('/logout', (req, res) => {
  *                              state:
  *                                  type: string
  */
-
-async function getAdmin(req, res, next) {
-  let admin;
-  try {
-    admin = await Admin.findById(req.params.id);
-    if (admin == null) {
-      return res.status(404).json({ message: "Cannot find admin" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  res.admin = admin;
-  next();
-}
-
 router.patch(
   '/updateAdmin/:id',
   authenticateToken,
@@ -501,6 +485,7 @@ router.delete(
 router.post("/home", authenticateToken, (req, res) => {
   res.send("Homepage");
 });
+
 async function getAdmin(req, res, next) {
   let admin;
   try {

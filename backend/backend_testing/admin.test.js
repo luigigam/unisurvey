@@ -1,5 +1,4 @@
-/*
-const request = require('supertest');
+const supertest = require('supertest');
 const app = require('../../server'); 
 const mongoose = require('mongoose');
 const Admin = require('../models/admin');
@@ -25,7 +24,7 @@ describe('API per gli amministratori', () => {
 
   describe('POST /admins/signup', () => {
     test('dovrebbe registrare un nuovo amministratore', async () => {
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/admins/signup')
         .send({
           name: 'John',
@@ -50,7 +49,7 @@ describe('API per gli amministratori', () => {
         password: 'password',
       });
 
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/admins/signup')
         .send({
           name: 'John',
@@ -64,7 +63,7 @@ describe('API per gli amministratori', () => {
     });
 
     test('dovrebbe restituire un errore se l\'email non è valida', async () => {
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/admins/signup')
         .send({
           name: 'John',
@@ -88,7 +87,7 @@ describe('API per gli amministratori', () => {
         password: 'password',
       });
 
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/admins/login')
         .send({
           email: 'john.cile@example.com',
@@ -101,7 +100,7 @@ describe('API per gli amministratori', () => {
     });
 
     test('dovrebbe restituire un errore se l\'email non viene trovata', async () => {
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/admins/login')
         .send({
           email: 'nonexistent.admin@example.com',
@@ -121,7 +120,7 @@ describe('API per gli amministratori', () => {
         password: 'password',
       });
 
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/admins/login')
         .send({
           email: 'john.cile@example.com',
@@ -136,7 +135,7 @@ describe('API per gli amministratori', () => {
   // Test the POST /survey route
   describe('POST /survey', () => {
     it('should add a new survey', async () => {
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/survey')
         .send({
           title: 'Mensa Povo0',
@@ -148,7 +147,7 @@ describe('API per gli amministratori', () => {
     });
 
     it('should return an error when the survey data is invalid', async () => {
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/survey')
         .send({
           // Invalid survey data without title and link properties
@@ -165,7 +164,7 @@ describe('API per gli amministratori', () => {
 
     beforeAll(async () => {
       // Add a new survey before running the test
-      const response = await request(app)
+      const response = await supertest(app)
         .post('/survey')
         .send({
           title: 'Mensa Povo0',
@@ -176,19 +175,17 @@ describe('API per gli amministratori', () => {
     });
 
     it('should remove an existing survey', async () => {
-      const response = await request(app).delete(`/survey/${surveyId}`);
+      const response = await supertest(app).delete(`/survey/${surveyId}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual({ message: 'Sondaggio rimosso dal database' });
     });
 
     it('should return an error when the survey ID is invalid', async () => {
-      const response = await request(app).delete('/survey/invalidId');
+      const response = await supertest(app).delete('/survey/invalidId');
 
       expect(response.status).toBe(500);
       expect(response.body).toEqual({ error: 'Errore durante la rimozione del sondaggio' });
     });
   });
 });
-
-*/

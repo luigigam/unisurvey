@@ -1,4 +1,4 @@
-document.getElementById('button').addEventListener('click', function (e) {
+document.getElementById('button').addEventListener('click', async function (e) {
   e.preventDefault();
 
   const name = document.getElementById('name').value;
