@@ -194,6 +194,81 @@ router.post("/login", async (req, res) => {
 
 /**
  * @swagger
+ * /students/report:
+ *  post:
+ *      tags: [student]
+ *      summary: students reports
+ *      description: returns the list of students registered in CSV format.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *      responses:
+ *          '400':
+ *              description: 'Bad request'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '404':
+ *              description: 'students not found'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *          '200':
+ *              description: 'report ready'
+ *              content:
+ *                  text/csv:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              state:
+ *                                  type: string
+ *
+ */
+app.get("/report", async (req, res) => {
+  try {
+    const students = await Student.find();
+
+    // Configura el objeto CSV writer
+    const csvWriter = createObjectCsvWriter({
+      path: "students.csv",
+      header: [
+
+        { id: "name", title: "Name" },
+        { id: "surname", title: "Surname" },
+        { id: "gender", title: "Gender" },
+        { id: "email", title: "Email" },
+        { id: "student_id", title: "Student ID" },
+        { id: "study_course", title: "Study Course" },
+        { id: "study_year", title: "Study Year" },
+      ],
+    });
+
+    await csvWriter.writeRecords(students);
+
+    res.sendFile("students.csv", { root: __dirname });
+  } catch (error) {
+    console.error("Error al obtener estudiantes:", error);
+    res.status(500).send("Error al obtener estudiantes");
+  }
+});
+
+
+/**
+ * @swagger
  * /students/token:
  *  post:
  *      tags: [student]

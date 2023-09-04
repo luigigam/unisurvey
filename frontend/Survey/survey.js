@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // Fetch surveys from the API
-  fetch("http://localhost:3000/api/survey")
+  fetch("/api/survey")
       .then(response => response.json())
       .then(data => {
           generateSurveyButtons(data);
